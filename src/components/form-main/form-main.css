@@ -1,0 +1,36 @@
+
+.MuiBox-root {
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+}
+
+
+div.MuiInputBase-root {
+  background-color: white;
+}
+
+.MuiInputBase-root:hover {
+  background-color: lightgray;
+}
+
+.MuiInputBase-root.Mui-focused fieldset.MuiOutlinedInput-notchedOutline,
+.MuiInputBase-root.Mui-focused fieldset.MuiOutlinedInput-notchedOutline span {
+  border: none;
+}
+
+/* https://mui.com/material-ui/react-text-field/ */
+
+label.MuiInputLabel-root {
+  font-weight: 700;
+  font-size: 14px;
+  color: lightgray;
+  text-align: center;
+  width: 100%;
+}
+
+label.MuiInputLabel-root.Mui-focused,
+label.MuiInputLabel-root.MuiInputLabel-filled  {
+  width: auto;
+  color: '#247cc1';
+}
