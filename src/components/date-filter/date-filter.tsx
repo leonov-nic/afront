@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react';
 import DatePickerFilter from '../data-picker-filter/data-picker-filter';
 import { Dayjs } from 'dayjs';
-// import { useAppDispatch } from "../../hooks/useAppDispatch";
-// import { fetchJobs } from '../../store/api-action';
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { fetchJobs } from '../../store/api-action';
+import { getDataAndResetTime } from '../../utils/utils';
 
 export default function DateFilter() {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const [date, setDate] = useState<Dayjs | null>(null);
 
   useEffect(() => {
-    console.log(date);
-    // dispatch(fetchJobs({createdAt: date}));
-
-  }, [date]);
+    dispatch(fetchJobs({createdAt: getDataAndResetTime(date)}));
+  }, [date, dispatch]);
 
   const hundleChangeDate = (value: Dayjs | null) => {
     setDate(value);

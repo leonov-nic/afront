@@ -1,10 +1,12 @@
 // import {utils, writeFile} from 'xlsx';
 // import { ChangeEvent } from 'react';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import utc from 'dayjs/plugin/utc'
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
+dayjs.extend(utc);
 
 export const dictionary = <T extends { _id: string | undefined }>(array: T[]) => {
   const dictionary = new Map<string | undefined, T>();
@@ -55,6 +57,21 @@ export const isTimeSameOrAfter = (timeTo: string, timeFrom: string) => {
 export const getDataNow = () => {
   const data = new Date();
   return data.toISOString();
+}
+
+export const getDataNowWithResetTime = () => {
+  const data = new Date();
+  console.log(data);
+  data.setHours(0, 0, 0, 0);
+  console.log(data);
+  // console.log(dayjs(data).utc().local().format());
+  return dayjs(data).utc().local().format();
+  // return data;
+}
+
+export const getDataAndResetTime = (data: Dayjs | null) => {
+  if (data == null) {return;}
+  return dayjs(data).format();
 }
 
 export const getDay = () => {

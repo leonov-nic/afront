@@ -9,6 +9,7 @@ const StatusCodeMapping: Record<string, boolean> = {
   '404': true,
   '401': true,
   '500': true,
+  '501': true,
 };
 
 type ValidationErrorField = {
