@@ -12,7 +12,8 @@ interface SelectTimeProps {
 }
 
 export default function SelectTime({ name }: SelectTimeProps): JSX.Element {
-  const { setFieldValue, values } =  useFormikContext<{[key: string]: string}>();
+  const { setFieldValue, values, errors } =  useFormikContext<{[key: string]: string}>();
+  const error = errors[`${name}`];
 
   const timeSlots = Array.from(new Array(24 * 2)).map(
     (_, index) =>
@@ -42,7 +43,13 @@ export default function SelectTime({ name }: SelectTimeProps): JSX.Element {
       onChange={handleChangeSelect}
       // getOptionDisabled={(option) =>
       //   timeSlots.slice(0, 12).includes(option)}
-      renderInput={(params) => <TextField error={!!values.error} {...params} placeholder={name} name={name}/>}
+      renderInput={(params) => 
+        <TextField 
+          error={!!error}
+          helperText={error && error}
+          {...params} 
+          placeholder={name} name={name}
+        />}
     />
   );
 }

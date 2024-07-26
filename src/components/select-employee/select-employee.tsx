@@ -19,33 +19,38 @@ export default function SelectEmployee({sx, onChangeSelect}: SelectEmployeeProps
   const employees = useAppSelector(getEmployees);
   const dictionaryEmployees = dictionary<TEmployee>(employees);
 
-  const { setValues, values} =  useFormikContext<TSelectJob>();
-
+  const { setValues, values, errors } =  useFormikContext<TSelectJob>();
+  const error = errors['employeeId'];
+  
   return (
-    <Autocomplete
-      value={values.employeeId ? dictionaryEmployees.get(values.employeeId) : null}
-      id="select-employee"
-      sx={[{ maxWidth: 180, display: "inline-flex"}, ...(Array.isArray(sx) ? sx : [sx]),]}
-      options={employees}
-      fullWidth={true}
-      getOptionLabel={(option) => option.familyName}
-      onChange={(_event, value) => {
-        value && onChangeSelect && onChangeSelect(value)
-        value && setValues({...values,
-          typeOfJob: value.mainJob,
-          familyName: value.familyName,
-          registrationNumber: value.registrationNumber,
-          employeeId: `${value._id && value._id.toString()}`
-        })
-      }}
+    <>
+      <Autocomplete
+        value={values.employeeId ? dictionaryEmployees.get(values.employeeId) : null}
+        id="select-employee"
+        sx={[{ maxWidth: 180, display: "inline-flex"}, ...(Array.isArray(sx) ? sx : [sx]),]}
+        options={employees}
+        fullWidth={true}
+        getOptionLabel={(option) => option.familyName}
+        onChange={(_event, value) => {
+          value && onChangeSelect && onChangeSelect(value)
+          value && setValues({...values,
+            typeOfJob: value.mainJob,
+            familyName: value.familyName,
+            registrationNumber: value.registrationNumber,
+            employeeId: `${value._id && value._id.toString()}`
+          })
+        }}
 
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          name='employeeId'
-          placeholder="Employee"
-        />
-      )}
-    />
+        renderInput={(params) => (
+          <TextField
+            error={error ? true : false}
+            helperText={error && error}
+            {...params}
+            name='employeeId'
+            placeholder="Employee"
+          />
+        )}
+      />
+    </>
   );
 }

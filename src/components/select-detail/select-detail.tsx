@@ -10,7 +10,8 @@ import { dictionary } from '../../utils/utils';
 export default function SelectDetail(): JSX.Element {
   const details = useAppSelector(getDetails);
   const dictionaryDetails = dictionary<TDetail>(details);
-  const { setFieldValue, values } =  useFormikContext<TJob>();
+  const { setFieldValue, values, errors } =  useFormikContext<TJob>();
+  const error = errors[`detailId`];
 
   return (
     <Autocomplete
@@ -26,6 +27,8 @@ export default function SelectDetail(): JSX.Element {
       renderInput={(params) => (
         <TextField
           {...params}
+          error={error ? true : false}
+          helperText={error && error}
           name='detailId'
           placeholder="Detail"
           inputProps={{

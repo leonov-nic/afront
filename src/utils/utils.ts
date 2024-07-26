@@ -61,9 +61,8 @@ export const getDataNow = () => {
 
 export const getDataNowWithResetTime = () => {
   const data = new Date();
-  console.log(data);
+  // console.log(data);
   data.setHours(0, 0, 0, 0);
-  console.log(data);
   // console.log(dayjs(data).utc().local().format());
   return dayjs(data).utc().local().format();
   // return data;

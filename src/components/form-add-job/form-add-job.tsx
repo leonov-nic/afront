@@ -36,12 +36,13 @@ const INITIAL_VALUES = {
 };
 
 const VALIDATION_SCHEMA = Yup.object().shape({
-  employeeId: Yup.string().required("Required"),
-  timeFrom: Yup.string().required("Required"),
-  timeTo: Yup.string().required("Required"),
-  detailId: Yup.string().required("Required"),
-  typeOfJob: Yup.string().required("Required"),
-  quantity: Yup.number().required("Required").typeError("Quantity must be a number"),
+  employeeId: Yup.string().required("Fill field"),
+  timeFrom: Yup.string().required("Fill field"),
+  timeTo: Yup.string().required("Fill field"),
+  detailId: Yup.string().required("Fill field"),
+  typeOfJob: Yup.string().required("Fill field"),
+  extra: Yup.number(),
+  quantity: Yup.number().required("Fill field"),
   comment: Yup.string(),
 });
 
@@ -50,7 +51,7 @@ export default function FormAddJob(): JSX.Element {
   const user = useAppSelector(getUser);
 
   const validateQuantity = (value: number) => {
-    if (value === 0 || value === undefined) {
+    if (value === 0 || value == undefined) {
       return 'Quantity must be greater than 0';
     }
     return undefined;

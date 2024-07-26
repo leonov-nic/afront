@@ -60,7 +60,9 @@ type SelectTypeOfJobProps = {
 
 
 export default function SelectTypeOfJob({name, sx = []}: SelectTypeOfJobProps): JSX.Element {
-  const { setFieldValue, values } = useFormikContext<TJob>();
+  const { setFieldValue, values, errors } = useFormikContext<TJob>();
+  const error = errors['typeOfJob'];
+  
 
   return (
     <Autocomplete
@@ -78,6 +80,8 @@ export default function SelectTypeOfJob({name, sx = []}: SelectTypeOfJobProps): 
 
       renderInput={(params) => (
         <TextField
+          error={!!error}
+          helperText={error && error}
           {...params}
           name={name}
           placeholder={`${values.typeOfJob ? values.typeOfJob : "Type Of Job"}`}
