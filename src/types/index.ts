@@ -8,6 +8,7 @@ export type CountByDirection = {
 export interface Query {
   createdAt?: string;
   limit?: number;
+  offset?: number;
 }
 
 export type TEmployee = {

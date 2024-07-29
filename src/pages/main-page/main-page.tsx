@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import * as S from './main-page.styled';
 
@@ -31,20 +31,23 @@ import {
  import { baseQuery } from '../../const';
 
 export default function MainPage(): JSX.Element {
+  const [query, setQuery] = useState(baseQuery);
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(getIsLoading);
   const statusAuthorization = useAppSelector(getAuthorizationStatus);
 
-  useEffect(() => {
-    // const q = {
-    //   limit: 2,
-    //   createdAt: "2024-06-10T12:43:31.146Z",
-    // }
+  // const q = {
+  //   offset: 4,
+  //   createdAt: "2024-07-29T12:43:31.146Z",
+  // }
+  // setQuery(q);
 
-    dispatch(fetchJobs(baseQuery))
+  useEffect(() => {
+
+    dispatch(fetchJobs(query))
     dispatch(fetchEmployees());
     dispatch(fetchDetails());
-  },[dispatch]);
+  },[dispatch, query]);
 
   // const { pathname } = useLocation() as { pathname: AppRoute };
 

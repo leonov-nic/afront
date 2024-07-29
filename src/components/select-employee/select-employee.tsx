@@ -19,8 +19,9 @@ export default function SelectEmployee({sx, onChangeSelect}: SelectEmployeeProps
   const employees = useAppSelector(getEmployees);
   const dictionaryEmployees = dictionary<TEmployee>(employees);
 
-  const { setValues, values, errors } =  useFormikContext<TSelectJob>();
+  const { setValues, values, errors, touched, handleChange } =  useFormikContext<TSelectJob>();
   const error = errors['employeeId'];
+  const value = values['employeeId'];
   
   return (
     <>
@@ -39,12 +40,23 @@ export default function SelectEmployee({sx, onChangeSelect}: SelectEmployeeProps
             registrationNumber: value.registrationNumber,
             employeeId: `${value._id && value._id.toString()}`
           })
+
+          handleChange('employeeId');
+
+          if (value === null) {
+            setValues({...values,
+              typeOfJob: '',
+              familyName: '',
+              registrationNumber: undefined,
+              employeeId: '',
+            })
+          }
         }}
 
         renderInput={(params) => (
           <TextField
-            error={error ? true : false}
-            helperText={error && error}
+            error={!value && touched.employeeId }
+            helperText={!value && touched.employeeId ? error : null}
             {...params}
             name='employeeId'
             placeholder="Employee"

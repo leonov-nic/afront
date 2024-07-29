@@ -2,18 +2,16 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useFormikContext } from 'formik';
 import { SyntheticEvent } from 'react';
-
 import { toast } from 'react-toastify';
-
-import { isTimeSameOrAfter, isTimeSameOrBefore } from '../../utils/utils';
 
 interface SelectTimeProps {
   name: string;
 }
 
 export default function SelectTime({ name }: SelectTimeProps): JSX.Element {
-  const { setFieldValue, values, errors } =  useFormikContext<{[key: string]: string}>();
+  const { setFieldValue, values, errors, touched, handleChange  } =  useFormikContext<{[key: string]: string}>();
   const error = errors[`${name}`];
+  const value = values[`${name}`];
 
   const timeSlots = Array.from(new Array(24 * 2)).map(
     (_, index) =>
@@ -24,13 +22,24 @@ export default function SelectTime({ name }: SelectTimeProps): JSX.Element {
 
   const handleChangeSelect = (_event: SyntheticEvent<Element, Event>, value: string | null) => {
     setFieldValue(name, value);
-    if (value && values.timeFrom && name === 'timeTo' && !isTimeSameOrBefore(values.timeFrom, value)) {
-      setFieldValue(name, '');
-      toast.warn('Time To must be more then Time From');
-    } else if (value && values.timeTo && name === 'timeFrom' && !isTimeSameOrAfter(values.timeTo, value)) {
-      setFieldValue(name, '')
-      toast.warn('Time From must be less then Time To')
+ 
+    if (name === 'timeTo' && values.timeFrom && value) {
+      const timeFrom = Number(values.timeFrom.replace(':', ''));
+      const timeTo = Number(value.replace(':', ''))
+      if (timeFrom >= timeTo) {
+        setFieldValue('timeTo', '');
+        toast.warn('Time To must be more then Time From');
+      }
+    } else if (name === 'timeFrom' && values.timeTo && value) {
+      const timeTo = Number(values['timeTo'].replace(':', ''));
+      const timeFrom = Number(value.replace(':', ''))
+      if (timeFrom >= timeTo) {
+        setFieldValue('timeFrom', '');
+        toast.warn('Time To must be more then Time From');
+      }
     }
+
+    handleChange(`${name}`);
   }
 
   return (
@@ -39,14 +48,15 @@ export default function SelectTime({ name }: SelectTimeProps): JSX.Element {
       id={name}
       sx={{ minWidth: 160, maxWidth: 160, display: 'inline-flex'}}
       data-name={name}
-      options={[...timeSlots.slice(12, 48), '00:00']}
+      options={[...timeSlots.slice(12, 48), '24:00']}
       onChange={handleChangeSelect}
       // getOptionDisabled={(option) =>
       //   timeSlots.slice(0, 12).includes(option)}
       renderInput={(params) => 
         <TextField 
-          error={!!error}
-          helperText={error && error}
+          error={!value && touched[`${name}`] }
+          helperText={!value && touched[`${name}`] ? error : null}
+
           {...params} 
           placeholder={name} name={name}
         />}

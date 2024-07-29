@@ -10,8 +10,9 @@ import { dictionary } from '../../utils/utils';
 export default function SelectDetail(): JSX.Element {
   const details = useAppSelector(getDetails);
   const dictionaryDetails = dictionary<TDetail>(details);
-  const { setFieldValue, values, errors } =  useFormikContext<TJob>();
+  const { setFieldValue, values, errors, touched, handleChange  } =  useFormikContext<TJob>();
   const error = errors[`detailId`];
+  const value = values['detailId'];
 
   return (
     <Autocomplete
@@ -22,13 +23,19 @@ export default function SelectDetail(): JSX.Element {
       options={details}
       fullWidth={true}
       getOptionLabel={(option) => option.shortName}
-      onChange={(_event, value) => value && setFieldValue('detailId', value._id)}
+      onChange={(_event, value) => {
+        if (value) {
+          setFieldValue('detailId', value._id);
+          handleChange('detailId');
+        }}
+      }
 
       renderInput={(params) => (
         <TextField
           {...params}
-          error={error ? true : false}
-          helperText={error && error}
+          error={!value && touched.detailId }
+          helperText={!value && touched.detailId ? error : null}
+
           name='detailId'
           placeholder="Detail"
           inputProps={{

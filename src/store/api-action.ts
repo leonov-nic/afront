@@ -93,7 +93,8 @@ export const fetchJobs = createAsyncThunk<TJobRDO[], Query, { extra: ThunkApiCon
     {
       params: {
         createdAt: params?.createdAt,
-        limit: params?.limit
+        limit: params?.limit,
+        offset: params?.offset
       }
     });
     return data;
