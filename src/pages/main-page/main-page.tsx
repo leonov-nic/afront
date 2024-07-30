@@ -13,6 +13,7 @@ import Container from '../../components/common/container/container';
 import FormAddJob from '../../components/form-add-job/form-add-job';
 import MainTable from '../../components/main-table/main-table';
 import ControlBox from '../../components/control-box/control-box';
+import { Dayjs } from 'dayjs';
 
 import {
   getIsLoading,
@@ -28,41 +29,33 @@ import {
   fetchDetails
  } from '../../store/api-action';
 
- import { baseQuery } from '../../const';
+import { baseQuery } from '../../const';
+import { getDataNowWithResetTime } from '../../utils/utils';
 
 export default function MainPage(): JSX.Element {
   const [query, setQuery] = useState(baseQuery);
+
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(getIsLoading);
   const statusAuthorization = useAppSelector(getAuthorizationStatus);
 
-  // const q = {
-  //   offset: 4,
-  //   createdAt: "2024-07-29T12:43:31.146Z",
-  // }
-  // setQuery(q);
-
   useEffect(() => {
-
     dispatch(fetchJobs(query))
     dispatch(fetchEmployees());
     dispatch(fetchDetails());
   },[dispatch, query]);
 
-  // const { pathname } = useLocation() as { pathname: AppRoute };
+  const onChangeDate = (date: Dayjs | null) => {
+    const newQuery = {...query, createdAt: date ? date.toISOString() : getDataNowWithResetTime()}
+    setQuery(newQuery);
+  }
 
-  // const RootClassName: Record<AppRoute, string> = {
-  //   [AppRoute.Root]: 'page--gray page--main',
-  //   [AppRoute.Login]: 'page--gray page--login',
-  //   [AppRoute.Register]: 'page--gray page--login',
-  //   [AppRoute.Favorites]: favoriteOffers.length === 0 ? 'page--favorites-empty' : '',
-  //   [AppRoute.Property]: '',
-  //   [AppRoute.Add]: '',
-  //   [AppRoute.Edit]: '',
-  //   [AppRoute.NotFound]: '',
-  // };
+  const handleChangeButton = () => {
+    const newOffset =  (query.offset || 0) + 1;
+    const newQuery = {...query, offset: newOffset}
+    setQuery(newQuery);
+  }
 
-  // <div className={`page ${RootClassName[pathname]}`}>
 
   return (
     statusAuthorization ? <MainLayout>
@@ -72,7 +65,7 @@ export default function MainPage(): JSX.Element {
 
       <S.Main>
         <Container>
-          <ControlBox />
+          <ControlBox onChangeDate={onChangeDate}/>
         </Container>
 
         <Container $paddingTablet="10px">
@@ -81,6 +74,10 @@ export default function MainPage(): JSX.Element {
 
         <Container className="container" $mt="10px" $overflow="auto">
           {!isLoading ? <MainTable/> : <Loading/>}
+        </Container>
+ 
+        <Container className="container" $mt="10px" $overflow="auto">
+          <button onClick={handleChangeButton} style={{width: '200px', height: '50px', display: 'block', margin: '0 auto'}}>ещё</button>
         </Container>
 
       </S.Main>

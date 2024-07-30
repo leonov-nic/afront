@@ -5,9 +5,9 @@ import ButtonOpenDialogEditEmployee from '../button-open-dialog-edit-employee/bu
 import ButtonOpenDialogAddDetail from '../button-open-dialog-add-detail/button-open-dialog-add-detail';
 
 import DateFilter from '../date-filter/date-filter';
+import { Dayjs } from 'dayjs';
 
-export default function ControlBox() {
-
+export default function ControlBox({onChangeDate}: {onChangeDate: (value: Dayjs | null)=> void}) {
   return (
     <Box
       borderBottom="3px solid #93a9b8"
@@ -24,7 +24,7 @@ export default function ControlBox() {
       <ButtonOpenDialogEditEmployee/>
       <ButtonOpenDialogRemoveEmployee/>
       <ButtonOpenDialogAddDetail/>
-      <DateFilter/>
+      <DateFilter onChangeDate={onChangeDate}/>
     </Box>
   );
 }
