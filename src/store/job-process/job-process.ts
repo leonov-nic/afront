@@ -35,19 +35,18 @@ export const jobProcess = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchJobs.pending, (state) => {
-        state.jobs = [];
         state.isLoading = true;
       })
       .addCase(fetchJobs.rejected, (state) => {
-        state.jobs = [];
         state.isLoading = false;
-        state.isJobSendingStatus = SubmitStatus.Pending;
+        state.isJobSendingStatus = SubmitStatus.Rejected;
       })
       .addCase(fetchJobs.fulfilled, (state, action) => {
-        state.jobs = action.payload;
         state.isLoading = false;
-        state.isJobSendingStatus = SubmitStatus.Fullfilled;
-        state.isJobSendingStatus = SubmitStatus.Still;
+        // console.log(action.payload);
+        state.jobs = action.payload;
+        // state.jobs = state.jobs.concat(action.payload);
+        // state.jobs = [...state.jobs, ...action.payload];
       })
       .addCase(deleteJob.pending, (state) => {
         state.isLoading = true;
@@ -56,7 +55,6 @@ export const jobProcess = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchEmployees.pending, (state) => {
-        state.employees = [];
         state.isLoading = true;
       })
       .addCase(fetchEmployees.rejected, (state) => {

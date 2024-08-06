@@ -8,8 +8,8 @@ export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const baseQuery: Query = {
   createdAt: getDataNowWithResetTime(),
-  limit: 1,
-  offset: 1,
+  limit: 50,
+  offset: 0,
 };
 
 export enum AuthorizationStatus {

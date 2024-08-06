@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import * as S from './main-page.styled';
 
@@ -14,6 +14,8 @@ import FormAddJob from '../../components/form-add-job/form-add-job';
 import MainTable from '../../components/main-table/main-table';
 import ControlBox from '../../components/control-box/control-box';
 import { Dayjs } from 'dayjs';
+import { Query } from '../../types';
+import { getDataAndResetTime } from '../../utils/utils';
 
 import {
   getIsLoading,
@@ -26,35 +28,43 @@ import {
 import {
   fetchJobs,
   fetchEmployees,
-  fetchDetails
+  fetchDetails,
  } from '../../store/api-action';
 
 import { baseQuery } from '../../const';
 import { getDataNowWithResetTime } from '../../utils/utils';
 
 export default function MainPage(): JSX.Element {
+  console.log('render MainPage');
   const [query, setQuery] = useState(baseQuery);
+  const prevQuery = useRef<Query>(baseQuery);
 
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(getIsLoading);
   const statusAuthorization = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
-    dispatch(fetchJobs(query))
+    prevQuery.current = query;
+    console.log('render MainPage useEffect');
+    console.log(prevQuery.current.createdAt, query.createdAt);
+
+    if (prevQuery.current !== query) {return;}
+    dispatch(fetchJobs(query));
     dispatch(fetchEmployees());
     dispatch(fetchDetails());
-  },[dispatch, query]);
 
-  const onChangeDate = (date: Dayjs | null) => {
-    const newQuery = {...query, createdAt: date ? date.toISOString() : getDataNowWithResetTime()}
+  }, [dispatch, query]);
+  
+  const onChangeDate = useCallback((date: Dayjs | null) => {
+    const newQuery = {...query, createdAt: date ? getDataAndResetTime(date) : getDataNowWithResetTime()}
     setQuery(newQuery);
-  }
+  }, [query]);
 
-  const handleChangeButton = () => {
+  const handleChangeButton = useCallback(() => {
     const newOffset =  (query.offset || 0) + 1;
     const newQuery = {...query, offset: newOffset}
     setQuery(newQuery);
-  }
+  }, [query]);
 
 
   return (
@@ -79,6 +89,7 @@ export default function MainPage(): JSX.Element {
         <Container className="container" $mt="10px" $overflow="auto">
           <button onClick={handleChangeButton} style={{width: '200px', height: '50px', display: 'block', margin: '0 auto'}}>ещё</button>
         </Container>
+        
 
       </S.Main>
     </MainLayout> : <Navigate to='/entrance' />
