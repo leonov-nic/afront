@@ -66,23 +66,23 @@ export const logoutUser = createAsyncThunk<void, undefined, { extra: ThunkApiCon
     Token.drop();
   });
 
-  export const registerUser = createAsyncThunk<void, UserRegister, { extra: ThunkApiConfig }>(
-    'user/registerUser',
-    async ({ email, password, type }, { dispatch, extra }) => {
-      const { api, browserHistory } = extra;
+export const registerUser = createAsyncThunk<void, UserRegister, { extra: ThunkApiConfig }>(
+  'user/registerUser',
+  async ({ email, password, type }, { dispatch, extra }) => {
+    const { api, browserHistory } = extra;
 
-      const { status } = await api.post<UserDto>('/users/register', {email, password, type});
+    const { status } = await api.post<UserDto>('/users/register', {email, password, type});
 
-      if (status === 201) {
-        const action = await dispatch(loginUser({ email, password }));
+    if (status === 201) {
+      const action = await dispatch(loginUser({ email, password }));
 
-        if (action.type === loginUser.fulfilled.type) {
-          await dispatch(fetchUserStatus());
-        }
-
-        browserHistory.push('/');
+      if (action.type === loginUser.fulfilled.type) {
+        await dispatch(fetchUserStatus());
       }
-    });
+
+      browserHistory.push('/');
+    }
+  });
 
 export const fetchJobs = createAsyncThunk<TJobRDO[], Query, { extra: ThunkApiConfig }>(
   'app/fetchJobs',
@@ -188,8 +188,7 @@ export const postDetail = createAsyncThunk<TNewDetail, TNewDetail, { extra: Thun
   async (detail, { extra, dispatch }) => {
     const { api } = extra;
     const { data } = await api.post<TNewDetail>('/details', detail);
-    await dispatch(fetchDetails());
+    await dispatch(fetchJobs(baseQuery));
     return data;
   }
 );
-

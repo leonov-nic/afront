@@ -47,6 +47,7 @@ const VALIDATION_SCHEMA = Yup.object().shape({
 });
 
 export default function FormAddJob(): JSX.Element {
+  console.log('Form add job');
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
 

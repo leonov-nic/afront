@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
@@ -12,25 +14,6 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { getJobs } from '../../store/job-process/job-process';
 import { TEmployeeRDO, TDetail, TNameOfJob, TUserRDO } from '../../types';
 
-function createData(
-  _id: string,
-  createdAt: string,
-  employeeId: string,
-  employee: TEmployeeRDO,
-  timeFrom: string,
-  timeTo: string,
-  totalHours: number | undefined,
-  detailId: string,
-  detail: TDetail | undefined,
-  typeOfJob: TNameOfJob,
-  quantity: number,
-  master: TUserRDO,
-  extra?: number,
-  comment?: string,
-) {
-  return { _id, createdAt, employeeId, employee, timeFrom, timeTo, totalHours, detailId, detail, typeOfJob, extra, quantity, comment, master };
-}
-
 const StyledTableCell = styled(TableCell)(({theme}) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: '#96b8cc',
@@ -42,9 +25,28 @@ const StyledTableCell = styled(TableCell)(({theme}) => ({
   },
 }));
 
-
-export default function MainTable(): JSX.Element {
+const MainTable = memo((): JSX.Element => {
+  console.log('render Table');
   const jobs = useAppSelector(getJobs);
+
+  const createData = (
+    _id: string,
+    createdAt: string,
+    employeeId: string,
+    employee: TEmployeeRDO,
+    timeFrom: string,
+    timeTo: string,
+    totalHours: number | undefined,
+    detailId: string,
+    detail: TDetail | undefined,
+    typeOfJob: TNameOfJob,
+    quantity: number,
+    master: TUserRDO,
+    extra?: number,
+    comment?: string,
+  ) => {
+    return { _id, createdAt, employeeId, employee, timeFrom, timeTo, totalHours, detailId, detail, typeOfJob, extra, quantity, comment, master };
+  }
 
   const rows = jobs.map(job => createData(
     job._id,
@@ -93,4 +95,6 @@ export default function MainTable(): JSX.Element {
       <p style={{margin: "50px 0 30px", color: "gray", textAlign: "center",
         textTransform: 'uppercase', fontSize: "18px"}}>No work has been created today yet</p>
   );
-}
+});
+
+export default MainTable;

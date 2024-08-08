@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import Box from '@mui/material/Box';
 import ButtonOpenDialogRemoveEmployee from '../button-open-dialog-remove-employee/button-open-dialog-remove-employee';
 import ButtonOpenDialogAddEmployee from '../button-open-dialog-add-employee/button-open-dialog-add-employee';
@@ -7,7 +9,9 @@ import ButtonOpenDialogAddDetail from '../button-open-dialog-add-detail/button-o
 import DateFilter from '../date-filter/date-filter';
 import { Dayjs } from 'dayjs';
 
-export default function ControlBox({onChangeDate}: {onChangeDate: (value: Dayjs | null)=> void}) {
+
+const ControlBox = memo(({onChangeDate}: {onChangeDate: (value: Dayjs | null)=> void}) => {
+  console.log('render ControlBox');
   return (
     <Box
       borderBottom="3px solid #93a9b8"
@@ -17,14 +21,15 @@ export default function ControlBox({onChangeDate}: {onChangeDate: (value: Dayjs 
       marginBottom="15px"
       display="flex"
       flexDirection={"row"}
-      // alignItems="start"
-      sx={{ backgroundColor: "#96b8cc", p: 0, ariaLabel: 'Without label'}}
+      sx={{ backgroundColor: "#96b8cc", p: 0, ariaLabel: 'Without label' }}
     >
-      <ButtonOpenDialogAddEmployee/>
-      <ButtonOpenDialogEditEmployee/>
-      <ButtonOpenDialogRemoveEmployee/>
-      <ButtonOpenDialogAddDetail/>
-      <DateFilter onChangeDate={onChangeDate}/>
+      <ButtonOpenDialogAddEmployee />
+      <ButtonOpenDialogEditEmployee />
+      <ButtonOpenDialogRemoveEmployee />
+      <ButtonOpenDialogAddDetail />
+      <DateFilter onChangeDate={onChangeDate} />
     </Box>
   );
-}
+});
+
+export default ControlBox;

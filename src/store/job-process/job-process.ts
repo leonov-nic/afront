@@ -43,8 +43,8 @@ export const jobProcess = createSlice({
       })
       .addCase(fetchJobs.fulfilled, (state, action) => {
         state.isLoading = false;
-        // console.log(action.payload);
         state.jobs = action.payload;
+        
         // state.jobs = state.jobs.concat(action.payload);
         // state.jobs = [...state.jobs, ...action.payload];
       })

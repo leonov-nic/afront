@@ -46,7 +46,6 @@ export default function MainPage(): JSX.Element {
   useEffect(() => {
     prevQuery.current = query;
     console.log('render MainPage useEffect');
-    console.log(prevQuery.current.createdAt, query.createdAt);
 
     if (prevQuery.current !== query) {return;}
     dispatch(fetchJobs(query));
