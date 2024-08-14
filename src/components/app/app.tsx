@@ -2,6 +2,7 @@ import { ThemeProvider } from 'styled-components';
 import { appTheme } from './common';
 import * as S from './app.styled';
 
+import { useContext } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Route, Routes } from 'react-router-dom';
 import PrivateRoute from '../private-route/private-route';

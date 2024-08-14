@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { Navigate } from 'react-router-dom';
 import * as S from './main-page.styled';
-
+import React from 'react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
@@ -15,15 +15,15 @@ import MainTable from '../../components/main-table/main-table';
 import ControlBox from '../../components/control-box/control-box';
 import { Dayjs } from 'dayjs';
 import { Query } from '../../types';
-import { getDataAndResetTime } from '../../utils/utils';
+import { getDataAndResetTime, getDataNowWithResetTime } from '../../utils/utils';
 
 import {
   getIsLoading,
 } from '../../store/job-process/job-process';
 
-import {
-  getAuthorizationStatus,
-} from '../../store/user-process/user-process';
+// import {
+//   getAuthorizationStatus,
+// } from '../../store/user-process/user-process';
 
 import {
   fetchJobs,
@@ -32,16 +32,17 @@ import {
  } from '../../store/api-action';
 
 import { baseQuery } from '../../const';
-import { getDataNowWithResetTime } from '../../utils/utils';
+
 
 export default function MainPage(): JSX.Element {
+  const isLoading = useAppSelector(getIsLoading);
   console.log('render MainPage');
   const [query, setQuery] = useState(baseQuery);
   const prevQuery = useRef<Query>(baseQuery);
 
   const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(getIsLoading);
-  const statusAuthorization = useAppSelector(getAuthorizationStatus);
+ 
+  // const statusAuthorization = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
     prevQuery.current = query;
@@ -51,6 +52,10 @@ export default function MainPage(): JSX.Element {
     dispatch(fetchJobs(query));
     dispatch(fetchEmployees());
     dispatch(fetchDetails());
+
+    return () => {
+      console.log('unmonted mainPage');
+    }
 
   }, [dispatch, query]);
   
@@ -67,7 +72,7 @@ export default function MainPage(): JSX.Element {
 
 
   return (
-    statusAuthorization ? <MainLayout>
+    <MainLayout>
       <Helmet>
         <title>VOITTO-app</title>
       </Helmet>
@@ -89,8 +94,7 @@ export default function MainPage(): JSX.Element {
           <button onClick={handleChangeButton} style={{width: '200px', height: '50px', display: 'block', margin: '0 auto'}}>ещё</button>
         </Container>
         
-
       </S.Main>
-    </MainLayout> : <Navigate to='/entrance' />
+    </MainLayout>
   );
 }

@@ -58,7 +58,6 @@ export const jobProcess = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchEmployees.rejected, (state) => {
-        state.employees = [];
         state.isLoading = false;
       })
       .addCase(fetchEmployees.fulfilled, (state, action) => {
@@ -76,8 +75,7 @@ export const jobProcess = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchDetails.rejected, (state) => {
-        state.details = [];
-        state.isLoading = false;
+          state.isLoading = false;
       })
       .addCase(fetchDetails.fulfilled, (state, action) => {
         state.details = action.payload;
@@ -88,12 +86,26 @@ export const jobProcess = createSlice({
 
 export const { resetJobSendingStatus, setSortDate } = jobProcess.actions;
 
-export const getIsLoading = (state: State): boolean => state['JOB'].isLoading;
-export const getJobs = (state: State): TJobRDO[] => state['JOB'].jobs;
-export const getEmployees = (state: State): TEmployee[] => state['JOB'].employees;
-export const getDetails = (state: State): TDetail[] => state['JOB'].details;
-export const getSortDate = (state: State): string => state['JOB'].sortDate;
+
+// export const getJobs = (state: State): TJobRDO[] => state['JOB'].jobs;
+// export const getIsLoading = (state: State): boolean => state['JOB'].isLoading;
+
+// export const getIsLoading = createSelector(
+//   selectJob,
+//   (state) => state.isLoading
+// );
+// export const getEmployees = (state: State): TEmployee[] => state['JOB'].employees;
+// export const getDetails = (state: State): TDetail[] => state['JOB'].details;
+// export const getSortDate = (state: State): string => state['JOB'].sortDate;
 export const getIsJobSendingStatus = (state: State): SubmitStatus => state['JOB'].isJobSendingStatus;
+
+export const selectSelf = (state: State) => state;
+export const selectJob = createSelector(selectSelf, (state) => state.JOB);
+export const getEmployees = createSelector(selectJob, (state) => state.employees);
+export const getDetails = createSelector(selectJob, (state) => state.details);
+export const getIsLoading = createSelector(selectJob, (state) => state.isLoading);
+export const getSortDate = createSelector(selectJob, (state) => state.sortDate);
+export const getJobs = createSelector(selectJob, (state) => state.jobs);
 
 export const selectSortDateJobs = createSelector(
   [getJobs, getSortDate],

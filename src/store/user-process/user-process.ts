@@ -1,8 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { fetchUserStatus, loginUser, logoutUser } from '../api-action';
 import { AuthorizationStatus } from '../../const';
 import type { State, TUserProcess } from '../../types/state';
-import { TUser } from '../../types/index';
+// import { TUser } from '../../types/index';
 
 const initialState: TUserProcess = {
   authorizationStatus: AuthorizationStatus.NoAuth,
@@ -38,6 +38,9 @@ export const userProcess = createSlice({
   }
 });
 
-export const getAuthorizationStatus = (state: State): AuthorizationStatus => state['USER'].authorizationStatus;
-export const getIsAuthorized = (state: State): boolean => state['USER'].authorizationStatus === AuthorizationStatus.Auth;
-export const getUser = (state: State): TUser | null => state['USER'].user;
+export const selectSelf = (state: State) => state;
+export const selectUser = createSelector(selectSelf, (state) => state.USER);
+
+export const getAuthorizationStatus = createSelector(selectUser, (state) => state.authorizationStatus);
+export const getUser = createSelector(selectUser, (state) => state.user);
+export const getIsAuthorized = createSelector(selectUser, (state) => state.authorizationStatus === AuthorizationStatus.Auth);

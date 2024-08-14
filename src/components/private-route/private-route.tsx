@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+// import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { getAuthorizationStatus } from '../../store/user-process/user-process';
 import { AuthorizationStatus } from '../../const';
@@ -11,10 +11,11 @@ type PrivateRouteProps = {
 
 export default function PrivateRoute({ children, restrictedFor, redirectTo }: PrivateRouteProps): JSX.Element {
   const statusAuthorization = useAppSelector(getAuthorizationStatus);
-
-  return (
-    statusAuthorization !== restrictedFor
-      ? children
-      : <Navigate to={redirectTo} />
-  );
+  console.log(statusAuthorization, restrictedFor, redirectTo);
+  return children;
+  // return ( 
+  //   statusAuthorization !== restrictedFor
+  //     ? children
+  //     : <Navigate to={redirectTo} />
+  // );
 }

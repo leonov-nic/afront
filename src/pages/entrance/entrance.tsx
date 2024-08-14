@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FormMain from '../../components/form-main/form-main';
 import {useAppSelector} from '../../hooks/useAppSelector';
 import {getAuthorizationStatus} from '../../store/user-process/user-process';
@@ -11,19 +11,20 @@ import './entrance.css';
 import { getDay } from '../../utils/utils';
 
 export default function Entrance(): JSX.Element {
+  const navigate = useNavigate();
   const statusAuthorization = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
 
     if (statusAuthorization === AuthorizationStatus.Auth ) {
       toast.info('Добро пожаловать');
+      navigate('/');
     }
 
-  },[statusAuthorization]);
+  },[statusAuthorization, navigate]);
 
 
   return (
-    statusAuthorization !== AuthorizationStatus.Auth ?
       <main>
         <Helmet>
           <title>VOITTO</title>
@@ -38,6 +39,6 @@ export default function Entrance(): JSX.Element {
             </div>
           </div>
         </section>
-      </main> : <Navigate to='/' />
+      </main>
   );
 }
