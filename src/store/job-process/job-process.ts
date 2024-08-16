@@ -100,14 +100,10 @@ export const { resetJobSendingStatus, setSortDate } = jobProcess.actions;
 export const getIsJobSendingStatus = (state: State): SubmitStatus => state['JOB'].isJobSendingStatus;
 
 export const selectSelf = (state: State) => state;
-export const selectJob = createSelector(selectSelf, (state) => state.JOB);
-export const getEmployees = createSelector(selectJob, (state) => state.employees);
-export const getDetails = createSelector(selectJob, (state) => state.details);
-export const getIsLoading = createSelector(selectJob, (state) => state.isLoading);
-export const getSortDate = createSelector(selectJob, (state) => state.sortDate);
-export const getJobs = createSelector(selectJob, (state) => state.jobs);
+export const selectJob = createSelector(selectSelf, state => state.JOB);
 
-export const selectSortDateJobs = createSelector(
-  [getJobs, getSortDate],
-  (jobs, sortDate,) => jobs.filter((job) => job.createdAt === sortDate)
-);
+export const getIsLoading = createSelector(selectJob, (state: TJobProcess) => state.isLoading);
+export const getSortDate = createSelector(selectJob, (state: TJobProcess) => state.sortDate);
+export const getDetails = createSelector(selectJob, (state: TJobProcess) => state.details);
+export const getEmployees = createSelector(selectJob, (state: TJobProcess) => state.employees);
+export const getJobs = createSelector(selectJob, (state: TJobProcess) => state.jobs);

@@ -1,8 +1,7 @@
 import { Helmet } from 'react-helmet-async';
-import { useCallback, useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import * as S from './main-page.styled';
-import React from 'react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
@@ -14,16 +13,15 @@ import FormAddJob from '../../components/form-add-job/form-add-job';
 import MainTable from '../../components/main-table/main-table';
 import ControlBox from '../../components/control-box/control-box';
 import { Dayjs } from 'dayjs';
-import { Query } from '../../types';
 import { getDataAndResetTime, getDataNowWithResetTime } from '../../utils/utils';
 
 import {
   getIsLoading,
 } from '../../store/job-process/job-process';
 
-// import {
-//   getAuthorizationStatus,
-// } from '../../store/user-process/user-process';
+import {
+  getAuthorizationStatus,
+} from '../../store/user-process/user-process';
 
 import {
   fetchJobs,
@@ -35,26 +33,22 @@ import { baseQuery } from '../../const';
 
 
 export default function MainPage(): JSX.Element {
-  const isLoading = useAppSelector(getIsLoading);
   console.log('render MainPage');
-  const [query, setQuery] = useState(baseQuery);
-  const prevQuery = useRef<Query>(baseQuery);
-
+  const isLoading = useAppSelector(getIsLoading);
+  const statusAuthorization = useAppSelector(getAuthorizationStatus);
   const dispatch = useAppDispatch();
- 
-  // const statusAuthorization = useAppSelector(getAuthorizationStatus);
 
+  const [query, setQuery] = useState(baseQuery);
+  
   useEffect(() => {
-    prevQuery.current = query;
     console.log('render MainPage useEffect');
 
-    if (prevQuery.current !== query) {return;}
     dispatch(fetchJobs(query));
     dispatch(fetchEmployees());
     dispatch(fetchDetails());
 
     return () => {
-      console.log('unmonted mainPage');
+      console.log('unmounted mainPage');
     }
 
   }, [dispatch, query]);
@@ -72,7 +66,7 @@ export default function MainPage(): JSX.Element {
 
 
   return (
-    <MainLayout>
+    statusAuthorization === 'AUTH' ? <MainLayout>
       <Helmet>
         <title>VOITTO-app</title>
       </Helmet>
@@ -95,6 +89,6 @@ export default function MainPage(): JSX.Element {
         </Container>
         
       </S.Main>
-    </MainLayout>
+    </MainLayout> : <Navigate to="/entrance" replace={true} />
   );
 }
