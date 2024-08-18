@@ -1,27 +1,29 @@
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import FormMain from '../../components/form-main/form-main';
-import {useAppSelector} from '../../hooks/useAppSelector';
-import {getAuthorizationStatus} from '../../store/user-process/user-process';
+// import {useAppSelector} from '../../hooks/useAppSelector';
+// import {getAuthorizationStatus} from '../../store/user-process/user-process';
 import { AuthorizationStatus } from '../../const';
 import {toast} from 'react-toastify';
 import { useEffect } from 'react';
 import './entrance.css';
-
+import useDebounce from '../../hooks/use-debounce';
 import { getDay } from '../../utils/utils';
+import useAuth from '../../hooks/useAuth';
 
 export default function Entrance(): JSX.Element {
   const navigate = useNavigate();
-  const statusAuthorization = useAppSelector(getAuthorizationStatus);
-
+  // const statusAuthorization = useAppSelector(getAuthorizationStatus);
+  const statusAuthorization = useAuth();
+  const str = useDebounce(statusAuthorization);
   useEffect(() => {
 
-    if (statusAuthorization === AuthorizationStatus.Auth ) {
+    if (str === AuthorizationStatus.Auth ) {
       toast.info('Добро пожаловать');
       navigate('/');
     }
 
-  },[statusAuthorization, navigate]);
+  },[str, navigate]);
 
 
   return (

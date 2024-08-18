@@ -14,7 +14,7 @@ export default function NotFound(): JSX.Element {
             <span>404</span>
             <b>Not Found</b>
           </h1>
-          <Link className="header__logo-link not-found__link" to="/">To Main Page</Link>
+          <Link className="header__logo-link not-found__link" to="/entrance">To Main Page</Link>
         </div>
       </main>
     </div>

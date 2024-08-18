@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { TJobProcess, State } from '../../types/state';
-import { TJobRDO, TEmployee, TDetail } from '../../types';
 import { SubmitStatus } from '../../const';
 
 import {
@@ -36,15 +35,16 @@ export const jobProcess = createSlice({
     builder
       .addCase(fetchJobs.pending, (state) => {
         state.isLoading = true;
+        state.jobs = [];
       })
       .addCase(fetchJobs.rejected, (state) => {
         state.isLoading = false;
-        state.isJobSendingStatus = SubmitStatus.Rejected;
       })
       .addCase(fetchJobs.fulfilled, (state, action) => {
         state.isLoading = false;
         state.jobs = action.payload;
-        
+        // state.jobs = [];
+      
         // state.jobs = state.jobs.concat(action.payload);
         // state.jobs = [...state.jobs, ...action.payload];
       })
@@ -64,18 +64,16 @@ export const jobProcess = createSlice({
         state.employees = action.payload;
         state.isLoading = false;
       })
-      .addCase(deleteEmployee.fulfilled, (state) => {
-        state.isLoading = false;
+      .addCase(deleteEmployee.fulfilled, () => {
       })
       .addCase(postEmployee.fulfilled, (state) => {
         state.isLoading = false;
       })
       .addCase(fetchDetails.pending, (state) => {
-        state.details = [];
         state.isLoading = true;
       })
       .addCase(fetchDetails.rejected, (state) => {
-          state.isLoading = false;
+        state.isLoading = false;
       })
       .addCase(fetchDetails.fulfilled, (state, action) => {
         state.details = action.payload;
@@ -86,24 +84,14 @@ export const jobProcess = createSlice({
 
 export const { resetJobSendingStatus, setSortDate } = jobProcess.actions;
 
-
-// export const getJobs = (state: State): TJobRDO[] => state['JOB'].jobs;
-// export const getIsLoading = (state: State): boolean => state['JOB'].isLoading;
-
-// export const getIsLoading = createSelector(
-//   selectJob,
-//   (state) => state.isLoading
-// );
-// export const getEmployees = (state: State): TEmployee[] => state['JOB'].employees;
-// export const getDetails = (state: State): TDetail[] => state['JOB'].details;
-// export const getSortDate = (state: State): string => state['JOB'].sortDate;
-export const getIsJobSendingStatus = (state: State): SubmitStatus => state['JOB'].isJobSendingStatus;
-
 export const selectSelf = (state: State) => state;
 export const selectJob = createSelector(selectSelf, state => state.JOB);
 
+export const getIsJobSendingStatus = createSelector(selectJob, (state: TJobProcess): SubmitStatus => state.isJobSendingStatus);
 export const getIsLoading = createSelector(selectJob, (state: TJobProcess) => state.isLoading);
+
 export const getSortDate = createSelector(selectJob, (state: TJobProcess) => state.sortDate);
 export const getDetails = createSelector(selectJob, (state: TJobProcess) => state.details);
 export const getEmployees = createSelector(selectJob, (state: TJobProcess) => state.employees);
 export const getJobs = createSelector(selectJob, (state: TJobProcess) => state.jobs);
+export const getJobsLength = createSelector(selectJob, (state: TJobProcess) => state.jobs.length);

@@ -7,7 +7,7 @@ import { Dayjs } from 'dayjs';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 
-export default function DatePickerFilter({ onChange }: { onChange: (value: Dayjs | null) => void }) {
+export default function DatePickerFilter({ onChange }: { onChange: (value: Dayjs) => void }) {
   const [cleared, setCleared] = useState<boolean>(false);
 
   useEffect(() => {

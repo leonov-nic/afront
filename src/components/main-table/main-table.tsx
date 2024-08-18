@@ -1,5 +1,6 @@
 import { memo } from 'react';
 
+import Loading from '../../components/loading/loading';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
@@ -11,8 +12,11 @@ import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CustumTableRow from '../custom-table-row/custom-table-row';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { getJobs } from '../../store/job-process/job-process';
+import { getJobs, getIsLoading } from '../../store/job-process/job-process';
 import { TEmployeeRDO, TDetail, TNameOfJob, TUserRDO } from '../../types';
+import { useState, useEffect } from 'react';
+import { TJobRDO } from '../../types';
+
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -27,7 +31,19 @@ const StyledTableCell = styled(TableCell)(({theme}) => ({
 
 const MainTable = memo((): JSX.Element => {
   console.log('render Table');
-  const jobs = useAppSelector(getJobs);
+  const [jobs, setJobs] = useState<TJobRDO[]>([]);
+  const isLoading = useAppSelector(getIsLoading);
+  const fetchingJobs = useAppSelector(getJobs);
+  console.log(fetchingJobs);
+  console.log(jobs);
+
+  useEffect(() => {
+    setJobs(prevJobs => {
+      const existingIds = new Set(prevJobs.map(job => job._id)); // Создаем множество существующих _id
+      const newJobs = fetchingJobs.filter(job => !existingIds.has(job._id)); // Фильтруем новые работы
+      return prevJobs.concat(newJobs); // Объединяем старые и новые работы
+    });
+  }, [fetchingJobs]);
 
   const createData = (
     _id: string,
@@ -66,7 +82,7 @@ const MainTable = memo((): JSX.Element => {
   ));
 
   return (
-    rows.length ? <TableContainer component={Paper}>
+    !isLoading ? rows.length ? <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="table of jobs">
         <TableHead>
           <TableRow>
@@ -93,7 +109,7 @@ const MainTable = memo((): JSX.Element => {
       </Table>
     </TableContainer> :
       <p style={{margin: "50px 0 30px", color: "gray", textAlign: "center",
-        textTransform: 'uppercase', fontSize: "18px"}}>No work has been created today yet</p>
+        textTransform: 'uppercase', fontSize: "18px"}}>No work has been created today yet</p> : <Loading/>
   );
 });
 
