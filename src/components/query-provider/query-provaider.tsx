@@ -19,8 +19,6 @@ export const QueryContext = createContext<{
 export default function QueryProvider({children}: {children: ReactNode}): JSX.Element {
   const [query, setQuery] = useState<Query>(baseQuery);
 
-  console.log(query);
-
   const handleChangeDate = useCallback((date: Dayjs) => {
     setQuery((prev: Query) => ({
       ...prev,

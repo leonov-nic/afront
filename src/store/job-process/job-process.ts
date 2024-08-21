@@ -15,6 +15,7 @@ import {
 const initialState: TJobProcess = {
   isLoading: false,
   jobs: [],
+  newJobs: [],
   employees: [],
   details: [],
   isJobSendingStatus: SubmitStatus.Still,
@@ -50,12 +51,13 @@ export const jobProcess = createSlice({
       // })
       .addCase(fetchJobs.fulfilled, (state, action) => {
         state.isLoading = false;
-
-        const existingIds = new Set(state.jobs.map(job => job._id));
-        const newJobs = action.payload.filter(job => !existingIds.has(job._id));
-        state.jobs = state.jobs.concat(newJobs);
+        const existingIds = new Set(state.newJobs.map(job => job._id));
+        state.jobs = action.payload.filter(job => !existingIds.has(job._id));
+        state.newJobs = state.newJobs.concat(state.jobs);
       })
-      .addCase(postJob.fulfilled, () => {
+      .addCase(postJob.pending, (state) => {
+        console.log(state.jobs, state.newJobs);
+        // state.newJobs = [];
       })
       .addCase(deleteJob.pending, (state) => {
         state.isLoading = true;
@@ -103,4 +105,5 @@ export const getSortDate = createSelector(selectJob, (state: TJobProcess) => sta
 export const getDetails = createSelector(selectJob, (state: TJobProcess) => state.details);
 export const getEmployees = createSelector(selectJob, (state: TJobProcess) => state.employees);
 export const getJobs = createSelector(selectJob, (state: TJobProcess) => state.jobs);
+export const getNewJobs = createSelector(selectJob, (state: TJobProcess) => state.newJobs);
 export const getJobsLength = createSelector(selectJob, (state: TJobProcess) => state.jobs.length);

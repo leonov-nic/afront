@@ -11,6 +11,7 @@ export type TJobProcess = {
   isJobSendingStatus: SubmitStatus,
   isLoading: boolean,
   jobs: TJobRDO[],
+  newJobs: TJobRDO[],
   employees: TEmployee[],
   details: TDetail[],
   sortDate: string;

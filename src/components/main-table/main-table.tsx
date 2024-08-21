@@ -12,7 +12,7 @@ import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CustumTableRow from '../custom-table-row/custom-table-row';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { getJobs, getIsLoading } from '../../store/job-process/job-process';
+import { getNewJobs, getIsLoading } from '../../store/job-process/job-process';
 import { TEmployeeRDO, TDetail, TNameOfJob, TUserRDO } from '../../types';
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -30,9 +30,8 @@ const MainTable = memo((): JSX.Element => {
   console.log('render Table');
   // const [jobs, setJobs] = useState<TJobRDO[]>([]);
   const isLoading = useAppSelector(getIsLoading);
-  const jobs = useAppSelector(getJobs);
+  const jobs = useAppSelector(getNewJobs);
   // console.log(fetchingJobs);
-  console.log(jobs);
 
   // useEffect(() => {
   //   // setJobs(prevJobs => {
