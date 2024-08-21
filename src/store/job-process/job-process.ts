@@ -8,7 +8,8 @@ import {
   fetchEmployees,
   deleteEmployee,
   postEmployee,
-  fetchDetails
+  fetchDetails,
+  postJob
 } from '../api-action';
 
 const initialState: TJobProcess = {
@@ -35,18 +36,26 @@ export const jobProcess = createSlice({
     builder
       .addCase(fetchJobs.pending, (state) => {
         state.isLoading = true;
-        state.jobs = [];
       })
       .addCase(fetchJobs.rejected, (state) => {
         state.isLoading = false;
       })
+      // .addCase(fetchJobs.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.jobs = action.payload;
+      //   // state.jobs = [];
+      
+      //   // state.jobs = state.jobs.concat(action.payload);
+      //   // state.jobs = [...state.jobs, ...action.payload];
+      // })
       .addCase(fetchJobs.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.jobs = action.payload;
-        // state.jobs = [];
-      
-        // state.jobs = state.jobs.concat(action.payload);
-        // state.jobs = [...state.jobs, ...action.payload];
+
+        const existingIds = new Set(state.jobs.map(job => job._id));
+        const newJobs = action.payload.filter(job => !existingIds.has(job._id));
+        state.jobs = state.jobs.concat(newJobs);
+      })
+      .addCase(postJob.fulfilled, () => {
       })
       .addCase(deleteJob.pending, (state) => {
         state.isLoading = true;

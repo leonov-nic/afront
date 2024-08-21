@@ -9,7 +9,6 @@ import { getDay } from '../../../utils/utils';
 import Container from '../container/container';
 import { CustomButton } from '../button/button';
 import { useEffect } from 'react';
-import useDebounce from '../../../hooks/use-debounce';
 import { AuthorizationStatus } from '../../../const';
 import useAuth from '../../../hooks/useAuth';
 
@@ -18,13 +17,13 @@ export default function Header(): JSX.Element {
   const user = useAppSelector(getUser);
   const navigate = useNavigate();
   const statusAuthorization = useAuth();
-  const str = useDebounce(statusAuthorization);
+
   useEffect(() => {
-    if (str === AuthorizationStatus.NoAuth ) {
+    if (statusAuthorization === AuthorizationStatus.NoAuth ) {
       navigate('/entrance');
     }
 
-  }, [str, navigate]);
+  }, [statusAuthorization, navigate]);
 
   const handleOutUser = () => {
     dispatch(logoutUser());

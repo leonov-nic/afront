@@ -10,7 +10,7 @@ import DateFilter from '../date-filter/date-filter';
 import { Dayjs } from 'dayjs';
 
 
-const ControlBox = memo(({onChangeDate}: {onChangeDate: (value: Dayjs)=> void}) => {
+const ControlBox = memo(({onChangeDate}: {onChangeDate: ((value: Dayjs)=> void) | undefined}) => {
   console.log('render ControlBox');
   return (
     <Box

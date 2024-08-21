@@ -15,17 +15,18 @@ import MainPage from '../../pages/main-page/main-page';
 import Entrance from '../../pages/entrance/entrance';
 import NotFound from '../../pages/not-found/not-found';
 
-// import { AuthorizationStatus } from '../../const';
 import AuthProvider from '../auth-provider/auth-provider';
+import QueryProvider from '../query-provider/query-provaider';
 
 function App(): JSX.Element {
   return (
-      <ThemeProvider theme={appTheme}>
-        <S.GlobalStyle />
-        <HelmetProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <HistoryRouter history={browserHistory}>
-              <AuthProvider>
+    <ThemeProvider theme={appTheme}>
+      <S.GlobalStyle />
+      <HelmetProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <HistoryRouter history={browserHistory}>
+            <AuthProvider>
+              <QueryProvider>
                 <Routes>
                   <Route
                     path={'/'}
@@ -38,11 +39,12 @@ function App(): JSX.Element {
                   <Route path={'/entrance'} element={<Entrance />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
-              </AuthProvider>
-            </HistoryRouter>
-          </LocalizationProvider>
-        </HelmetProvider>
-      </ThemeProvider>
+              </QueryProvider>
+            </AuthProvider>
+          </HistoryRouter>
+        </LocalizationProvider>
+      </HelmetProvider>
+    </ThemeProvider>
   );
 }
 

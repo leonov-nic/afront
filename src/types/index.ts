@@ -6,7 +6,7 @@ export type CountByDirection = {
 }
 
 export interface Query {
-  createdAt: string | undefined;
+  createdAt: string | undefined ;
   limit: number;
   offset: number;
 }

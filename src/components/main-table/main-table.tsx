@@ -14,9 +14,6 @@ import CustumTableRow from '../custom-table-row/custom-table-row';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { getJobs, getIsLoading } from '../../store/job-process/job-process';
 import { TEmployeeRDO, TDetail, TNameOfJob, TUserRDO } from '../../types';
-import { useState, useEffect } from 'react';
-import { TJobRDO } from '../../types';
-
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -31,19 +28,19 @@ const StyledTableCell = styled(TableCell)(({theme}) => ({
 
 const MainTable = memo((): JSX.Element => {
   console.log('render Table');
-  const [jobs, setJobs] = useState<TJobRDO[]>([]);
+  // const [jobs, setJobs] = useState<TJobRDO[]>([]);
   const isLoading = useAppSelector(getIsLoading);
-  const fetchingJobs = useAppSelector(getJobs);
-  console.log(fetchingJobs);
+  const jobs = useAppSelector(getJobs);
+  // console.log(fetchingJobs);
   console.log(jobs);
 
-  useEffect(() => {
-    setJobs(prevJobs => {
-      const existingIds = new Set(prevJobs.map(job => job._id)); // Создаем множество существующих _id
-      const newJobs = fetchingJobs.filter(job => !existingIds.has(job._id)); // Фильтруем новые работы
-      return prevJobs.concat(newJobs); // Объединяем старые и новые работы
-    });
-  }, [fetchingJobs]);
+  // useEffect(() => {
+  //   // setJobs(prevJobs => {
+  //   //   const existingIds = new Set(prevJobs.map(job => job._id)); // Создаем множество существующих _id
+  //   //   const newJobs = fetchingJobs.filter(job => !existingIds.has(job._id)); // Фильтруем новые работы
+  //   //   return prevJobs.concat(newJobs); // Объединяем старые и новые работы
+  //   // });
+  // }, [jobs]);
 
   const createData = (
     _id: string,
