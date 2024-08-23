@@ -94,7 +94,7 @@ export const fetchJobs = createAsyncThunk<TJobRDO[], Query, { extra: ThunkApiCon
     {
       params: {
         createdAt: params.createdAt,
-        limit: 1,
+        limit: params.limit,
         offset: params.offset
       }
     });
@@ -126,10 +126,10 @@ export const editJob = createAsyncThunk<TUpdateJob, TUpdateJob, { extra: ThunkAp
 
 export const postJob = createAsyncThunk<TJob, TJob, { extra: ThunkApiConfig }>(
   'app/postJob',
-  async (job, { extra, dispatch  }) => {
+  async (job, { extra }) => {
     const { api } = extra;
     const { data: newJob} = await api.post<TJob>('/jobs', job);
-    await dispatch(fetchJobs(baseQuery));
+    // await dispatch(fetchJobs(baseQuery));
     return newJob;
   }
 );

@@ -12,7 +12,8 @@ import { CustomButton } from "../common/button/button";
 import ButtonOpenDrawerEditJob from "../button-open-drawer-edit-job/button-open-drawer-edit-job";
 import { TJobRDO } from "../../types";
 
-import { deleteJob } from "../../store/api-action";
+import { deleteJob, fetchJobs } from "../../store/api-action";
+import { baseQuery } from "../../const";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 
 const StyledMenu = styled((props: MenuProps) => (
@@ -57,7 +58,9 @@ const ControlsColumn = ({ row, fun, opacity }: { row: TJobRDO, fun: () => void, 
   }
 
   const hundleDeleteRow = () => {
-    dispatch(deleteJob(row._id));
+    dispatch(deleteJob(row._id))
+    .then((data) => { if (data.meta.requestStatus === 'fulfilled') dispatch(fetchJobs(baseQuery)); });
+
     toast.info(`Работа для ${row.employee.familyName} за ${humanizeDate(row.createdAt)} удалена`, {
       position: 'top-center',
       style: {

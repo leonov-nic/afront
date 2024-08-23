@@ -41,14 +41,6 @@ export const jobProcess = createSlice({
       .addCase(fetchJobs.rejected, (state) => {
         state.isLoading = false;
       })
-      // .addCase(fetchJobs.fulfilled, (state, action) => {
-      //   state.isLoading = false;
-      //   state.jobs = action.payload;
-      //   // state.jobs = [];
-      
-      //   // state.jobs = state.jobs.concat(action.payload);
-      //   // state.jobs = [...state.jobs, ...action.payload];
-      // })
       .addCase(fetchJobs.fulfilled, (state, action) => {
         state.isLoading = false;
         const existingIds = new Set(state.newJobs.map(job => job._id));
@@ -56,13 +48,16 @@ export const jobProcess = createSlice({
         state.newJobs = state.newJobs.concat(state.jobs);
       })
       .addCase(postJob.pending, (state) => {
-        console.log(state.jobs, state.newJobs);
-        // state.newJobs = [];
+        state.isLoading = true;
+      })
+      .addCase(postJob.fulfilled, (state) => {
+        state.newJobs = [];
       })
       .addCase(deleteJob.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(deleteJob.fulfilled, (state) => {
+        state.newJobs = [];
         state.isLoading = false;
       })
       .addCase(fetchEmployees.pending, (state) => {

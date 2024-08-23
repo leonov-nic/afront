@@ -7,10 +7,10 @@ import ButtonOpenDialogEditEmployee from '../button-open-dialog-edit-employee/bu
 import ButtonOpenDialogAddDetail from '../button-open-dialog-add-detail/button-open-dialog-add-detail';
 
 import DateFilter from '../date-filter/date-filter';
-import { Dayjs } from 'dayjs';
+// import { Dayjs } from 'dayjs';
 
 
-const ControlBox = memo(({onChangeDate}: {onChangeDate: ((value: Dayjs)=> void) | undefined}) => {
+const ControlBox = memo(() => {
   console.log('render ControlBox');
   return (
     <Box
@@ -27,7 +27,7 @@ const ControlBox = memo(({onChangeDate}: {onChangeDate: ((value: Dayjs)=> void) 
       <ButtonOpenDialogEditEmployee />
       <ButtonOpenDialogRemoveEmployee />
       <ButtonOpenDialogAddDetail />
-      <DateFilter onChangeDate={onChangeDate} />
+      <DateFilter />
     </Box>
   );
 });

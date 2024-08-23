@@ -21,7 +21,7 @@ import {
 export default function MainPage(): JSX.Element {
   console.log('render MainPage');
   
-  const { query, onChangeDate, onChangeOffset  } = useQuery();
+  const { query, onChangeOffset  } = useQuery();
   console.log(query);
   const dispatch = useAppDispatch();
 
@@ -46,7 +46,7 @@ export default function MainPage(): JSX.Element {
 
       <S.Main>
         <Container>
-          <ControlBox onChangeDate={onChangeDate}/>
+          <ControlBox />
         </Container>
 
         <Container $paddingTablet="10px">

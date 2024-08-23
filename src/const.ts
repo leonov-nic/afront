@@ -8,7 +8,7 @@ export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const baseQuery: Query = {
   createdAt: getDataNowWithResetTime(),
-  limit: 1,
+  limit: 2,
   offset: 0,
 };
 

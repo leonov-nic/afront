@@ -25,7 +25,8 @@ import CustomTextarea from '../custom-textarea/custom-textarea';
 
 import { getDayAndMonth, getHours, getNewTimeInDate } from '../../utils/utils';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { editJob } from '../../store/api-action';
+import { editJob, fetchJobs } from '../../store/api-action';
+import { baseQuery } from '../../const';
 
 import Drawer from '@mui/material/Drawer';
 
@@ -79,7 +80,8 @@ export default function DrawerEditJob(props: DrawerEditJobProps): JSX.Element {
   const submitFunction = (values: TUpdateJob) => {
     values.timeFrom = dayjs(getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
     values.timeTo = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
-    dispatch(editJob(values));
+    dispatch(editJob(values))
+    .then((data) => { if (data.meta.requestStatus === 'fulfilled') dispatch(fetchJobs(baseQuery)); });
 
     toast.success(`Работа сотрудника ${employee} успешно изменена`,
       {style: {background: '#17c1bc',}});

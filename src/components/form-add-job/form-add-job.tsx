@@ -20,7 +20,8 @@ import CustomTextarea from '../custom-textarea/custom-textarea';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { getUser } from '../../store/user-process/user-process';
-import { postJob } from '../../store/api-action';
+import { postJob, fetchJobs } from '../../store/api-action';
+import { baseQuery } from '../../const';
 
 const INITIAL_VALUES = {
   employeeId: '',
@@ -61,7 +62,10 @@ export default function FormAddJob(): JSX.Element {
     user ? values.master = user._id : values.master = '';
     values.timeFrom = dayjs(getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
     values.timeTo = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
-    dispatch(postJob(values));
+    dispatch(postJob(values))
+    .then((data) => { if (data.meta.requestStatus === 'fulfilled') 
+      dispatch(fetchJobs(baseQuery))
+    });
 
     toast.success(`Работа успешно добавлена`, {
       position: 'top-center',
