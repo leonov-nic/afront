@@ -6,10 +6,13 @@ export const BACKEND_URL = 'http://localhost:5002/api';
 export const REQUEST_TIMEOUT = 5000;
 export const TIMEOUT_SHOW_ERROR = 2000;
 
+export const MAX_JOBS = 2;
+
 export const baseQuery: Query = {
   createdAt: getDataNowWithResetTime(),
-  limit: 2,
+  limit: MAX_JOBS,
   offset: 0,
+  lengthJobs: MAX_JOBS,
 };
 
 export enum AuthorizationStatus {

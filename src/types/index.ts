@@ -9,6 +9,7 @@ export interface Query {
   createdAt: string | undefined ;
   limit: number;
   offset: number;
+  lengthJobs: number;
 }
 
 export type TEmployee = {

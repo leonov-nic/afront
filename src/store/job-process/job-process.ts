@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { TJobProcess, State } from '../../types/state';
 import { SubmitStatus } from '../../const';
+import { baseQuery } from '../../const';
 
 import {
   fetchJobs,
@@ -20,6 +21,7 @@ const initialState: TJobProcess = {
   details: [],
   isJobSendingStatus: SubmitStatus.Still,
   sortDate: '',
+  lengthJobs: Number(baseQuery.lengthJobs),
 };
 
 export const jobProcess = createSlice({
@@ -28,6 +30,7 @@ export const jobProcess = createSlice({
   reducers: {
     setSortDate: (state, action: PayloadAction<string>) => {
       state.sortDate = action.payload;
+      state.newJobs = [];
     },
     resetJobSendingStatus: (state) => {
       state.isJobSendingStatus = SubmitStatus.Still;
@@ -42,6 +45,7 @@ export const jobProcess = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchJobs.fulfilled, (state, action) => {
+        state.lengthJobs = Number(action.payload.length);
         state.isLoading = false;
         const existingIds = new Set(state.newJobs.map(job => job._id));
         state.jobs = action.payload.filter(job => !existingIds.has(job._id));
@@ -101,4 +105,4 @@ export const getDetails = createSelector(selectJob, (state: TJobProcess) => stat
 export const getEmployees = createSelector(selectJob, (state: TJobProcess) => state.employees);
 export const getJobs = createSelector(selectJob, (state: TJobProcess) => state.jobs);
 export const getNewJobs = createSelector(selectJob, (state: TJobProcess) => state.newJobs);
-export const getJobsLength = createSelector(selectJob, (state: TJobProcess) => state.jobs.length);
+export const getJobsLength = createSelector(selectJob, (state: TJobProcess) => state.lengthJobs);

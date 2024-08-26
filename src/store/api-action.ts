@@ -88,7 +88,6 @@ export const fetchJobs = createAsyncThunk<TJobRDO[], Query, { extra: ThunkApiCon
   'app/fetchJobs',
   async (params, { extra }) => {
     const { api } = extra;
-    console.log(params);
 
     const {data} = await api.get<TJobRDO[]>(`/jobs/`, 
     {
@@ -104,10 +103,9 @@ export const fetchJobs = createAsyncThunk<TJobRDO[], Query, { extra: ThunkApiCon
 
 export const deleteJob = createAsyncThunk<void, TJobRDO['_id'], { extra: ThunkApiConfig }>
 ('app/deleteJob',
-  async (_id, { extra, dispatch }) => {
+  async (_id, { extra }) => {
     const { api, browserHistory } = extra;
     const {data} = await api.delete<void>(`/jobs/${_id}`);
-    await dispatch(fetchJobs(baseQuery));
     browserHistory.push('/');
     return data;
   },
@@ -115,11 +113,9 @@ export const deleteJob = createAsyncThunk<void, TJobRDO['_id'], { extra: ThunkAp
 
 export const editJob = createAsyncThunk<TUpdateJob, TUpdateJob, { extra: ThunkApiConfig }>(
   'app/editJob',
-  async (job, { extra, dispatch }) => {
+  async (job, { extra }) => {
     const { api } = extra;
     const { data } = await api.put<TUpdateJob>(`/jobs/${job._id}`, job);
-    await dispatch(fetchEmployees());
-    await dispatch(fetchJobs(baseQuery));
     return data;
   }
 );

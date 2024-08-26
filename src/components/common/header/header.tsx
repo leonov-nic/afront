@@ -11,19 +11,30 @@ import { CustomButton } from '../button/button';
 import { useEffect } from 'react';
 import { AuthorizationStatus } from '../../../const';
 import useAuth from '../../../hooks/useAuth';
+import useQuery from '../../../hooks/useQuery';
+import {
+  fetchJobs,
+  fetchEmployees,
+  fetchDetails,
+ } from '../../../store/api-action';
 
 export default function Header(): JSX.Element {
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
   const navigate = useNavigate();
   const statusAuthorization = useAuth();
+  const { query } = useQuery();
 
   useEffect(() => {
     if (statusAuthorization === AuthorizationStatus.NoAuth ) {
       navigate('/entrance');
     }
 
-  }, [statusAuthorization, navigate]);
+    dispatch(fetchJobs(query));
+    dispatch(fetchEmployees());
+    dispatch(fetchDetails());
+
+  }, [statusAuthorization, navigate, dispatch, query]);
 
   const handleOutUser = () => {
     dispatch(logoutUser());

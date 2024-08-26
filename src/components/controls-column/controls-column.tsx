@@ -6,15 +6,18 @@ import { MenuProps } from '@mui/material/Menu';
 
 import { toast } from 'react-toastify';
 
-import { humanizeDate } from "../../utils/utils";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
 import useVisibility from "../../hooks/useVisibility";
+import useQuery from "../../hooks/useQuery";
+
 import { CustomButton } from "../common/button/button";
 import ButtonOpenDrawerEditJob from "../button-open-drawer-edit-job/button-open-drawer-edit-job";
-import { TJobRDO } from "../../types";
 
+import { humanizeDate } from "../../utils/utils";
+import { TJobRDO } from "../../types";
 import { deleteJob, fetchJobs } from "../../store/api-action";
 import { baseQuery } from "../../const";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
+
 
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
@@ -45,6 +48,7 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 const ControlsColumn = ({ row, fun, opacity }: { row: TJobRDO, fun: () => void, opacity: boolean }) => {
+  const { setQuery } = useQuery();
   const dispatch = useAppDispatch();
   const ref = useRef<HTMLButtonElement>(null);
 
@@ -59,7 +63,10 @@ const ControlsColumn = ({ row, fun, opacity }: { row: TJobRDO, fun: () => void, 
 
   const hundleDeleteRow = () => {
     dispatch(deleteJob(row._id))
-    .then((data) => { if (data.meta.requestStatus === 'fulfilled') dispatch(fetchJobs(baseQuery)); });
+    .then((data) => { if (data.meta.requestStatus === 'fulfilled') {
+      setQuery && setQuery(baseQuery);
+      dispatch(fetchJobs(baseQuery)); 
+    }});
 
     toast.info(`Работа для ${row.employee.familyName} за ${humanizeDate(row.createdAt)} удалена`, {
       position: 'top-center',
@@ -80,7 +87,6 @@ const ControlsColumn = ({ row, fun, opacity }: { row: TJobRDO, fun: () => void, 
         anchorEl={ref.current}
         onClick={hundleClick}
         sx={{zIndex: 8}}
-        // sx={{backgroundColor: 'rgba(116, 190, 18, 0.2)', zIndex: 8}}
       >
         <MenuItem sx={{p: 0.1}}>
           <ButtonOpenDrawerEditJob row={row}></ButtonOpenDrawerEditJob>
