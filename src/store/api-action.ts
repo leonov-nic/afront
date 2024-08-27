@@ -125,7 +125,6 @@ export const postJob = createAsyncThunk<TJob, TJob, { extra: ThunkApiConfig }>(
   async (job, { extra }) => {
     const { api } = extra;
     const { data: newJob} = await api.post<TJob>('/jobs', job);
-    // await dispatch(fetchJobs(baseQuery));
     return newJob;
   }
 );
@@ -145,7 +144,6 @@ export const editEmployee = createAsyncThunk<TEditEmployee, TEditEmployee, { ext
     const { api } = extra;
     const { data } = await api.put<TEmployee>(`/employees/${employee._id}`, employee);
     await dispatch(fetchEmployees());
-    await dispatch(fetchJobs(baseQuery));
     return data;
   }
 );
@@ -163,10 +161,9 @@ export const postEmployee = createAsyncThunk<TNewEmployee, TNewEmployee, { extra
 export const deleteEmployee = createAsyncThunk<void, TEmployee['_id'], { extra: ThunkApiConfig }>(
   'app/deleteEmployee',
   async (_id, { extra, dispatch }) => {
-    const { api, browserHistory } = extra;
+    const { api } = extra;
     const {data} = await api.delete<void>(`/employees/${_id}`);
     await dispatch(fetchEmployees());
-    browserHistory.push('/');
     return data;
   },
 );
@@ -185,7 +182,7 @@ export const postDetail = createAsyncThunk<TNewDetail, TNewDetail, { extra: Thun
   async (detail, { extra, dispatch }) => {
     const { api } = extra;
     const { data } = await api.post<TNewDetail>('/details', detail);
-    await dispatch(fetchJobs(baseQuery));
+    await dispatch(fetchDetails());
     return data;
   }
 );

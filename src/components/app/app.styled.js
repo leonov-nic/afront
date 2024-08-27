@@ -209,7 +209,7 @@ export const GlobalStyle = createGlobalStyle`
     margin-bottom: 0;
   }
 
-  .container {
+  .container, .MuiTableContainer-root {
     scrollbar-width: thin;
     scrollbar-width: 8px;
     scrollbar-color: ${({ theme }) => theme.color.chambray} ${({ theme }) => theme.color.lightSeaGreen};

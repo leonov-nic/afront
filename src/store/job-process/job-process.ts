@@ -10,7 +10,8 @@ import {
   deleteEmployee,
   postEmployee,
   fetchDetails,
-  postJob
+  postJob,
+  editJob
 } from '../api-action';
 
 const initialState: TJobProcess = {
@@ -51,10 +52,10 @@ export const jobProcess = createSlice({
         state.jobs = action.payload.filter(job => !existingIds.has(job._id));
         state.newJobs = state.newJobs.concat(state.jobs);
       })
-      .addCase(postJob.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(postJob.fulfilled, (state) => {
+        state.newJobs = [];
+      })
+      .addCase(editJob.fulfilled, (state) => {
         state.newJobs = [];
       })
       .addCase(deleteJob.pending, (state) => {

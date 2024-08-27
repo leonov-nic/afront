@@ -15,6 +15,9 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { getNewJobs, getIsLoading } from '../../store/job-process/job-process';
 import { TEmployeeRDO, TDetail, TNameOfJob, TUserRDO } from '../../types';
 
+
+import JsonToExcell from '../../utils/utils';
+
 const StyledTableCell = styled(TableCell)(({theme}) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: '#96b8cc',
@@ -28,19 +31,12 @@ const StyledTableCell = styled(TableCell)(({theme}) => ({
 
 const MainTable = memo((): JSX.Element => {
   console.log('render Table');
-  // const [jobs, setJobs] = useState<TJobRDO[]>([]);
+
   const isLoading = useAppSelector(getIsLoading);
   const jobs = useAppSelector(getNewJobs);
-  // console.log(fetchingJobs);
-
-  // useEffect(() => {
-  //   // setJobs(prevJobs => {
-  //   //   const existingIds = new Set(prevJobs.map(job => job._id)); // Создаем множество существующих _id
-  //   //   const newJobs = fetchingJobs.filter(job => !existingIds.has(job._id)); // Фильтруем новые работы
-  //   //   return prevJobs.concat(newJobs); // Объединяем старые и новые работы
-  //   // });
-  // }, [jobs]);
-
+  console.log(jobs);
+  const dd = new JsonToExcell(jobs, 'table');
+  dd.init();
   const createData = (
     _id: string,
     createdAt: string,
@@ -78,32 +74,33 @@ const MainTable = memo((): JSX.Element => {
   ));
 
   return (
-    !isLoading ? rows.length ? <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="table of jobs">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell width="25px" align="center">Date</StyledTableCell>
-            <StyledTableCell width="10px" align="center">&#8470;</StyledTableCell>
-            <StyledTableCell align="center">Employee</StyledTableCell>
-            <StyledTableCell width="25px" align="center">From</StyledTableCell>
-            <StyledTableCell align="center">To</StyledTableCell>
-            <StyledTableCell align="center">H</StyledTableCell>
-            <StyledTableCell align="center">Detail</StyledTableCell>
-            <StyledTableCell align="center">Type of work</StyledTableCell>
-            <StyledTableCell width="15px" align="center">Extra</StyledTableCell>
-            <StyledTableCell width="25px" align="center">Quantity</StyledTableCell>
-            <StyledTableCell align="center">Master</StyledTableCell>
-            <StyledTableCell align="center">Comment</StyledTableCell>
-            <StyledTableCell width="15px" align="center"><DeleteIcon style={{paddingTop: "5px"}}></DeleteIcon></StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <CustumTableRow key={row._id} row={row}></CustumTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer> :
+    !isLoading ? rows.length ? 
+      <TableContainer sx={{ maxHeight: '58vh' }} component={Paper}>
+        <Table sx={{ minWidth: 700 }} aria-label="table of jobs">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell width="25px" align="center">Date</StyledTableCell>
+              <StyledTableCell width="10px" align="center">&#8470;</StyledTableCell>
+              <StyledTableCell align="center">Employee</StyledTableCell>
+              <StyledTableCell width="25px" align="center">From</StyledTableCell>
+              <StyledTableCell align="center">To</StyledTableCell>
+              <StyledTableCell align="center">H</StyledTableCell>
+              <StyledTableCell align="center">Detail</StyledTableCell>
+              <StyledTableCell align="center">Type of work</StyledTableCell>
+              <StyledTableCell width="15px" align="center">Extra</StyledTableCell>
+              <StyledTableCell width="25px" align="center">Quantity</StyledTableCell>
+              <StyledTableCell align="center">Master</StyledTableCell>
+              <StyledTableCell align="center">Comment</StyledTableCell>
+              <StyledTableCell width="15px" align="center"><DeleteIcon style={{paddingTop: "5px"}}></DeleteIcon></StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <CustumTableRow key={row._id} row={row}></CustumTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer> :
       <p style={{margin: "50px 0 30px", color: "gray", textAlign: "center",
         textTransform: 'uppercase', fontSize: "18px"}}>No work has been created today yet</p> : <Loading/>
   );

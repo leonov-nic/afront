@@ -26,21 +26,9 @@ import CustomTextarea from '../custom-textarea/custom-textarea';
 import { getDayAndMonth, getHours, getNewTimeInDate } from '../../utils/utils';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { editJob, fetchJobs } from '../../store/api-action';
-import { baseQuery } from '../../const';
 
 import Drawer from '@mui/material/Drawer';
-
-// const INITIAL_VALUES = {
-//   employeeId: '',
-//   timeFrom: '',
-//   timeTo: '',
-//   detailId: '',
-//   typeOfJob: '',
-//   extra: undefined,
-//   quantity: undefined,
-//   comment: '',
-//   master: '',
-// };
+import useQuery from '../../hooks/useQuery';
 
 const VALIDATION_SCHEMA = Yup.object().shape({
   employeeId: Yup.string().required("Required"),
@@ -60,6 +48,8 @@ export interface DrawerEditJobProps {
 
 export default function DrawerEditJob(props: DrawerEditJobProps): JSX.Element {
   const {open, onClose, row} = props;
+  const { query } = useQuery();
+  const dispatch = useAppDispatch();
 
   const {employee, timeFrom, timeTo, master, ...newRow} = row;
   const modifiedRow = {
@@ -72,7 +62,6 @@ export default function DrawerEditJob(props: DrawerEditJobProps): JSX.Element {
   delete modifiedRow.totalHours;
   delete modifiedRow.detail;
 
-  const dispatch = useAppDispatch();
   const hundlerCloseDialog = () => {
     onClose();
   }
@@ -81,7 +70,9 @@ export default function DrawerEditJob(props: DrawerEditJobProps): JSX.Element {
     values.timeFrom = dayjs(getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
     values.timeTo = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
     dispatch(editJob(values))
-    .then((data) => { if (data.meta.requestStatus === 'fulfilled') dispatch(fetchJobs(baseQuery)); });
+    .then((data) => { if (data.meta.requestStatus === 'fulfilled') {
+      dispatch(fetchJobs(query));
+    }});
 
     toast.success(`Работа сотрудника ${employee} успешно изменена`,
       {style: {background: '#17c1bc',}});

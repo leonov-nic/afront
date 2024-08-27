@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^2.2.3",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
+    "exceljs": "^4.4.0",
     "formik": "^2.4.6",
     "formik-mui": "^5.0.0-alpha.0",
     "formik-mui-x-date-pickers": "^0.0.1",

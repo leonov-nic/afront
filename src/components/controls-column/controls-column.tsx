@@ -16,8 +16,6 @@ import ButtonOpenDrawerEditJob from "../button-open-drawer-edit-job/button-open-
 import { humanizeDate } from "../../utils/utils";
 import { TJobRDO } from "../../types";
 import { deleteJob, fetchJobs } from "../../store/api-action";
-import { baseQuery } from "../../const";
-
 
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
@@ -48,12 +46,11 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 const ControlsColumn = ({ row, fun, opacity }: { row: TJobRDO, fun: () => void, opacity: boolean }) => {
-  const { setQuery } = useQuery();
+  const { query } = useQuery();
+  const { visibility, toggle, hide } = useVisibility();
   const dispatch = useAppDispatch();
   const ref = useRef<HTMLButtonElement>(null);
-
-  const { visibility, toggle, hide } = useVisibility();
-
+  
   const hundleClick = (evt: React.MouseEvent<HTMLTableElement>) => {
     const element = evt.target as HTMLElement;
     if (element.classList.contains('MuiBackdrop-root')) {
@@ -64,8 +61,7 @@ const ControlsColumn = ({ row, fun, opacity }: { row: TJobRDO, fun: () => void, 
   const hundleDeleteRow = () => {
     dispatch(deleteJob(row._id))
     .then((data) => { if (data.meta.requestStatus === 'fulfilled') {
-      setQuery && setQuery(baseQuery);
-      dispatch(fetchJobs(baseQuery)); 
+      dispatch(fetchJobs(query)); 
     }});
 
     toast.info(`Работа для ${row.employee.familyName} за ${humanizeDate(row.createdAt)} удалена`, {

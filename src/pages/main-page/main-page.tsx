@@ -8,9 +8,12 @@ import FormAddJob from '../../components/form-add-job/form-add-job';
 import MainTable from '../../components/main-table/main-table';
 import ControlBox from '../../components/control-box/control-box';
 import ButtonAddJobs from '../../components/button-add-jobs/button-add-jobs';
+// import { useAppSelector } from '../../hooks/useAppSelector';
+// import { getNewJobs } from '../../store/job-process/job-process';
 
 export default function MainPage(): JSX.Element {
   console.log('render MainPage');
+  // const jobs = useAppSelector(getNewJobs);
 
   useEffect(() => {
     console.log('render MainPage useEffect');
@@ -34,11 +37,8 @@ export default function MainPage(): JSX.Element {
           <FormAddJob />
         </Container>
 
-        <Container className="container" $mt="10px" $overflow="auto">
+        <Container className="container" $mt="10px" $overflow="auto" style={{alignItems: 'center', display: 'flex', minHeight: '65vh', flexDirection: 'column'}}>
           <MainTable/>
-        </Container>
-
-        <Container className="container" $mt="10px" $overflow="auto" style={{textAlign: 'center'}}>
           <ButtonAddJobs/>
         </Container>
         

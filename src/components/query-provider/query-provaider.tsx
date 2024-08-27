@@ -44,12 +44,12 @@ export default function QueryProvider({children}: {children: ReactNode}): JSX.El
       }));
     } else if (length < Number(baseQuery.limit)) {
       dispatch(setSortDate(''));
-       setQuery(baseQuery);
+       setQuery({...baseQuery, createdAt: query.createdAt});
     } else {
       dispatch(setSortDate(''));
-      setQuery(baseQuery);
+      setQuery({...baseQuery, createdAt: query.createdAt});
     }
-  }, [length, dispatch]);
+  }, [length, dispatch, query.createdAt]);
 
   const value = {
     query: {...query, lengthJobs: length},

@@ -1,4 +1,5 @@
-// import {utils, writeFile} from 'xlsx';
+import ExcelJS from 'exceljs';
+import { TJobRDO } from '../types';
 // import { ChangeEvent } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -90,30 +91,41 @@ export const getDayAndMonth = (date: string) => {
   return `${day}.${month}`;
 }
 
-// export default class TableToExcell {
-//   private _table: HTMLElement | null = null;
-//   private _tableName;
 
-//   constructor(table: string, tableName: string) {
-//     this._table = document.getElementById(`${table}`);
-//     this._tableName = tableName;
-//     this._writeToFileHandler = this._writeToFileHandler.bind(this);
-//   }
 
-//   init() {
-//     if (this._table) {
-//       this._writeToFileHandler();
-//     }
-//   }
+export default class JsonToExcell {
+  private _data: TJobRDO[] | null = null;
+  private _tableName;
 
-//   _writeToFileHandler() {
-//     this._writeToFileHundler();
-//   }
+  constructor(data: TJobRDO[], tableName: string) {
+    this._data = data;
+    this._tableName = tableName;
+    this._writeToFileHandler = this._writeToFileHandler.bind(this);
+  }
 
-//   _writeToFileHundler() {
-//     const workbook = utils.book_new();
-//     const sheet = utils.table_to_sheet(this._table);
-//     utils.book_append_sheet(workbook, sheet, 'Sheet1');
-//     writeFile(workbook, `${this._tableName}.xlsx`);
-//   }
-// }
+  init() {
+    if (this._data) {
+      this._writeToFileHandler();
+    }
+  }
+
+  private async _writeToFileHandler() {
+    await this._writeToFileHundler();
+  }
+
+  private async _writeToFileHundler() {
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet(this._tableName);
+
+    // const headers = this._data && Object.keys(this._data); // Предполагается, что _data - это массив объектов
+    // sheet.addRow(headers);
+
+    // Добавляем данные
+    this._data && this._data.forEach((item) => {
+      sheet.addRow(Object.values(item));
+    });
+
+    // Сохраняем файл
+    await workbook.xlsx.writeFile(`${this._tableName}.xlsx`);
+  }
+}

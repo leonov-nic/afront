@@ -9,9 +9,9 @@ const { onChangeOffset, query }  = useQuery();
     <>
       <CustomButton
         data-name='111'
-        sx={{ color: 'white', backgroundColor: "#96b8cc", boxShadow: "none", py: 2, px: 6, marginLeft: 'auto', borderRadius: 0}}
+        sx={{ fontSize: '12px',color: 'white', backgroundColor: "#96b8cc", boxShadow: "none", py: 1.5, px: 5, marginTop: 'auto', width: 'fit-content'}}
         onClick={onChangeOffset}
-        text={query.lengthJobs && query.lengthJobs === 2 ? 'Загрузить ещё' : query.lengthJobs && query.lengthJobs < 2 ? 'Загрузить заново' : 'Загрузить заново'}
+        text={query.lengthJobs && query.lengthJobs === 2 ? 'load more' : query.lengthJobs && query.lengthJobs < 2 ? 'load again' : 'load again'}
       >
       </CustomButton>
     </>
