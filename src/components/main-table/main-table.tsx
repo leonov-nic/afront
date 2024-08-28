@@ -13,9 +13,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CustumTableRow from '../custom-table-row/custom-table-row';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { getNewJobs, getIsLoading } from '../../store/job-process/job-process';
-import { TEmployeeRDO, TDetail, TNameOfJob, TUserRDO } from '../../types';
 
-
+import { createRowsForTable } from '../../utils/utils';
 import JsonToExcell from '../../utils/utils';
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
@@ -29,49 +28,23 @@ const StyledTableCell = styled(TableCell)(({theme}) => ({
   },
 }));
 
+// const data = [
+//   { name: 'John', age: 30, city: 'New York' },
+//   { name: 'Jane', age: 25, city: 'Los Angeles' },
+//   { name: 'Doe', age: 22, city: 'Chicago' },
+// ];
+
 const MainTable = memo((): JSX.Element => {
   console.log('render Table');
 
   const isLoading = useAppSelector(getIsLoading);
   const jobs = useAppSelector(getNewJobs);
-  console.log(jobs);
+  // console.log(jobs);
+
   const dd = new JsonToExcell(jobs, 'table');
   dd.init();
-  const createData = (
-    _id: string,
-    createdAt: string,
-    employeeId: string,
-    employee: TEmployeeRDO,
-    timeFrom: string,
-    timeTo: string,
-    totalHours: number | undefined,
-    detailId: string,
-    detail: TDetail | undefined,
-    typeOfJob: TNameOfJob,
-    quantity: number,
-    master: TUserRDO,
-    extra?: number,
-    comment?: string,
-  ) => {
-    return { _id, createdAt, employeeId, employee, timeFrom, timeTo, totalHours, detailId, detail, typeOfJob, extra, quantity, comment, master };
-  }
 
-  const rows = jobs.map(job => createData(
-    job._id,
-    job.createdAt,
-    job.employeeId,
-    job.employee,
-    job.timeFrom,
-    job.timeTo,
-    job.totalHours,
-    job.detailId,
-    job.detail,
-    job.typeOfJob,
-    job.quantity,
-    job.master,
-    job.extra,
-    job.comment
-  ));
+  const rows = createRowsForTable(jobs);
 
   return (
     !isLoading ? rows.length ? 

@@ -1,5 +1,6 @@
 import ExcelJS from 'exceljs';
-import { TJobRDO } from '../types';
+import { saveAs } from 'file-saver';
+import { TJobRDO, TEmployeeRDO, TDetail, TNameOfJob, TUserRDO } from '../types';
 // import { ChangeEvent } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -97,8 +98,8 @@ export default class JsonToExcell {
   private _data: TJobRDO[] | null = null;
   private _tableName;
 
-  constructor(data: TJobRDO[], tableName: string) {
-    this._data = data;
+  constructor(jobs: TJobRDO[], tableName: string) {
+    this._data = jobs;
     this._tableName = tableName;
     this._writeToFileHandler = this._writeToFileHandler.bind(this);
   }
@@ -113,19 +114,97 @@ export default class JsonToExcell {
     await this._writeToFileHundler();
   }
 
+  // this._data && this._data.forEach((item) => {
+  //   sheet.addRow(Object.values(item));
+  // });
+
+
   private async _writeToFileHundler() {
     const workbook = new ExcelJS.Workbook();
-    const sheet = workbook.addWorksheet(this._tableName);
+    // workbook.creator = 'Leonov';
+    // workbook.lastModifiedBy = 'Nick';
+    // workbook.created = new Date(1975, 5, 14);
+    // workbook.modified = new Date();
+    // workbook.lastPrinted = new Date(2016, 12, 16);
 
-    // const headers = this._data && Object.keys(this._data); // Предполагается, что _data - это массив объектов
-    // sheet.addRow(headers);
+       const sheet = workbook.addWorksheet(`${this._tableName}`, {properties:{tabColor:{argb:'FFC0000'}}});
+    workbook.calcProperties.fullCalcOnLoad = true;
 
-    // Добавляем данные
-    this._data && this._data.forEach((item) => {
-      sheet.addRow(Object.values(item));
-    });
-
-    // Сохраняем файл
-    await workbook.xlsx.writeFile(`${this._tableName}.xlsx`);
+    if (this._data) {
+      const rows = createRowsForExellFile(this._data);
+      const headers = Object.keys(rows[0]);
+      sheet.addRow(headers);
+      rows.forEach((row) => {
+        sheet.addRow(Object.values(row));
+      });
+    }
+    
+    const buffer = await workbook.xlsx.writeBuffer();
+    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    const blob = new Blob([buffer], {type: fileType});
+    saveAs(blob, `${this._tableName}.xlsx`);
   }
 }
+
+export const createDataForTable = (
+  _id: string,
+  createdAt: string,
+  employeeId: string,
+  employee: TEmployeeRDO,
+  timeFrom: string,
+  timeTo: string,
+  totalHours: number | undefined,
+  detailId: string,
+  detail: TDetail | undefined,
+  typeOfJob: TNameOfJob,
+  quantity: number,
+  master: TUserRDO,
+  extra?: number,
+  comment?: string,
+) => {
+  return { _id, createdAt, employeeId, employee, timeFrom, timeTo, totalHours, detailId, detail, typeOfJob, extra, quantity, comment, master };
+}
+
+export const createRowsForTable = (jobs: TJobRDO[]) => {
+  const rows = jobs.map(job => createDataForTable(
+    job._id,
+    job.createdAt,
+    job.employeeId,
+    job.employee,
+    job.timeFrom,
+    job.timeTo,
+    job.totalHours,
+    job.detailId,
+    job.detail,
+    job.typeOfJob,
+    job.quantity,
+    job.master,
+    job.extra,
+    job.comment
+  ));
+
+  return rows;
+}
+
+
+export const createRowsForExellFile = (jobs: TJobRDO[]) => {
+  const rows = jobs.map(job => {
+  
+    return {
+    "Date": getDayAndMonth(job.createdAt),
+    "№": job.employee.registrationNumber,
+    "Employee": job.employee.familyName,
+    "TimeFrom": getHours(job.timeFrom),
+    "TimeTo": getHours(job.timeTo),
+    "TotalHours": job.totalHours,
+    "Detail": job.detail?.shortName,
+    "Type Of Job": job.typeOfJob,
+    "Extra": job.extra || "–",
+    "Quantity": job.quantity,
+    "Master": job.master.name,
+    "Comment": job.comment || "–"};
+  });
+  console.log(rows);
+  return rows;
+}
+
