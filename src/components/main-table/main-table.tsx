@@ -15,7 +15,6 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { getNewJobs, getIsLoading } from '../../store/job-process/job-process';
 
 import { createRowsForTable } from '../../utils/utils';
-import JsonToExcell from '../../utils/utils';
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -28,21 +27,12 @@ const StyledTableCell = styled(TableCell)(({theme}) => ({
   },
 }));
 
-// const data = [
-//   { name: 'John', age: 30, city: 'New York' },
-//   { name: 'Jane', age: 25, city: 'Los Angeles' },
-//   { name: 'Doe', age: 22, city: 'Chicago' },
-// ];
 
 const MainTable = memo((): JSX.Element => {
   console.log('render Table');
 
   const isLoading = useAppSelector(getIsLoading);
   const jobs = useAppSelector(getNewJobs);
-  // console.log(jobs);
-
-  const dd = new JsonToExcell(jobs, 'table');
-  dd.init();
 
   const rows = createRowsForTable(jobs);
 

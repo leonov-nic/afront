@@ -9,6 +9,7 @@ import utc from 'dayjs/plugin/utc'
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(utc);
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 export const dictionary = <T extends { _id: string | undefined }>(array: T[]) => {
   const dictionary = new Map<string | undefined, T>();
@@ -61,14 +62,6 @@ export const getDataNow = () => {
   return data.toISOString();
 }
 
-export const getDataNowWithResetTime = () => {
-  const data = new Date();
-  data.setHours(0, 0, 0, 0);
-  // console.log(dayjs(data).utc().local().format());
-  return dayjs(data).utc().local().format();
-  // return data;
-}
-
 export const getDataAndResetTime = (data: Dayjs | null) => {
   if (data == null) {return;}
   return dayjs(data).format();
@@ -92,20 +85,31 @@ export const getDayAndMonth = (date: string) => {
   return `${day}.${month}`;
 }
 
+export const getMonth = (date: string) => {
+  const month = new Date(date).getMonth();
+  return month;
+}
 
+export const getDataNowWithResetTime = () => {
+  const data = new Date();
+  data.setHours(0, 0, 0, 0);
+  return dayjs(data).utc().local().format();
+}
 
 export default class JsonToExcell {
   private _data: TJobRDO[] | null = null;
   private _tableName;
+  private _date;
 
-  constructor(jobs: TJobRDO[], tableName: string) {
+  constructor(jobs: TJobRDO[], tableName: string, date: string | undefined) {
     this._data = jobs;
     this._tableName = tableName;
+    this._date = date;
     this._writeToFileHandler = this._writeToFileHandler.bind(this);
   }
 
   init() {
-    if (this._data) {
+    if (this._date) {
       this._writeToFileHandler();
     }
   }
@@ -114,35 +118,55 @@ export default class JsonToExcell {
     await this._writeToFileHundler();
   }
 
-  // this._data && this._data.forEach((item) => {
-  //   sheet.addRow(Object.values(item));
-  // });
-
-
   private async _writeToFileHundler() {
     const workbook = new ExcelJS.Workbook();
-    // workbook.creator = 'Leonov';
-    // workbook.lastModifiedBy = 'Nick';
-    // workbook.created = new Date(1975, 5, 14);
-    // workbook.modified = new Date();
-    // workbook.lastPrinted = new Date(2016, 12, 16);
 
-       const sheet = workbook.addWorksheet(`${this._tableName}`, {properties:{tabColor:{argb:'FFC0000'}}});
+    const sheet = workbook.addWorksheet(`${this._tableName}`, {properties:{tabColor:{argb:'FFC0000'}}});
     workbook.calcProperties.fullCalcOnLoad = true;
 
-    if (this._data) {
+    if (this._data?.length) {
       const rows = createRowsForExellFile(this._data);
-      const headers = Object.keys(rows[0]);
-      sheet.addRow(headers);
-      rows.forEach((row) => {
-        sheet.addRow(Object.values(row));
+
+      const headers = rows && Object.keys(rows[0]);
+      headers.forEach((_header, index) => {
+        sheet.getColumn(index + 1).width = 14;
       });
+  
+      const headerRow = sheet.addRow(headers);
+      headerRow.eachCell((cell) => {
+        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+        cell.border = {
+          top: {style:'thin'},
+          left: {style:'thin'},
+          bottom: {style:'thin'},
+          right: {style:'thin'}
+        };
+        cell.fill = {
+          type: 'pattern',
+          pattern:'solid',
+          fgColor: { argb: 'FFCCCCCC' }, 
+        };
+      });
+      rows && rows.forEach((row) => {
+        const newRow = sheet.addRow(Object.values(row));
+        newRow.eachCell((cell) => {
+          cell.alignment = { vertical: 'middle', horizontal: 'center' };
+          cell.border = {
+            top: {style:'thin'},
+            left: {style:'thin'},
+            bottom: {style:'thin'},
+            right: {style:'thin'}
+          };
+        });
+      });
+    } else {
+      return;
     }
-    
+
     const buffer = await workbook.xlsx.writeBuffer();
     const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     const blob = new Blob([buffer], {type: fileType});
-    saveAs(blob, `${this._tableName}.xlsx`);
+    saveAs(blob, `${this._date && months[getMonth(this._date)]}.xlsx`);
   }
 }
 
@@ -204,7 +228,7 @@ export const createRowsForExellFile = (jobs: TJobRDO[]) => {
     "Master": job.master.name,
     "Comment": job.comment || "–"};
   });
-  console.log(rows);
+
   return rows;
 }
 

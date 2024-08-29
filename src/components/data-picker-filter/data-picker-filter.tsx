@@ -44,7 +44,8 @@ export default function DatePickerFilter() {
         // views={["day", "month"]}
         // timezone="Europe/Paris"
         disableFuture
-        sx={{ width: 200, left: "calc(50% - 415px)" }}
+        // sx={{ width: 200, left: "calc(50% - 415px)" }}
+        sx={{ width: 200 }}
         onChange={hundleChangeDate}
         slotProps={{
           field: { clearable: true, onClear: () => {setCleared(true); setQuery && setQuery(baseQuery);}},

@@ -12,6 +12,12 @@ export interface Query {
   lengthJobs: number;
 }
 
+export interface QueryByMonth {
+  createdAt: string | undefined ;
+  limit?: number;
+  filterByMonth: boolean;
+}
+
 export type TEmployee = {
   _id: string | undefined ;
   familyName: string;

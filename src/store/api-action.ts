@@ -13,6 +13,7 @@ import {
   UserRegister,
   TSubmitUser,
   Query,
+  QueryByMonth
 } from '../types';
 
 
@@ -22,7 +23,6 @@ import type { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { Token } from '../utils/utils';
-import { baseQuery } from '../const';
 
 type ThunkApiConfig = {
   api: AxiosInstance;
@@ -83,6 +83,23 @@ export const registerUser = createAsyncThunk<void, UserRegister, { extra: ThunkA
       browserHistory.push('/');
     }
   });
+
+export const fetchJobsByMonth = createAsyncThunk<TJobRDO[], QueryByMonth, { extra: ThunkApiConfig }>(
+  'app/fetchJobsByMonth',
+  async (params, { extra }) => {
+    const { api } = extra;
+
+    const {data} = await api.get<TJobRDO[]>(`/jobs/`, 
+    {
+      params: {
+        createdAt: params.createdAt,
+        limit: 300,
+        filterByMonth: params.filterByMonth
+      }
+    });
+    return data;
+  },
+);
 
 export const fetchJobs = createAsyncThunk<TJobRDO[], Query, { extra: ThunkApiConfig }>(
   'app/fetchJobs',
