@@ -45,7 +45,7 @@ export default function Header(): JSX.Element {
     // setAvatar(file);
     // console.log(avatar);
     if (file) {
-      dispatch(postAvatar(formData)); 
+      dispatch(postAvatar(file)); 
     }
   };
 
