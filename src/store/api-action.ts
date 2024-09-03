@@ -87,10 +87,11 @@ export const registerUser = createAsyncThunk<void, UserRegister, { extra: ThunkA
 export const postAvatar = createAsyncThunk<void, File, { extra: ThunkApiConfig }>(
   'user/postAvatar',
   async (avatar, { extra }) => {
-    console.log(avatar);
+    const formData = new FormData();
+    formData.append('avatar', avatar); 
     const { api, browserHistory } = extra;
-    await api.post(`api/users/avatar`, avatar, {
-      headers: { 'Content-Type': 'multipart/form-data' }
+    await api.post(`api/users/avatar`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data',  }
     });
     browserHistory.push('/');
   });
@@ -99,6 +100,7 @@ export const postAvatar = createAsyncThunk<void, File, { extra: ThunkApiConfig }
 export const fetchJobsByMonth = createAsyncThunk<TJobRDO[], QueryByMonth, { extra: ThunkApiConfig }>(
   'app/fetchJobsByMonth',
   async (params, { extra }) => {
+    
     const { api } = extra;
 
     const {data} = await api.get<TJobRDO[]>(`api/jobs/`, 

@@ -1,23 +1,26 @@
 
 import * as S from './header.styled';
+import { useEffect, ChangeEvent, MouseEvent, useRef } from 'react';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { getUser } from '../../../store/user-process/user-process';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { logoutUser } from '../../../store/api-action';
 import { useNavigate, Link } from 'react-router-dom';
-import { getDay } from '../../../utils/utils';
+
+
 import Container from '../container/container';
 import { CustomButton } from '../button/button';
-import { useEffect, useState, ChangeEvent, MouseEvent, useRef } from 'react';
+import { getDay } from '../../../utils/utils';
 import { AuthorizationStatus } from '../../../const';
 import useAuth from '../../../hooks/useAuth';
 import useQuery from '../../../hooks/useQuery';
-import { postAvatar } from '../../../store/api-action';
 
 import {
   fetchJobs,
   fetchEmployees,
   fetchDetails,
+  fetchUserStatus,
+  logoutUser,
+  postAvatar,
  } from '../../../store/api-action';
 
 export default function Header(): JSX.Element {
@@ -27,25 +30,19 @@ export default function Header(): JSX.Element {
   const navigate = useNavigate();
   const statusAuthorization = useAuth();
   const { query } = useQuery();
-  const [avatar, setAvatar] = useState<File | undefined>();
 
-
-  
   const handleLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => { 
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => { 
     const file = e.target.files?.[0];
-    const formData = new FormData();
-    file && formData.append('avatar', file);
-    console.log(file);
-    console.log(formData);
-    // setAvatar(file);
-    // console.log(avatar);
     if (file) {
-      dispatch(postAvatar(file)); 
+      const data = await dispatch(postAvatar(file)); 
+      if (data.meta.requestStatus === 'fulfilled') {
+        await dispatch(fetchUserStatus());
+      }
     }
   };
 
@@ -60,8 +57,8 @@ export default function Header(): JSX.Element {
 
   }, [statusAuthorization, navigate, dispatch, query]);
 
-  const handleOutUser = () => {
-    dispatch(logoutUser());
+  const handleOutUser = async () => {
+    await dispatch(logoutUser());
   }
 
   return (
