@@ -37,10 +37,9 @@ export const fetchUserStatus = createAsyncThunk<TUser, undefined,  { extra: Thun
     try {
       const { data: user } = await api.get<UserWithTokenDto>('api/users');
       return user;
-    } catch (error ) {
+    } catch (error) {
       // const axiosError = error as AxiosError;
-      // Token.drop();
-
+      Token.drop();
       return Promise.reject(error);
     }
   },
