@@ -107,3 +107,8 @@ export const getEmployees = createSelector(selectJob, (state: TJobProcess) => st
 export const getJobs = createSelector(selectJob, (state: TJobProcess) => state.jobs);
 export const getNewJobs = createSelector(selectJob, (state: TJobProcess) => state.newJobs);
 export const getJobsLength = createSelector(selectJob, (state: TJobProcess) => state.lengthJobs);
+
+export const getJobsCount = createSelector( 
+  [getNewJobs], 
+  (jobs) => jobs.length > 0 ? jobs[0].count : 0
+);

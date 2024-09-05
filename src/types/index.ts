@@ -78,6 +78,7 @@ export type TJobRDO = {
   extra?: number;
   quantity: number;
   comment?: string;
+  count?: number;
   master: TUserRDO;
 }
 

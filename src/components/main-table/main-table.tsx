@@ -33,6 +33,7 @@ const MainTable = memo((): JSX.Element => {
 
   const isLoading = useAppSelector(getIsLoading);
   const jobs = useAppSelector(getNewJobs);
+  console.log(jobs);
 
   const rows = createRowsForTable(jobs);
 

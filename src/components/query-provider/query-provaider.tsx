@@ -4,7 +4,7 @@ import { baseQuery } from '../../const';
 import { Dayjs } from 'dayjs';
 import { getDataAndResetTime } from '../../utils/utils';
 import { setSortDate } from '../../store/job-process/job-process';
-import { getJobsLength } from '../../store/job-process/job-process';
+import { getJobsLength, getJobsCount } from '../../store/job-process/job-process';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
@@ -25,8 +25,9 @@ export const QueryContext = createContext<{
 export default function QueryProvider({children}: {children: ReactNode}): JSX.Element {
 
   const length = useAppSelector(getJobsLength);
+  const count = useAppSelector(getJobsCount);
   const dispatch = useAppDispatch();
-  const [query, setQuery] = useState<Query>(baseQuery);
+  const [query, setQuery] = useState<Query>({...baseQuery});
 
   const handleChangeDate = useCallback((date: Dayjs) => {
     dispatch(setSortDate(''));
@@ -42,14 +43,14 @@ export default function QueryProvider({children}: {children: ReactNode}): JSX.El
         ...prev,
         offset: prev.offset + Number(baseQuery.limit),
       }));
-    } else if (length < Number(baseQuery.limit)) {
-      dispatch(setSortDate(''));
-       setQuery({...baseQuery, createdAt: query.createdAt});
+    } else if (count && length < count) {
+        dispatch(setSortDate(''));
+        setQuery({...baseQuery, createdAt: query.createdAt});
     } else {
-      dispatch(setSortDate(''));
-      setQuery({...baseQuery, createdAt: query.createdAt});
+        dispatch(setSortDate(''));
+        setQuery({...baseQuery, createdAt: query.createdAt});
     }
-  }, [length, dispatch, query.createdAt]);
+  }, [length, dispatch, query.createdAt, count]);
 
   const value = {
     query: {...query, lengthJobs: length},

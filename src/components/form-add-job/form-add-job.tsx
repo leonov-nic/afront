@@ -111,7 +111,7 @@ export default function FormAddJob(): JSX.Element {
               value={values.quantity === undefined ? '' : values.quantity}
             />
             <CustomTextarea/>
-            <SubmitButton sx={{marginLeft: 'auto'}} text='Write'></SubmitButton>
+            <SubmitButton sx={{marginRight: 'auto'}} text='Write'></SubmitButton>
           </Stack>
         </Form>
       )}

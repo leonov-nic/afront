@@ -2,9 +2,13 @@ import { CustomButton } from '../common/button/button';
 import { memo } from 'react';
 import useQuery from '../../hooks/useQuery';
 import { baseQuery } from '../../const';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { getJobsCount } from '../../store/job-process/job-process';
 
 const ButtonAddJobs = memo(() => {
 const { onChangeOffset, query }  = useQuery();
+const count = useAppSelector(getJobsCount);
+console.log(count);
 
   return (
     <>
