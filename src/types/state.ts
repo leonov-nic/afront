@@ -15,7 +15,6 @@ export type TJobProcess = {
   employees: TEmployee[],
   details: TDetail[],
   sortDate: string;
-  lengthJobs: number;
 };
 
 export type State = ReturnType<typeof store.getState>;

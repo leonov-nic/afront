@@ -4,7 +4,7 @@ import { baseQuery } from '../../const';
 import { Dayjs } from 'dayjs';
 import { getDataAndResetTime } from '../../utils/utils';
 import { setSortDate } from '../../store/job-process/job-process';
-import { getJobsLength, getJobsCount } from '../../store/job-process/job-process';
+import { getJobsCount, getAllJobsLength } from '../../store/job-process/job-process';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
@@ -24,8 +24,9 @@ export const QueryContext = createContext<{
 
 export default function QueryProvider({children}: {children: ReactNode}): JSX.Element {
 
-  const length = useAppSelector(getJobsLength);
+  const allJobslength = useAppSelector(getAllJobsLength);
   const count = useAppSelector(getJobsCount);
+ 
   const dispatch = useAppDispatch();
   const [query, setQuery] = useState<Query>({...baseQuery});
 
@@ -37,23 +38,26 @@ export default function QueryProvider({children}: {children: ReactNode}): JSX.El
     }));
   }, [dispatch]);
 
+
+  // this.#renderTrips(trips.slice(0, Math.min(tripsCount, this.#renderedTripCount)));
+
   const handleChangeOffset = useCallback(() => {
-    if (length === baseQuery.limit) {
+    if (count && allJobslength < count) {
       setQuery(prev => ({
         ...prev,
         offset: prev.offset + Number(baseQuery.limit),
       }));
-    } else if (count && length < count) {
-        dispatch(setSortDate(''));
-        setQuery({...baseQuery, createdAt: query.createdAt});
+    } else if (allJobslength == count) {
+      dispatch(setSortDate(''));
+      setQuery({...baseQuery, createdAt: query.createdAt});
     } else {
         dispatch(setSortDate(''));
         setQuery({...baseQuery, createdAt: query.createdAt});
-    }
-  }, [length, dispatch, query.createdAt, count]);
+     }
+  }, [dispatch, query.createdAt, count, allJobslength]);
 
   const value = {
-    query: {...query, lengthJobs: length},
+    query: {...query, lengthJobs: allJobslength},
     onChangeDate: handleChangeDate,
     onChangeOffset: handleChangeOffset,
     setQuery: setQuery,
