@@ -43,4 +43,5 @@ export const selectUser = createSelector(selectSelf, (state) => state.USER);
 
 export const getAuthorizationStatus = createSelector(selectUser, (state) => state.authorizationStatus);
 export const getUser = createSelector(selectUser, (state) => state.user);
+export const getUserStatus = createSelector(getUser, (user) => user?.type);
 export const getIsAuthorized = createSelector(selectUser, (state) => state.authorizationStatus === AuthorizationStatus.Auth);

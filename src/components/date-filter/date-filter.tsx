@@ -8,11 +8,11 @@ export default function DateFilter() {
       sx={{ justifyContent: "center", 
         alignItems: "center", 
         marginLeft: 'auto',
-        marginRight: 'calc(50% - 140px)'
+        marginRight: ButtonLoadFile() ? 'calc(50% - 140px)' : 'calc(50% - 105px)'
       }}
     >
       <DatePickerFilter  />
-      <ButtonLoadFile  />
+      {ButtonLoadFile() || null}
     </Stack >
   );
 }

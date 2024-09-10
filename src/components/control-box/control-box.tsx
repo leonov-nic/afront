@@ -10,6 +10,7 @@ import DateFilter from '../date-filter/date-filter';
 
 const ControlBox = memo(() => {
   console.log('render ControlBox');
+
   return (
     <Box
       borderBottom="3px solid #93a9b8"
@@ -24,7 +25,7 @@ const ControlBox = memo(() => {
       <ButtonOpenDialogAddEmployee />
       <ButtonOpenDialogEditEmployee />
       <ButtonOpenDialogRemoveEmployee />
-      <ButtonOpenDialogAddDetail />
+      {ButtonOpenDialogAddDetail() || null}
       <DateFilter />
     </Box>
   );

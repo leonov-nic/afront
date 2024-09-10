@@ -8,8 +8,12 @@ import { fetchJobsByMonth } from '../../store/api-action';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import useQuery from '../../hooks/useQuery';
 
+import { getUserStatus } from '../../store/user-process/user-process';
+import { useAppSelector } from '../../hooks/useAppSelector';
+
 export default function ButtonLoadFile() {
   const dispatch = useAppDispatch();
+  const userStatus = useAppSelector(getUserStatus);
   const { query } = useQuery();
 
   const handleLoadFile = async () => { 
@@ -27,17 +31,17 @@ export default function ButtonLoadFile() {
   }
 
   return (
+    userStatus === 'admin' &&
     <>
-    <IconButton
-        sx={{p: 1, border: '3px solid rgba(255, 255, 255, 0.2)',  
-            '&:hover': {backgroundColor: 'rgba(40, 40, 40, 0.1)', color: 'orange'}, 
-            backgroundColor: 'transparent',
-            color: 'white'}}
-        onClick={handleLoadFile}
-    >
-        <FileDownloadIcon />
-    </IconButton>
-
+      <IconButton
+          sx={{p: 1, border: '3px solid rgba(255, 255, 255, 0.2)',  
+              '&:hover': {backgroundColor: 'rgba(40, 40, 40, 0.1)', color: 'orange'}, 
+              backgroundColor: 'transparent',
+              color: 'white'}}
+          onClick={handleLoadFile}
+      >
+          <FileDownloadIcon />
+      </IconButton>
     </>
   );
 }
