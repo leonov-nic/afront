@@ -8,7 +8,7 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 
 export default function ButtonOpenDialogAddDetail() {
   const userStatus = useAppSelector(getUserStatus);
-  console.log(userStatus);
+
   const [open, setOpen] = useState(false);
 
   const handleOpenDialog = () => {

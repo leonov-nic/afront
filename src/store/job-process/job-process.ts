@@ -52,8 +52,17 @@ export const jobProcess = createSlice({
       .addCase(postJob.fulfilled, (state) => {
         state.newJobs = [];
       })
+      .addCase(editJob.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(editJob.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(editJob.fulfilled, (state) => {
         state.newJobs = [];
+      })
+      .addCase(deleteJob.rejected, (state) => {
+        state.isLoading = false;
       })
       .addCase(deleteJob.pending, (state) => {
         state.isLoading = true;

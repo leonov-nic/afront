@@ -19,10 +19,10 @@ export default function SelectDetail(): JSX.Element {
       value={values.detailId ? dictionaryDetails.get(values.detailId) : null}
       autoComplete={false}
       id="select-detail"
-      sx={{ maxWidth: 150, display: "inline-flex"}}
+      sx={{ maxWidth: 185, display: "inline-flex"}}
       options={details}
       fullWidth={true}
-      getOptionLabel={(option) => option.shortName}
+      getOptionLabel={(option) => `${option.shortName} / ${option.longName}`}
       onChange={(_event, value) => {
         if (value) {
           setFieldValue('detailId', value._id);
