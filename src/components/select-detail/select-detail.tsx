@@ -6,6 +6,7 @@ import { getDetails } from "../../store/job-process/job-process";
 
 import { TDetail, TJob } from '../../types';
 import { dictionary } from '../../utils/utils';
+import { setJobBoxOne } from '../../const';
 
 export default function SelectDetail(): JSX.Element {
   const details = useAppSelector(getDetails);
@@ -16,6 +17,7 @@ export default function SelectDetail(): JSX.Element {
 
   return (
     <Autocomplete
+      disabled={setJobBoxOne.has(values.typeOfJob)} 
       value={values.detailId ? dictionaryDetails.get(values.detailId) : null}
       autoComplete={false}
       id="select-detail"

@@ -21,7 +21,7 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { getUser } from '../../store/user-process/user-process';
 import { postJob, fetchJobs } from '../../store/api-action';
-import { baseQuery } from '../../const';
+import { baseQuery, setJobBoxOne } from '../../const';
 
 const INITIAL_VALUES = {
   employeeId: '',
@@ -60,8 +60,12 @@ export default function FormAddJob(): JSX.Element {
 
   const submitFunction = (values: TJob, actions: { setSubmitting: (arg0: boolean) => void; resetForm: (arg0: { employeeId: string; timeFrom: string; timeTo: string; detailId: string; typeOfJob: string; extra: undefined; quantity: undefined; comment: string; master: string; }) => void; }) => {
     user ? values.master = user._id : values.master = '';
-    values.timeFrom = dayjs(getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
-    values.timeTo = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
+    if (!setJobBoxOne.has(values.typeOfJob)) {
+      values.timeFrom = dayjs(getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
+      values.timeTo = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
+    }
+    console.log('submit');
+
     dispatch(postJob(values))
     .then((data) => { if (data.meta.requestStatus === 'fulfilled') 
       dispatch(fetchJobs(baseQuery))
@@ -109,6 +113,7 @@ export default function FormAddJob(): JSX.Element {
               placeholder="Quantity"
               validate={validateQuantity}
               value={values.quantity === undefined ? '' : values.quantity}
+              disabled={setJobBoxOne.has(values.typeOfJob)} 
             />
             <CustomTextarea/>
             <SubmitButton sx={{marginRight: 'auto'}} text='Write'></SubmitButton>

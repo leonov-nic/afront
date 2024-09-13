@@ -3,6 +3,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useFormikContext } from 'formik';
 import { SyntheticEvent } from 'react';
 import { toast } from 'react-toastify';
+import { setJobBoxOne } from '../../const';
 
 interface SelectTimeProps {
   name: string;
@@ -44,6 +45,7 @@ export default function SelectTime({ name }: SelectTimeProps): JSX.Element {
 
   return (
     <Autocomplete
+      disabled={setJobBoxOne.has(values.typeOfJob)} 
       value={values[`${name}`] === '' ? null : values[`${name}`]}
       id={name}
       sx={{ minWidth: 160, maxWidth: 160, display: 'inline-flex'}}

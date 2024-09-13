@@ -7,6 +7,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 // import { Autocomplete } from 'formik-mui';
 import { useFormikContext } from 'formik';
 
+import { setJobBoxOne } from "../../const";
+
 
 type SelectTypeOfJobProps = {
   name: string;
@@ -14,7 +16,7 @@ type SelectTypeOfJobProps = {
 }
 
 export default function SelectTypeOfJob({name, sx = []}: SelectTypeOfJobProps): JSX.Element {
-  const { setFieldValue, values, errors, touched, handleChange  } = useFormikContext<TJob>();
+  const { setFieldValue, values, errors, touched, handleChange, setValues  } = useFormikContext<TJob>();
   const error = errors['typeOfJob'];
   const value = values['typeOfJob'];
 
@@ -30,6 +32,16 @@ export default function SelectTypeOfJob({name, sx = []}: SelectTypeOfJobProps): 
       isOptionEqualToValue={(option: TTypeOfJob, value: TTypeOfJob) => option.name === value.name && option.longName === value.longName}
       onChange={(_event, value) => {
         if (value) {
+          console.log(value);
+          if (setJobBoxOne.has(value.name)) {
+            console.log('выбрал из списка boxone');
+            setValues({...values,
+              quantity: 1,
+              timeFrom: '-',
+              timeTo: '-',
+              detailId: 'none',
+            })
+          }
           setFieldValue(`${name}`, value.name);
           handleChange(`${name}`);
         } 
