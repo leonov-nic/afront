@@ -49,15 +49,15 @@ export default function CustumTableRow({row}: {row: TJobRDO}): JSX.Element {
           <TableCell data-id={row['_id']} align="center">{getDayAndMonth(row.createdAt)}</TableCell>
           <TableCell align="center">{row.employee.registrationNumber}</TableCell>
           <TableCell component="th" align="center">{row.employee.familyName}</TableCell>
-          <TableCell align="center">{getHours(row.timeFrom)}</TableCell>
-          <TableCell align="center">{getHours(row.timeTo)}</TableCell>
+          <TableCell align="center">{row.timeFrom === '-' ? '-' : getHours(row.timeFrom)}</TableCell>
+          <TableCell align="center">{row.timeFrom === '-' ? '-' : getHours(row.timeTo)}</TableCell>
           <TableCell align="center">{row.totalHours}</TableCell>
-          <TableCell align="center">{row.detail && row.detail.shortName}</TableCell>
+          <TableCell align="center">{row.detail && row.detail.shortName !== '0' ? row.detail.shortName : '-'}</TableCell>
           <TableCell align="center">{row.typeOfJob}</TableCell>
           <TableCell align="center">{row.extra}</TableCell>
-          <TableCell align="center">{row.quantity}</TableCell>
+          <TableCell align="center">{row.quantity !== 0 ? row.quantity : '-'}</TableCell>
           <TableCell align="center">{row.master.name}</TableCell>
-          <TableCell align="center">{row.comment || "–"}</TableCell>
+          <TableCell align="center">{row.comment || "-"}</TableCell>
           <TableCell align="center" width="15px" style={{position: 'relative', right: 0, top: 0, padding: 0}}><ControlsColumn opacity={visibility} fun={handleLeaveRow} row={row}/></TableCell>
         </StyledTableRow>
       }

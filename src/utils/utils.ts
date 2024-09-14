@@ -218,15 +218,15 @@ export const createRowsForExellFile = (jobs: TJobRDO[]) => {
     "Date": getDayAndMonth(job.createdAt),
     "№": job.employee.registrationNumber,
     "Employee": job.employee.familyName,
-    "TimeFrom": getHours(job.timeFrom),
-    "TimeTo": getHours(job.timeTo),
+    "TimeFrom": job.timeFrom !== '-' ? getHours(job.timeFrom) : '-',
+    "TimeTo": job.timeTo !== '-' ? getHours(job.timeTo) : '-',
     "TotalHours": job.totalHours,
-    "Detail": job.detail?.shortName,
+    "Detail": job.detail?.shortName !== '0' ? job.detail?.shortName : '-',
     "Type Of Job": job.typeOfJob,
-    "Extra": job.extra || "–",
-    "Quantity": job.quantity,
+    "Extra": job.extra || "-",
+    "Quantity": job.quantity !== 0 ? job.quantity : '-',
     "Master": job.master.name,
-    "Comment": job.comment || "–"};
+    "Comment": job.comment || "-"};
   });
 
   return rows;

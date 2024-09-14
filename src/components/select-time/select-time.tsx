@@ -23,7 +23,7 @@ export default function SelectTime({ name }: SelectTimeProps): JSX.Element {
 
   const handleChangeSelect = (_event: SyntheticEvent<Element, Event>, value: string | null) => {
     setFieldValue(name, value);
- 
+
     if (name === 'timeTo' && values.timeFrom && value) {
       const timeFrom = Number(values.timeFrom.replace(':', ''));
       const timeTo = Number(value.replace(':', ''))
@@ -46,8 +46,12 @@ export default function SelectTime({ name }: SelectTimeProps): JSX.Element {
   return (
     <Autocomplete
       disabled={setJobBoxOne.has(values.typeOfJob)} 
-      value={values[`${name}`] === '' ? null : values[`${name}`]}
+      value={values[`${name}`] === '' ? null : values[`${name}`] }
       id={name}
+      isOptionEqualToValue={(option: string, value: string) => {
+        if (value === '-') {return true;}
+        return option === value; 
+      }}
       sx={{ minWidth: 160, maxWidth: 160, display: 'inline-flex'}}
       data-name={name}
       options={[...timeSlots.slice(12, 48), '24:00']}

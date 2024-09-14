@@ -32,14 +32,12 @@ export default function SelectTypeOfJob({name, sx = []}: SelectTypeOfJobProps): 
       isOptionEqualToValue={(option: TTypeOfJob, value: TTypeOfJob) => option.name === value.name && option.longName === value.longName}
       onChange={(_event, value) => {
         if (value) {
-          console.log(value);
           if (setJobBoxOne.has(value.name)) {
-            console.log('выбрал из списка boxone');
             setValues({...values,
-              quantity: 1,
+              quantity: 0,
               timeFrom: '-',
               timeTo: '-',
-              detailId: 'none',
+              detailId: '66e3fa22873f13f61db28d36',
             })
           }
           setFieldValue(`${name}`, value.name);

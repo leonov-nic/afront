@@ -10,6 +10,7 @@ import { setJobBoxOne } from '../../const';
 
 export default function SelectDetail(): JSX.Element {
   const details = useAppSelector(getDetails);
+  // const details = useAppSelector(getDetails).filter((det) => det.shortName != '0');
   const dictionaryDetails = dictionary<TDetail>(details);
   const { setFieldValue, values, errors, touched, handleChange  } =  useFormikContext<TJob>();
   const error = errors[`detailId`];

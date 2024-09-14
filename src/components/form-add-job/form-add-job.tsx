@@ -52,8 +52,8 @@ export default function FormAddJob(): JSX.Element {
   const user = useAppSelector(getUser);
 
   const validateQuantity = (value: number) => {
-    if (value === 0 || value == undefined) {
-      return 'Quantity must be greater than 0';
+    if (value == undefined) {
+      return 'Quantity must be';
     }
     return undefined;
   }
@@ -63,8 +63,10 @@ export default function FormAddJob(): JSX.Element {
     if (!setJobBoxOne.has(values.typeOfJob)) {
       values.timeFrom = dayjs(getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
       values.timeTo = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
+    } else {
+      values.timeFrom = '-';
+      values.timeTo = '-';
     }
-    console.log('submit');
 
     dispatch(postJob(values))
     .then((data) => { if (data.meta.requestStatus === 'fulfilled') 
