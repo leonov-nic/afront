@@ -21,7 +21,20 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { getUser } from '../../store/user-process/user-process';
 import { postJob, fetchJobs } from '../../store/api-action';
-import { baseQuery, setJobBoxOne } from '../../const';
+import { baseQuery, setJobBoxOne, setJobBoxTwo } from '../../const';
+
+
+export type TINITIAL_VALUES = {
+  employeeId: string;
+  timeFrom: string | undefined;
+  timeTo: string | undefined;
+  detailId: string;
+  typeOfJob: string;
+  extra: undefined;
+  quantity: undefined;
+  master: string;
+  comment: string;
+}
 
 const INITIAL_VALUES = {
   employeeId: '',
@@ -57,7 +70,7 @@ export default function FormAddJob(): JSX.Element {
     }
     return undefined;
   }
-
+  
   const submitFunction = (values: TJob, actions: { setSubmitting: (arg0: boolean) => void; resetForm: (arg0: { employeeId: string; timeFrom: string; timeTo: string; detailId: string; typeOfJob: string; extra: undefined; quantity: undefined; comment: string; master: string; }) => void; }) => {
     user ? values.master = user._id : values.master = '';
     if (!setJobBoxOne.has(values.typeOfJob)) {
@@ -105,6 +118,7 @@ export default function FormAddJob(): JSX.Element {
               name="extra"
               placeholder="Extra"
               value={values.extra === undefined ? '' : values.extra}
+              disabled={setJobBoxOne.has(values.typeOfJob) || setJobBoxTwo.has(values.typeOfJob)} 
             />
             <Field
               component={TextField}
@@ -115,7 +129,7 @@ export default function FormAddJob(): JSX.Element {
               placeholder="Quantity"
               validate={validateQuantity}
               value={values.quantity === undefined ? '' : values.quantity}
-              disabled={setJobBoxOne.has(values.typeOfJob)} 
+              disabled={setJobBoxOne.has(values.typeOfJob) || setJobBoxTwo.has(values.typeOfJob)} 
             />
             <CustomTextarea/>
             <SubmitButton sx={{marginRight: 'auto'}} text='Write'></SubmitButton>

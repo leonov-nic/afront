@@ -81,8 +81,9 @@ export const getHours = (date: string) => {
 
 export const getDayAndMonth = (date: string) => {
   const day = new Date(date).getDate() < 10 ? `0${new Date(date).getDate()}` : new Date(date).getDate()
-  const month = new Date(date).getMonth() < 10 ? `0${new Date(date).getMonth()+1}` : new Date(date).getMonth()
-  return `${day}.${month}`;
+  const month = new Date(date).getMonth() + 1;
+  const formattedMonth = month < 10 ? `0${month}` : month; 
+  return `${day}.${formattedMonth}`;
 }
 
 export const getMonth = (date: string) => {

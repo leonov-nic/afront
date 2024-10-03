@@ -80,9 +80,34 @@ export const NAMESOFJOBBOXONE = [
   's',
 ];
 
+export const NAMESOFJOBBOXTWO = [
+  'b',
+  'kon',
+  'n',
+  'rep',
+  'sta',
+  'ubo',
+  'wtr',
+  'doo',
+  'k',
+  'll',
+  'ls',
+  'ner',
+  'vom',
+  'adm',
+  'baum',
+  'pac',
+  'sob',
+];
+
 export const setJobBoxOne = new Set();
 NAMESOFJOBBOXONE.map((item) => {
   setJobBoxOne.add(item);
+})
+
+export const setJobBoxTwo = new Set();
+NAMESOFJOBBOXTWO.map((item) => {
+  setJobBoxTwo.add(item);
 })
 
 export const NAMESOFJOB = [

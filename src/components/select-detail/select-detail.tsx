@@ -41,10 +41,10 @@ export default function SelectDetail(): JSX.Element {
 
           name='detailId'
           placeholder="Detail"
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: 'new-password',
-          }}
+          // inputProps={{
+          //   ...params.inputProps,
+          //   autoComplete: 'new-password',
+          // }}
         />
       )}
     />
