@@ -46,7 +46,12 @@ export default function SelectTypeOfJob({name, sx = []}: SelectTypeOfJobProps): 
           }
           setFieldValue(`${name}`, value.name);
           handleChange(`${name}`);
-        } 
+        }
+        if (value === null) {
+          setValues({...values,
+            typeOfJob: '',
+          })
+        }
       }}
 
       renderInput={(params) => (

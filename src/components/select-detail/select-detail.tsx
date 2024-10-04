@@ -10,28 +10,34 @@ import { setJobBoxOne } from '../../const';
 
 export default function SelectDetail(): JSX.Element {
   const details = useAppSelector(getDetails);
-  // const details = useAppSelector(getDetails).filter((det) => det.shortName != '0');
   const dictionaryDetails = dictionary<TDetail>(details);
-  const { setFieldValue, values, errors, touched, handleChange  } =  useFormikContext<TJob>();
+  const { setFieldValue, setValues, values, errors, touched, handleChange  } =  useFormikContext<TJob>();
   const error = errors[`detailId`];
   const value = values['detailId'];
 
   return (
     <Autocomplete
       disabled={setJobBoxOne.has(values.typeOfJob)} 
-      value={values.detailId ? dictionaryDetails.get(values.detailId) : null}
+      value={values && value !== '' ? dictionaryDetails.get(values.detailId) : null}
       autoComplete={false}
       id="select-detail"
       sx={{ maxWidth: 185, display: "inline-flex"}}
       options={details}
       fullWidth={true}
+      
       getOptionLabel={(option) => `${option.shortName} / ${option.longName}`}
-      onChange={(_event, value) => {
+      onChange={(_event, value ) => {
         if (value) {
           setFieldValue('detailId', value._id);
           handleChange('detailId');
-        }}
-      }
+        }
+
+        if (value === null) {
+          setValues({...values,
+            detailId: '',
+          })
+        }
+      }}
 
       renderInput={(params) => (
         <TextField
