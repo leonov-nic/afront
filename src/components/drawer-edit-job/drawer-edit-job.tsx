@@ -74,7 +74,7 @@ export default function DrawerEditJob(props: DrawerEditJobProps): JSX.Element {
       dispatch(fetchJobs(query));
     }});
 
-    toast.success(`Работа сотрудника ${employee} успешно изменена`,
+    toast.success(`Employee ${employee.familyName} job successfully changed`,
       {style: {background: '#17c1bc',}});
     setTimeout(() => {
       hundlerCloseDialog();

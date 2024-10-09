@@ -86,7 +86,7 @@ export default function FormAddJob(): JSX.Element {
       dispatch(fetchJobs(baseQuery))
     });
 
-    toast.success(`Работа успешно добавлена`, {
+    toast.success(`Job added successfully`, {
       position: 'top-center',
       style: {
         background: '#17c1bc',

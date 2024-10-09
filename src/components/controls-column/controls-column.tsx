@@ -64,7 +64,7 @@ const ControlsColumn = ({ row, fun, opacity }: { row: TJobRDO, fun: () => void, 
       dispatch(fetchJobs(query)); 
     }});
 
-    toast.info(`Работа для ${row.employee.familyName} за ${humanizeDate(row.createdAt)} удалена`, {
+    toast.info(`Job for ${row.employee.familyName} for ${humanizeDate(row.createdAt)} deleted`, {
       position: 'top-center',
       style: {
         background: '#e4ba48',

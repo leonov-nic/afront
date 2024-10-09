@@ -10,6 +10,8 @@ import { SxProps, Theme } from '@mui/material/styles';
 import { TEmployee, TSelectJob } from '../../types';
 import { dictionary } from '../../utils/utils';
 
+import { setJobBoxTwo } from "../../const";
+
 type SelectEmployeeProps = {
   sx?: SxProps<Theme>;
   onChangeSelect?: (value: TEmployee) => void
@@ -34,23 +36,37 @@ export default function SelectEmployee({sx, onChangeSelect}: SelectEmployeeProps
         getOptionLabel={(option) => option.familyName}
         onChange={(_event, value) => {
           value && onChangeSelect && onChangeSelect(value)
-          value && setValues({...values,
-            typeOfJob: value.mainJob,
-            familyName: value.familyName,
-            registrationNumber: value.registrationNumber,
-            employeeId: `${value._id && value._id.toString()}`
-          })
-
-          handleChange('employeeId');
-
           if (value === null) {
             setValues({...values,
               typeOfJob: '',
               familyName: '',
               registrationNumber: undefined,
               employeeId: '',
+              timeFrom: '',
+              timeTo: '',
+              detailId: '',
             })
           }
+          if (value && setJobBoxTwo.has(value.mainJob)) {
+            setValues({...values,
+              typeOfJob: value.mainJob,
+              familyName: value.familyName,
+              registrationNumber: value.registrationNumber,
+              employeeId: `${value._id && value._id.toString()}`,
+              quantity: 0,
+              detailId: '66e3fa22873f13f61db28d36',
+              // detailId: '66e482d2f776718b37d41d2b',
+            })
+          } else {
+            value && setValues({...values,
+              typeOfJob: value.mainJob,
+              familyName: value.familyName,
+              registrationNumber: value.registrationNumber,
+              employeeId: `${value._id && value._id.toString()}`
+            })
+          }
+
+          handleChange('employeeId');
         }}
 
         renderInput={(params) => (

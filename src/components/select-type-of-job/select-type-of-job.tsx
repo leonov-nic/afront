@@ -50,6 +50,8 @@ export default function SelectTypeOfJob({name, sx = []}: SelectTypeOfJobProps): 
         if (value === null) {
           setValues({...values,
             typeOfJob: '',
+            detailId: '',
+            quantity: undefined,
           })
         }
       }}
