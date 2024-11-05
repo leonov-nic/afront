@@ -69,7 +69,7 @@ export const getDataAndResetTime = (data: Dayjs | null) => {
 
 export const getDay = () => {
   const data = new Date();
-  return `${data.getDate() >= 10 ? data.getDate() : `0${data.getDate()}`}.${  data.getMonth() >= 10 ? data.getMonth()+1 : `0${data.getMonth()+1}`}.${data.getFullYear()}`;
+  return `${data.getDate() >= 10 ? data.getDate() : `0${data.getDate()}`}.${  data.getMonth()+1 >= 10 ? data.getMonth()+1 : `0${data.getMonth()+1}`}.${data.getFullYear()}`;
 }
 
 export const getHours = (date: string) => {
@@ -77,6 +77,19 @@ export const getHours = (date: string) => {
   const h = d.getHours();
   const m = d.getMinutes();
   return `${h < 10 ? `0${h}` : h}:${m === 0 ? `0${m}` : m}`;
+}
+
+export const addZero = (i: number) => {
+  return i < 10 ? `0${i}` : i;
+}
+
+export const getHoursAndSeconds = (date: string) => {
+  const d = new Date(date);
+  const h = d.getHours();
+  const m = d.getMinutes();
+  const s = d.getSeconds();
+  console.log(typeof s)
+  return `${h < 10 ? `0${h}` : h}:${m === 0 ? `0${m}` : m}:${addZero(s)}`;
 }
 
 export const getDayAndMonth = (date: string) => {
@@ -214,13 +227,12 @@ export const createRowsForTable = (jobs: TJobRDO[]) => {
 
 export const createRowsForExellFile = (jobs: TJobRDO[]) => {
   const rows = jobs.map(job => {
-  
     return {
     "Date": getDayAndMonth(job.createdAt),
     "№": job.employee.registrationNumber,
     "Employee": job.employee.familyName,
-    "TimeFrom": job.timeFrom !== '-' ? getHours(job.timeFrom) : '-',
-    "TimeTo": job.timeTo !== '-' ? getHours(job.timeTo) : '-',
+    "TimeFrom": job.timeFrom !== '-' ? getHoursAndSeconds(job.timeFrom) : '-',
+    "TimeTo": job.timeTo !== '-' ? getHoursAndSeconds(job.timeTo) : '-',
     "TotalHours": job.totalHours,
     "Detail": job.detail?.shortName !== '0' ? job.detail?.shortName : '-',
     "Type Of Job": job.typeOfJob,

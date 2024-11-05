@@ -5,7 +5,7 @@ import FormMain from '../../components/form-main/form-main';
 // import {getAuthorizationStatus} from '../../store/user-process/user-process';
 import { AuthorizationStatus } from '../../const';
 import {toast} from 'react-toastify';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import './entrance.css';
 import useDebounce from '../../hooks/use-debounce';
 import { getDay } from '../../utils/utils';
@@ -16,7 +16,7 @@ export default function Entrance(): JSX.Element {
   // const statusAuthorization = useAppSelector(getAuthorizationStatus);
   const statusAuthorization = useAuth();
   const str = useDebounce(statusAuthorization);
-  useEffect(() => {
+  useLayoutEffect(() => {
 
     if (str === AuthorizationStatus.Auth ) {
       toast.info('Добро пожаловать');
