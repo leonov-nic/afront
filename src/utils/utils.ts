@@ -88,7 +88,6 @@ export const getHoursAndSeconds = (date: string) => {
   const h = d.getHours();
   const m = d.getMinutes();
   const s = d.getSeconds();
-  console.log(typeof s)
   return `${h < 10 ? `0${h}` : h}:${m === 0 ? `0${m}` : m}:${addZero(s)}`;
 }
 
@@ -96,7 +95,7 @@ export const getDayAndMonth = (date: string) => {
   const day = new Date(date).getDate() < 10 ? `0${new Date(date).getDate()}` : new Date(date).getDate()
   const month = new Date(date).getMonth() + 1;
   const formattedMonth = month < 10 ? `0${month}` : month; 
-  return `${day}.${formattedMonth}`;
+  return `${day}:${formattedMonth}`;
 }
 
 export const getMonth = (date: string) => {
@@ -139,7 +138,7 @@ export default class JsonToExcell {
     workbook.calcProperties.fullCalcOnLoad = true;
 
     if (this._data?.length) {
-      const rows = createRowsForExellFile(this._data);
+      const rows = await createRowsForExellFile(this._data);
 
       const headers = rows && Object.keys(rows[0]);
       headers.forEach((_header, index) => {
@@ -163,7 +162,7 @@ export default class JsonToExcell {
       });
       rows && rows.forEach((row) => {
         const newRow = sheet.addRow(Object.values(row));
-        newRow.eachCell((cell) => {
+        newRow.eachCell((cell, colNumber) => {
           cell.alignment = { vertical: 'middle', horizontal: 'center' };
           cell.border = {
             top: {style:'thin'},
@@ -171,7 +170,17 @@ export default class JsonToExcell {
             bottom: {style:'thin'},
             right: {style:'thin'}
           };
+
+          if (colNumber === 1 ) { 
+            cell.numFmt = 'yyyy-mm-dd';
+            console.log(typeof cell.value)
+          }
+
+          if (colNumber === 4 ||  colNumber === 5) { 
+            cell.numFmt = 'hh-mm-ss';
+          }
         });
+
       });
     } else {
       return;
@@ -225,10 +234,10 @@ export const createRowsForTable = (jobs: TJobRDO[]) => {
 }
 
 
-export const createRowsForExellFile = (jobs: TJobRDO[]) => {
+export const createRowsForExellFile = async (jobs: TJobRDO[]) => {
   const rows = jobs.map(job => {
     return {
-    "Date": getDayAndMonth(job.createdAt),
+    "Date": new Date(job.createdAt).toLocaleString('ru-RU', {year: 'numeric', month: '2-digit', day: '2-digit'}),
     "№": job.employee.registrationNumber,
     "Employee": job.employee.familyName,
     "TimeFrom": job.timeFrom !== '-' ? getHoursAndSeconds(job.timeFrom) : '-',
