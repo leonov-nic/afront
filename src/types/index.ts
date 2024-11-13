@@ -42,8 +42,8 @@ export type TDetail = {
   _id: string | undefined;
   shortName: string;
   longName: string;
-  normOfMinute?: string;
-  customer?: string;
+  normOfMinute?: number | null;
+  customer: string;
 }
 
 export type TNewDetail = Omit<TDetail, '_id'>

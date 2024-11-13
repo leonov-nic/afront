@@ -12,13 +12,15 @@ import Close from '@mui/icons-material/Close';
 
 import { toast } from 'react-toastify';
 
-import { TNewDetail } from "../../types";
+import { TNewDetail, TJob } from "../../types";
 import { SubmitButton,  } from '../common/button/button';
+import SelectDetail from '../select-detail/select-detail';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { postDetail } from '../../store/api-action';
+import { editDetail } from '../../store/api-action';
 
-const INITIAL_VALUES = {
+const INITIAL_VALUES: TNewDetail & Pick<TJob, 'detailId'> = {
+  detailId: '',
   shortName: '',
   longName: '',
   normOfMinute: undefined,
@@ -28,16 +30,16 @@ const INITIAL_VALUES = {
 const VALIDATION_SCHEMA = Yup.object().shape({
   shortName: Yup.string().required("Required"),
   longName: Yup.string().required("Required"),
-  normOfMinute: Yup.number(),
+  normOfMinute: Yup.number().nullable(),
   customer: Yup.string().required("Required"),
 });
 
-interface DialogAddDetailProps {
+interface DialogUpdateDetailProps {
   open: boolean;
   onClose?: () => void;
 }
 
-export default function DialogAddDetail(props: DialogAddDetailProps): JSX.Element {
+export default function DialogUpdateDetail(props: DialogUpdateDetailProps): JSX.Element {
 
   const {open, onClose} = props;
   const dispatch = useAppDispatch();
@@ -46,8 +48,8 @@ export default function DialogAddDetail(props: DialogAddDetailProps): JSX.Elemen
     onClose && onClose();
   }
 
-  const submitFunction = (values: TNewDetail, actions: { setSubmitting: (arg0: boolean) => void; }) => {
-    dispatch(postDetail(values))
+  const submitFunction = (values: TNewDetail & Pick<TJob, 'detailId'>, actions: { setSubmitting: (arg0: boolean) => void; }) => {
+    dispatch(editDetail(values))
     toast.success(`Добавлена деталь ${values.shortName}`,
       {
         style: {background: '#17c1bc',}
@@ -68,7 +70,7 @@ export default function DialogAddDetail(props: DialogAddDetailProps): JSX.Elemen
           </IconButton>
         </Stack>
         <DialogTitle sx={{color: 'gray', textAlign: 'center', textTransform: 'uppercase'}}>
-          Add Detail
+          Update Detail
         </DialogTitle>
         <Formik
           initialValues={INITIAL_VALUES}
@@ -78,6 +80,9 @@ export default function DialogAddDetail(props: DialogAddDetailProps): JSX.Elemen
           {({ values }) => (
             <Form>
               <Grid container columns={1} >
+                <Grid item xs={1} sx={{p: 1,  width: '100%' }}>
+                  <SelectDetail sx={{maxWidth: '100%', mx: 0 }}/>
+                </Grid>
                 <Grid item xs={1} sx={{p: 1}}>
                   <Field
                     component={TextField}
@@ -104,8 +109,8 @@ export default function DialogAddDetail(props: DialogAddDetailProps): JSX.Elemen
                     sx={{ width: '100%' }}
                     id="normOfMinute"
                     name="normOfMinute"
-                    value={values.normOfMinute ? values.normOfMinute : false}
                     type="number"
+                    value={values.normOfMinute ? values.normOfMinute : false}
                     placeholder="Norm Of Minute"
                   />
                 </Grid>
@@ -120,7 +125,7 @@ export default function DialogAddDetail(props: DialogAddDetailProps): JSX.Elemen
                   />
                 </Grid>
                 <Grid item xs={1} sx={{p: 1}}>
-                  <SubmitButton sx={{m: 0, width: '100%'}} disabled={values.shortName === '' || values.longName === ''} text='Add Detail'></SubmitButton>
+                  <SubmitButton sx={{m: 0, width: '100%'}} disabled={values.shortName === '' || values.longName === ''} text='Update Detail'></SubmitButton>
                 </Grid>
               </Grid>
             </Form>

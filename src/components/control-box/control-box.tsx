@@ -5,6 +5,7 @@ import ButtonOpenDialogRemoveEmployee from '../button-open-dialog-remove-employe
 import ButtonOpenDialogAddEmployee from '../button-open-dialog-add-employee/button-open-dialog-add-employee';
 import ButtonOpenDialogEditEmployee from '../button-open-dialog-edit-employee/button-open-dialog-edit-employee';
 import ButtonOpenDialogAddDetail from '../button-open-dialog-add-detail/button-open-dialog-add-detail';
+import ButtonOpenDialogUpdateDetail from '../button-open-dialog-update-detail/button-open-dialog-update-detail';
 
 import DateFilter from '../date-filter/date-filter';
 
@@ -26,6 +27,7 @@ const ControlBox = memo(() => {
       <ButtonOpenDialogEditEmployee />
       <ButtonOpenDialogRemoveEmployee />
       {ButtonOpenDialogAddDetail() || null}
+      {ButtonOpenDialogUpdateDetail() || null}
       <DateFilter />
     </Box>
   );

@@ -35,12 +35,14 @@ export default function SelectTypeOfJob({name, sx = []}: SelectTypeOfJobProps): 
               timeFrom: '-',
               timeTo: '-',
               detailId: '66e3fa22873f13f61db28d36',
+              // комп
               // detailId: '66e482d2f776718b37d41d2b',
             })
           } else if (setJobBoxTwo.has(value.name)) {
             setValues({...values,
               quantity: 0,
               detailId: '66e3fa22873f13f61db28d36',
+              // комп
               // detailId: '66e482d2f776718b37d41d2b',
             })
           }

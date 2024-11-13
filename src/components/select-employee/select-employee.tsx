@@ -56,6 +56,8 @@ export default function SelectEmployee({sx, onChangeSelect}: SelectEmployeeProps
               quantity: 0,
               detailId: '66e3fa22873f13f61db28d36',
               // detailId: '66e482d2f776718b37d41d2b',
+              // ноут
+              // detailId: '6733c9d01c3f96b7e44f987f',
             })
           } else {
             value && setValues({...values,

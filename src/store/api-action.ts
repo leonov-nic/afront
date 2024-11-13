@@ -216,3 +216,13 @@ export const postDetail = createAsyncThunk<TNewDetail, TNewDetail, { extra: Thun
     return data;
   }
 );
+
+export const editDetail = createAsyncThunk<TNewDetail & Pick<TJob, 'detailId'> , TNewDetail & Pick<TJob, 'detailId'>, { extra: ThunkApiConfig }>(
+  'app/editDetail',
+  async (detail, { extra, dispatch }) => {
+    const { api } = extra;
+    const { data } = await api.put<TNewDetail & Pick<TJob, 'detailId'>>(`api/details/${detail.detailId}`, detail);
+    await dispatch(fetchDetails());
+    return data;
+  }
+);
