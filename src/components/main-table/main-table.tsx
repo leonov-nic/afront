@@ -38,7 +38,7 @@ const MainTable = memo((): JSX.Element => {
   return (
     !isLoading ? rows.length ? 
       <TableContainer sx={{ maxHeight: '63vh' }} component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label="table of jobs">
+        <Table stickyHeader sx={{ minWidth: 700 }} aria-label="table of jobs">
           <TableHead>
             <TableRow>
               <StyledTableCell width="25px" align="center">Date</StyledTableCell>
