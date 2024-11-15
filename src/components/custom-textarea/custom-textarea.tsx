@@ -23,7 +23,7 @@ export default function CustomTextarea(): JSX.Element {
   }, [isSubmitting, isSwitched]);
 
   return (
-    <Box sx={{display: "flex", flexDirection: "row", alignItems: 'flex-start', marginBottom: 'auto', position: 'relative', zIndex: 1}}>
+    <Box sx={{display: "flex", flexDirection: "row", alignItems: 'flex-start', marginBottom: 'auto', position: 'relative', zIndex: 3}}>
       <FormControlLabel control={<Switch checked={isSwitched} onChange={handleToggleCommentWindow}/>} label="Comment" sx={{color: 'gray', textTransform: 'capitalize',  p: 0}}/>
 
       {isSwitched &&
