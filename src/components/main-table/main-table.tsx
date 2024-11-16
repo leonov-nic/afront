@@ -1,8 +1,9 @@
-import { memo } from 'react';
+import { memo, useState, useEffect, useLayoutEffect } from 'react';
 
 import Loading from '../../components/loading/loading';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
+
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
@@ -10,16 +11,21 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
+
+import FilterByEmployee from '../filter-by-employee/filter-by-employee';
+
 import CustumTableRow from '../custom-table-row/custom-table-row';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { getNewJobs, getIsLoading } from '../../store/job-process/job-process';
-
 import { createRowsForTable } from '../../utils/utils';
+import { TJobRDO } from '../../types';
+import useQuery from '../../hooks/useQuery';
 
 const StyledTableCell = styled(TableCell)(({theme}) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: '#96b8cc',
     color: theme.palette.common.white,
+    padding: 1,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -29,21 +35,36 @@ const StyledTableCell = styled(TableCell)(({theme}) => ({
 
 
 const MainTable = memo((): JSX.Element => {
-  console.log('render Table');
+  const { query } = useQuery();
+  const [family, setFamily] = useState<string | null>(null);
+  const [rows, setRows] = useState<TJobRDO[]>([]);
+
 
   const isLoading = useAppSelector(getIsLoading);
   const jobs = useAppSelector(getNewJobs);
-  const rows = createRowsForTable(jobs);
 
+  useLayoutEffect(() => {
+    setFamily(null);
+  }, [query.createdAt]);
+
+  useEffect(() => {
+    if (family) {
+      const filteredJobs = jobs.filter(job => job.employee.familyName === family);
+      setRows(createRowsForTable(filteredJobs));
+    } else {
+      setRows(createRowsForTable(jobs));
+    }
+  }, [family, jobs]);
+  
   return (
-    !isLoading ? rows.length ? 
+    !isLoading ? rows && rows.length ? 
       <TableContainer sx={{ maxHeight: '63vh' }} component={Paper}>
         <Table stickyHeader sx={{ minWidth: 700 }} aria-label="table of jobs">
           <TableHead>
             <TableRow>
               <StyledTableCell width="25px" align="center">Date</StyledTableCell>
               <StyledTableCell width="10px" align="center">&#8470;</StyledTableCell>
-              <StyledTableCell align="center">Employee</StyledTableCell>
+              <StyledTableCell align="center"><FilterByEmployee jobs={jobs} fun={setFamily}></FilterByEmployee>{family ? family: 'Employee'}</StyledTableCell>
               <StyledTableCell width="25px" align="center">From</StyledTableCell>
               <StyledTableCell align="center">To</StyledTableCell>
               <StyledTableCell align="center">H</StyledTableCell>

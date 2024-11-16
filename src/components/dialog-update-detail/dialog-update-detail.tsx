@@ -50,7 +50,7 @@ export default function DialogUpdateDetail(props: DialogUpdateDetailProps): JSX.
 
   const submitFunction = (values: TNewDetail & Pick<TJob, 'detailId'>, actions: { setSubmitting: (arg0: boolean) => void; }) => {
     dispatch(editDetail(values))
-    toast.success(`Добавлена деталь ${values.shortName}`,
+    toast.success(`Detail ${values.shortName} is updated`,
       {
         style: {background: '#17c1bc',}
       }
