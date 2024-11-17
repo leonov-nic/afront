@@ -33,7 +33,6 @@ const StyledTableCell = styled(TableCell)(({theme}) => ({
   },
 }));
 
-
 const MainTable = memo((): JSX.Element => {
   const { query } = useQuery();
   const [family, setFamily] = useState<string | null>(null);
@@ -64,7 +63,7 @@ const MainTable = memo((): JSX.Element => {
             <TableRow>
               <StyledTableCell width="25px" align="center">Date</StyledTableCell>
               <StyledTableCell width="10px" align="center">&#8470;</StyledTableCell>
-              <StyledTableCell align="center"><FilterByEmployee jobs={jobs} fun={setFamily}></FilterByEmployee>{family ? family: 'Employee'}</StyledTableCell>
+              <StyledTableCell style={{backgroundColor: family ? "#17c1bc" : "#96b8cc"}} align="center"><FilterByEmployee jobs={jobs} fun={setFamily}></FilterByEmployee>{family ? family : 'Employee'}</StyledTableCell>
               <StyledTableCell width="25px" align="center">From</StyledTableCell>
               <StyledTableCell align="center">To</StyledTableCell>
               <StyledTableCell align="center">H</StyledTableCell>

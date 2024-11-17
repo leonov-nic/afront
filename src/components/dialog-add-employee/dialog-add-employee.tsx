@@ -107,8 +107,7 @@ export default function DialogAddEmployee(props: DialogAddEmployeeProps): JSX.El
                   <SubmitButton
                     sx={{m: 0, width: '100%'}}
                     disabled={values.familyName === '' ||
-                    values.registrationNumber === undefined ||
-                    values.typeOfJob === undefined}
+                    values.registrationNumber === undefined}
                     text='Add Employee'>
                   </SubmitButton>
                 </Grid>
