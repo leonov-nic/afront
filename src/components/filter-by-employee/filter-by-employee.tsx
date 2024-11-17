@@ -14,6 +14,12 @@ import { TJobRDO } from "../../types";
 
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
+    PaperProps={{
+      style: {
+        maxHeight: '220px',
+        overflowY: 'auto',
+      },
+    }}
     id="fade-menu"
     MenuListProps={{
         'aria-labelledby': 'fade-button',
@@ -87,14 +93,14 @@ const FilterByEmployee = ({jobs, fun }: { jobs: TJobRDO[]; fun: (text: string | 
         open={visibility}
         onClose={hide}
         anchorEl={ref.current}
-        sx={{zIndex: 8, borderRadius: 0}}
+        sx={{zIndex: 8, borderRadius: 0, }}
       >
         <MenuItem sx={{p: 1, borderBottom: 1, justifyContent: "center", borderBottomColor: "gray", color: '#96b8cc', textTransform: 'uppercase', fontSize: 13}} onClick={hundleResetEmployee}>
             reset
         </MenuItem>
         {employees && employees.map((employee) => (
           <MenuItem key={employee.familyName} sx={{p: 1, borderBottom: 1, borderBottomColor: "gray",  fontSize: 13}} onClick={hundleSelectEmployee}>
-            {`${employee.familyName}`}
+            {employee.familyName}
           </MenuItem>
         ))}
 
