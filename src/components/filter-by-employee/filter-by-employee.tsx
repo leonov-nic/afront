@@ -17,6 +17,7 @@ const StyledMenu = styled((props: MenuProps) => (
     PaperProps={{
       style: {
         maxHeight: '220px',
+        maxWidth: '150px',
         overflowY: 'auto',
       },
     }}
@@ -95,11 +96,11 @@ const FilterByEmployee = ({jobs, fun }: { jobs: TJobRDO[]; fun: (text: string | 
         anchorEl={ref.current}
         sx={{zIndex: 8, borderRadius: 0, }}
       >
-        <MenuItem sx={{p: 1, borderBottom: 1, justifyContent: "center", borderBottomColor: "gray", color: '#96b8cc', textTransform: 'uppercase', fontSize: 13}} onClick={hundleResetEmployee}>
+        <MenuItem sx={{p: 1, borderBottom: 1, justifyContent: "center", borderBottomColor: "rgba(0, 0, 0, 0.1)", color: '#96b8cc', textTransform: 'uppercase', fontSize: 13}} onClick={hundleResetEmployee}>
             reset
         </MenuItem>
         {employees && employees.map((employee) => (
-          <MenuItem key={employee.familyName} sx={{p: 1, borderBottom: 1, borderBottomColor: "gray",  fontSize: 13}} onClick={hundleSelectEmployee}>
+          <MenuItem key={employee.familyName} sx={{p: 1, borderBottom: 1, borderBottomColor: "rgba(0, 0, 0, 0.1)",  fontSize: 14}} onClick={hundleSelectEmployee}>
             {employee.familyName}
           </MenuItem>
         ))}
