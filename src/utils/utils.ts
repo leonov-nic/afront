@@ -176,7 +176,7 @@ export default class JsonToExcell {
             console.log(typeof cell.value)
           }
 
-          if (colNumber === 4 ||  colNumber === 5) { 
+          if (colNumber === 11 ||  colNumber === 12) { 
             cell.numFmt = 'hh-mm-ss';
           }
         });
@@ -260,7 +260,7 @@ export const createRowsForExellFile = async (jobs: TJobRDO[]) => {
     "Date": new Date(job.createdAt).toLocaleString('ru-RU', {year: 'numeric', month: '2-digit', day: '2-digit'}),
     "№": job.employee.registrationNumber,
     "Type Of Job&Detail": `${job.typeOfJob}${job.detail?.shortName !== '0' ? job.detail?.shortName : ''}`,
-    "Quantity": job.quantity !== 0 ? job.quantity : '-',
+    "Quantity": job.quantity !== 0 ? Number(job.quantity) : '-',
     "TotalHours": job.totalHours,
     "Extra": job.extra || "-",
     "Comment": job.comment || "-",

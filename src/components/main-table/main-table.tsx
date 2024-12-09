@@ -63,16 +63,16 @@ const MainTable = memo((): JSX.Element => {
             <TableRow>
               <StyledTableCell width="25px" align="center">Date</StyledTableCell>
               <StyledTableCell width="10px" align="center">&#8470;</StyledTableCell>
-              <StyledTableCell style={{backgroundColor: family ? "#17c1bc" : "#96b8cc"}} align="center"><FilterByEmployee jobs={jobs} fun={setFamily}></FilterByEmployee>{family ? family : 'Employee'}</StyledTableCell>
+              <StyledTableCell style={{backgroundColor: family ? "#17c1bc" : "#96b8cc", width: "17%"}} align="center"><FilterByEmployee jobs={jobs} fun={setFamily}></FilterByEmployee>{family ? family : 'Employee'}</StyledTableCell>
               <StyledTableCell width="25px" align="center">From</StyledTableCell>
               <StyledTableCell align="center">To</StyledTableCell>
               <StyledTableCell align="center">H</StyledTableCell>
               <StyledTableCell align="center">Detail</StyledTableCell>
-              <StyledTableCell align="center">Type of work</StyledTableCell>
-              <StyledTableCell width="15px" align="center">Extra</StyledTableCell>
-              <StyledTableCell width="25px" align="center">Quantity</StyledTableCell>
+              <StyledTableCell width="12%" align="center">Type of work</StyledTableCell>
+              <StyledTableCell width="20px" align="center">Extra</StyledTableCell>
+              <StyledTableCell width="30px" align="center">Quantity</StyledTableCell>
               <StyledTableCell align="center">Master</StyledTableCell>
-              <StyledTableCell align="center">Comment</StyledTableCell>
+              <StyledTableCell width="30px" align="center">Comment</StyledTableCell>
               <StyledTableCell width="15px" align="center"><DeleteIcon style={{paddingTop: "5px"}}></DeleteIcon></StyledTableCell>
             </TableRow>
           </TableHead>
