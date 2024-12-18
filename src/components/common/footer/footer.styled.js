@@ -6,6 +6,7 @@ const StyledFooter = styled.footer`
 `;
 
 const FooterWrapper = styled.div`
+  display: 'flex';
   position: relative;
   padding: 15px 10px;
   text-align: center;

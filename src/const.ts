@@ -64,9 +64,10 @@ export const DIRECTIONS = [
 export enum UserType {
   Admin = 'admin',
   Regular = 'regular',
+  Storage = 'storage',
 }
 
-export const TYPES = ['admin', 'regular'] as const;
+export const TYPES = ['admin', 'regular', 'storage'] as const;
 
 
 export const NAMESOFJOBBOXONE = [

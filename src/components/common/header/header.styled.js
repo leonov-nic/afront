@@ -1,8 +1,9 @@
 import outHeader from '../../../assets/icons/out.svg?react';
 import styled from 'styled-components';
 
+
 const StyledHeader = styled.header`
-  background-color: ${({ theme }) => theme.color.curiousBlue};
+  background-color: ${({ theme, color }) => color || theme.color.curiousBlue};
 `;
 
 const HeaderWrapper = styled.div`
@@ -27,7 +28,7 @@ const HeaderTitle = styled.p`
   margin: 0;
   font-size: 18px;
   text-transform: uppercase;
-  color: ${({ theme }) => theme.color.white};
+  color: ${({ theme, color }) => color || theme.color.white};
 
   @media (max-width: 850px) {
 

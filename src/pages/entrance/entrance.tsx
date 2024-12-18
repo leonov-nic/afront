@@ -1,29 +1,33 @@
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import FormMain from '../../components/form-main/form-main';
-// import {useAppSelector} from '../../hooks/useAppSelector';
-// import {getAuthorizationStatus} from '../../store/user-process/user-process';
-import { AuthorizationStatus } from '../../const';
+import {useAppSelector} from '../../hooks/useAppSelector';
+import {getUser} from '../../store/user-process/user-process';
+import { AuthorizationStatus, UserType } from '../../const';
 import {toast} from 'react-toastify';
 import { useLayoutEffect } from 'react';
 import './entrance.css';
-import useDebounce from '../../hooks/use-debounce';
+// import useDebounce from '../../hooks/use-debounce';
 import { getDay } from '../../utils/utils';
 import useAuth from '../../hooks/useAuth';
 
 export default function Entrance(): JSX.Element {
   const navigate = useNavigate();
-  // const statusAuthorization = useAppSelector(getAuthorizationStatus);
+  const user = useAppSelector(getUser);
   const statusAuthorization = useAuth();
-  const str = useDebounce(statusAuthorization);
+  // const str = useDebounce(statusAuthorization);
   useLayoutEffect(() => {
-
-    if (str === AuthorizationStatus.Auth ) {
+    if (statusAuthorization !== AuthorizationStatus.Auth ) {
+      return;
+    }
+    if (user?.type === UserType.Storage) {
+      toast.info('Добро пожаловать');
+      navigate('/storage');
+    } else {
       toast.info('Добро пожаловать');
       navigate('/');
-    }
-
-  },[str, navigate]);
+    } 
+  },[statusAuthorization, navigate, user]);
 
 
   return (

@@ -1,4 +1,5 @@
-import { memo } from 'react';
+import { memo, useLayoutEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import ButtonOpenDialogRemoveEmployee from '../button-open-dialog-remove-employee/button-open-dialog-remove-employee';
@@ -6,11 +7,31 @@ import ButtonOpenDialogAddEmployee from '../button-open-dialog-add-employee/butt
 import ButtonOpenDialogEditEmployee from '../button-open-dialog-edit-employee/button-open-dialog-edit-employee';
 import ButtonOpenDialogAddDetail from '../button-open-dialog-add-detail/button-open-dialog-add-detail';
 import ButtonOpenDialogUpdateDetail from '../button-open-dialog-update-detail/button-open-dialog-update-detail';
+import ButtonOpenDialogAddToStorage from '../button-open-dialog-add-to-storage/button-open-dialog-add-to-storage';
+import ButtonOpenDialogDeleteFromStorage from '../button-open-dialog-delete-from-storage/button-open-dialog-delete-from-storage';
 
 import DateFilter from '../date-filter/date-filter';
+import { CustomButton } from '../common/button/button';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import useQuery from '../../hooks/useQuery';
+import {
+  fetchJobs,
+  fetchEmployees,
+  fetchDetails,
+ } from '../../store/api-action';
 
 const ControlBox = memo(() => {
   console.log('render ControlBox');
+  const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
+  const { query } = useQuery();
+
+  useLayoutEffect(() => {
+    dispatch(fetchJobs(query));
+    dispatch(fetchEmployees());
+    dispatch(fetchDetails());
+
+  }, [dispatch, query]);
 
   return (
     <Box
@@ -20,15 +41,83 @@ const ControlBox = memo(() => {
       marginTop="10px"
       marginBottom="15px"
       display="flex"
+      minHeight="auto"
       flexDirection={"row"}
       sx={{ backgroundColor: "#96b8cc", p: 0, ariaLabel: 'Without label' }}
     >
-      <ButtonOpenDialogAddEmployee />
-      <ButtonOpenDialogEditEmployee />
-      <ButtonOpenDialogRemoveEmployee />
-      {ButtonOpenDialogAddDetail() || null}
-      {ButtonOpenDialogUpdateDetail() || null}
-      <DateFilter />
+    {pathname !== '/storage' ? (
+      <>
+        <ButtonOpenDialogAddEmployee />
+        <ButtonOpenDialogEditEmployee />
+        <ButtonOpenDialogRemoveEmployee />
+        {ButtonOpenDialogAddDetail && <ButtonOpenDialogAddDetail />}
+        {ButtonOpenDialogUpdateDetail && <ButtonOpenDialogUpdateDetail />}
+        <DateFilter />
+      </>
+    ) : <> 
+          <ButtonOpenDialogAddToStorage/>
+          <ButtonOpenDialogDeleteFromStorage/>
+          <CustomButton
+            sx={{
+              position: 'relative',
+              left: '10%',
+              minWidth: '15%',
+              display: 'flex',
+              fontSize: '12px',
+              color: 'white', 
+              backgroundColor: '#247cc1',
+              borderRadius: 1.5,
+              boxShadow: "none", py: 1.7, px: 3, mx: 0.5, 
+              width: 'fit-content',
+              '&:hover': {backgroundColor: '#7690a0'}
+            }}>Input Instrument
+          </CustomButton>
+          <CustomButton
+            sx={{
+              position: 'relative',
+              left: '10%',
+              minWidth: '15%',
+              display: 'flex',
+              fontSize: '12px',
+              color: 'white', 
+              backgroundColor: '#247cc1',
+              borderRadius: 1.5,
+              boxShadow: "none", py: 1.7, px: 3, mx: 0.5, 
+              width: 'fit-content',
+              '&:hover': {backgroundColor: '#7690a0'}
+            }}>Input Ochrana
+          </CustomButton>
+          <CustomButton
+            sx={{
+              position: 'relative',
+              left: '10%',
+              minWidth: '15%',
+              display: 'flex',
+              fontSize: '12px',
+              color: 'white', 
+              backgroundColor: '#247cc1',
+              borderRadius: 1.5,
+              boxShadow: "none", py: 1.7, px: 3, mx: 0.5, 
+              width: 'fit-content',
+              '&:hover': {backgroundColor: '#7690a0'}
+            }}>issuance
+          </CustomButton>
+          <CustomButton
+            sx={{
+              position: 'relative',
+              left: '10%',
+              display: 'flex',
+              fontSize: '12px',
+              color: 'white', 
+              backgroundColor: '#247cc1',
+              borderRadius: 1.5,
+              boxShadow: "none", py: 1.7, px: 3, mx: 0.5, 
+              width: 'fit-content',
+              '&:hover': {backgroundColor: '#7690a0'}
+            }}>Info
+          </CustomButton>
+        </>
+      }
     </Box>
   );
 });

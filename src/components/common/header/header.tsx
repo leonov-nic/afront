@@ -1,35 +1,34 @@
 
 import * as S from './header.styled';
-import { useEffect, ChangeEvent, MouseEvent, useRef } from 'react';
+import { ChangeEvent, MouseEvent, useRef } from 'react';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { getUser } from '../../../store/user-process/user-process';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { useNavigate, Link } from 'react-router-dom';
-
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import Container from '../container/container';
 import { CustomButton } from '../button/button';
 import { getDay } from '../../../utils/utils';
-import { AuthorizationStatus } from '../../../const';
+import { UserType } from '../../../const';
 import useAuth from '../../../hooks/useAuth';
-import useQuery from '../../../hooks/useQuery';
 
 import {
-  fetchJobs,
-  fetchEmployees,
-  fetchDetails,
   fetchUserStatus,
   logoutUser,
   postAvatar,
  } from '../../../store/api-action';
 
 export default function Header(): JSX.Element {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
-  const navigate = useNavigate();
   const statusAuthorization = useAuth();
-  const { query } = useQuery();
+
+  console.log(user?.type);
+  console.log(statusAuthorization);
+  console.log(pathname);
 
   const handleLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -46,27 +45,19 @@ export default function Header(): JSX.Element {
     }
   };
 
-  useEffect(() => {
-    if (statusAuthorization === AuthorizationStatus.NoAuth ) {
-      navigate('/entrance');
-    }
-
-    dispatch(fetchJobs(query));
-    dispatch(fetchEmployees());
-    dispatch(fetchDetails());
-
-  }, [statusAuthorization, navigate, dispatch, query]);
-
   const handleOutUser = async () => {
     await dispatch(logoutUser());
+    navigate('/entrance');
   }
 
   return (
-    <S.StyledHeader>
+    <S.StyledHeader color={user?.type !== UserType.Storage && pathname !== '/storage' ? '' : '#574f69'}>
       <Container>
         <S.HeaderWrapper>
           <p>Today: {getDay()}</p>
-          <S.HeaderTitle>Working time of employes</S.HeaderTitle>
+          <S.HeaderTitle color={user?.type !== UserType.Storage && pathname !== '/storage' ? '' : '#e4ba48'}>
+            {user?.type !== UserType.Storage && pathname !== '/storage' ? 'Working time of employes' : 'work with storage'}
+          </S.HeaderTitle>
 
           <S.HeaderUserWrapper>
             <CustomButton onClick={handleOutUser} sx={{backgroundColor: 'transparent', '&:hover': {opacity: '0.5', backgroundColor: 'transparent'},}}>

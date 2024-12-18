@@ -14,6 +14,7 @@ import browserHistory from '../../browser-history';
 import MainPage from '../../pages/main-page/main-page';
 import Entrance from '../../pages/entrance/entrance';
 import NotFound from '../../pages/not-found/not-found';
+import Storage from '../../pages/storage/storage';
 
 import AuthProvider from '../auth-provider/auth-provider';
 import QueryProvider from '../query-provider/query-provaider';
@@ -37,6 +38,7 @@ function App(): JSX.Element {
                     }
                   />                
                   <Route path={'/entrance'} element={<Entrance />} />
+                  <Route path={'/storage'} element={<Storage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </QueryProvider>
