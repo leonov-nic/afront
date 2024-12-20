@@ -173,7 +173,6 @@ export default class JsonToExcell {
 
           if (colNumber === 1 ) { 
             cell.numFmt = 'yyyy-mm-dd';
-            console.log(typeof cell.value)
           }
 
           if (colNumber === 11 ||  colNumber === 12) { 
@@ -233,7 +232,7 @@ export const createRowsForTable = (jobs: TJobRDO[]) => {
   return rows;
 }
 
-
+//старая версия
 // export const createRowsForExellFile = async (jobs: TJobRDO[]) => {
 //   const rows = jobs.map(job => {
 //     return {
@@ -260,15 +259,15 @@ export const createRowsForExellFile = async (jobs: TJobRDO[]) => {
     "Date": new Date(job.createdAt).toLocaleString('ru-RU', {year: 'numeric', month: '2-digit', day: '2-digit'}),
     "№": job.employee.registrationNumber,
     "Type Of Job&Detail": `${job.typeOfJob}${job.detail?.shortName !== '0' ? job.detail?.shortName : ''}`,
-    "Quantity": job.quantity !== 0 ? Number(job.quantity) : '-',
-    "TotalHours": job.totalHours,
-    "Extra": job.extra || "-",
-    "Comment": job.comment || "-",
+    "Quantity": job.quantity !== 0 ? Number(job.quantity) : '',
+    "TotalHours": job.totalHours || "",
+    "Extra": job.extra || "",
+    "Comment": job.comment || "",
     "Type Of Job": job.typeOfJob,
     "Employee": job.employee.familyName,
-    "Detail": job.detail?.shortName !== '0' ? job.detail?.shortName : '-',
-    "TimeFrom": job.timeFrom !== '-' ? getHoursAndSeconds(job.timeFrom) : '-',
-    "TimeTo": job.timeTo !== '-' ? getHoursAndSeconds(job.timeTo) : '-',
+    "Detail": job.detail?.shortName !== '0' ? job.detail?.shortName : '',
+    "TimeFrom": job.timeFrom !== '-' ? getHoursAndSeconds(job.timeFrom) : '',
+    "TimeTo": job.timeTo !== '-' ? getHoursAndSeconds(job.timeTo) : '',
     "Master": job.master.name};
   });
 

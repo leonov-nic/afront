@@ -10,7 +10,7 @@ import Container from '../container/container';
 import { CustomButton } from '../button/button';
 import { getDay } from '../../../utils/utils';
 import { UserType } from '../../../const';
-import useAuth from '../../../hooks/useAuth';
+// import useAuth from '../../../hooks/useAuth';
 
 import {
   fetchUserStatus,
@@ -24,11 +24,7 @@ export default function Header(): JSX.Element {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
-  const statusAuthorization = useAuth();
-
-  console.log(user?.type);
-  console.log(statusAuthorization);
-  console.log(pathname);
+  // const statusAuthorization = useAuth();
 
   const handleLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
