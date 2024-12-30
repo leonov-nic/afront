@@ -1,10 +1,10 @@
 import { store } from '../store/index.js';
-import { TUser, TJobRDO, TEmployee, TDetail} from './index.js';
+import { TUser, TJobRDO, TEmployee, TDetail, TStoreHouse} from './index.js';
 import { AuthorizationStatus, SubmitStatus } from '../const.js';
 
 export type TUserProcess = {
-  authorizationStatus: AuthorizationStatus;
-  user: TUser | null;
+  authorizationStatus: AuthorizationStatus,
+  user: TUser | null,
 };
 
 export type TJobProcess = {
@@ -14,7 +14,13 @@ export type TJobProcess = {
   newJobs: TJobRDO[],
   employees: TEmployee[],
   details: TDetail[],
-  sortDate: string;
+  sortDate: string,
+};
+
+export type TStoreHouseProcess = {
+  isJobSendingStatus: SubmitStatus,
+  isLoading: boolean,
+  positions: TStoreHouse[],
 };
 
 export type State = ReturnType<typeof store.getState>;

@@ -8,7 +8,7 @@ import ButtonOpenDialogEditEmployee from '../button-open-dialog-edit-employee/bu
 import ButtonOpenDialogAddDetail from '../button-open-dialog-add-detail/button-open-dialog-add-detail';
 import ButtonOpenDialogUpdateDetail from '../button-open-dialog-update-detail/button-open-dialog-update-detail';
 import ButtonOpenDialogAddToStorage from '../button-open-dialog-add-to-storage/button-open-dialog-add-to-storage';
-import ButtonOpenDialogDeleteFromStorage from '../button-open-dialog-delete-from-storage/button-open-dialog-delete-from-storage';
+import ButtonOpenDialogStorehouseOperation from '../button-open-dialog-add-storehouse-operation/button-open-dialog-add-storehouse-operation';
 
 import DateFilter from '../date-filter/date-filter';
 import { CustomButton } from '../common/button/button';
@@ -56,11 +56,10 @@ const ControlBox = memo(() => {
       </>
     ) : <> 
           <ButtonOpenDialogAddToStorage/>
-          <ButtonOpenDialogDeleteFromStorage/>
           <CustomButton
             sx={{
               position: 'relative',
-              left: '10%',
+              left: '15%',
               minWidth: '15%',
               display: 'flex',
               fontSize: '12px',
@@ -75,7 +74,7 @@ const ControlBox = memo(() => {
           <CustomButton
             sx={{
               position: 'relative',
-              left: '10%',
+              left: '15%',
               minWidth: '15%',
               display: 'flex',
               fontSize: '12px',
@@ -90,7 +89,7 @@ const ControlBox = memo(() => {
           <CustomButton
             sx={{
               position: 'relative',
-              left: '10%',
+              left: '15%',
               minWidth: '15%',
               display: 'flex',
               fontSize: '12px',
@@ -105,7 +104,7 @@ const ControlBox = memo(() => {
           <CustomButton
             sx={{
               position: 'relative',
-              left: '10%',
+              left: '15%',
               display: 'flex',
               fontSize: '12px',
               color: 'white', 
@@ -116,6 +115,7 @@ const ControlBox = memo(() => {
               '&:hover': {backgroundColor: '#7690a0'}
             }}>Info
           </CustomButton>
+          <ButtonOpenDialogStorehouseOperation/>
         </>
       }
     </Box>

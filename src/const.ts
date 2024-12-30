@@ -36,30 +36,14 @@ export enum SubmitStatus {
 export enum AppRoute {
   Main = '/main',
   Root = '/',
+  Entrance = '/entrance',
+  Store = '/store',
 }
 
 export enum NameSpace {
   User = 'USER',
   App = 'APP',
 }
-
-export const DIRECTIONS = [
-  'all',
-  'Администрация',
-  'Вузы, Ссузы',
-  'Депутатский корпус',
-  'ЖКХ',
-  'Культура',
-  'МФЦ',
-  'Образование',
-  'Почта России',
-  'Правоохранители',
-  'Соц.сфера',
-  'Спорт ',
-  'Строительство',
-  'Транспорт',
-];
-
 
 export enum UserType {
   Admin = 'admin',
@@ -69,6 +53,10 @@ export enum UserType {
 
 export const TYPES = ['admin', 'regular', 'storage'] as const;
 
+export enum TypeOperation {
+  Shipment = 'Shipment',
+  Arrival = 'Arrival',
+}
 
 export const NAMESOFJOBBOXONE = [
   'f',

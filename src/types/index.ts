@@ -1,5 +1,5 @@
 import { UserType } from "../const";
-import { TYPES, NAMESOFJOB } from "../const";
+import { TYPES, NAMESOFJOB, TypeOperation } from "../const";
 
 export type CountByDirection = {
   [key: string]: number;
@@ -125,3 +125,30 @@ export class UserWithTokenDto {
   public _id!: string;
 }
 
+export type TStoreHouse = {
+  _id: string,
+  name: string;
+  company: string;
+  characteristics?: string;
+  size?: number;
+  diameter?: number;
+  type: string;
+  price?: number;
+  isActive?: boolean;
+  currentQuantity: number;
+}
+
+export type TStoreHouseDTO = Omit<TStoreHouse, '_id' | 'currentQuantity' | 'isActive'>
+
+export type TStoreHouseOperation = {
+  _id: string,
+  productId: string;
+  employeeId: string;
+  box?: number;
+  amount?: number;
+  totalAmount?: number;
+  typeOperation?: TypeOperation;
+  fromWhom?: string;
+}
+
+export type TStoreHouseOperationDTO = Omit<TStoreHouseOperation, '_id'>

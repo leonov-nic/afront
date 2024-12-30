@@ -13,7 +13,9 @@ import {
   UserRegister,
   TSubmitUser,
   Query,
-  QueryByMonth
+  QueryByMonth,
+  TStoreHouseDTO,
+  TStoreHouse
 } from '../types';
 
 
@@ -223,6 +225,25 @@ export const editDetail = createAsyncThunk<TNewDetail & Pick<TJob, 'detailId'> ,
     const { api } = extra;
     const { data } = await api.put<TNewDetail & Pick<TJob, 'detailId'>>(`api/details/${detail.detailId}`, detail);
     await dispatch(fetchDetails());
+    return data;
+  }
+);
+
+export const fetchStoreHouse = createAsyncThunk<TStoreHouse[], undefined, { extra: ThunkApiConfig }>(
+  'app/fetchStoreHouse',
+  async (_, { extra }) => {
+    const { api } = extra;
+    const {data} = await api.get<TStoreHouse[]>('api/storehouse');
+    return data;
+  },
+);
+
+export const postStoreHouse = createAsyncThunk<TStoreHouse, TStoreHouseDTO, { extra: ThunkApiConfig }>(
+  'app/postStoreHouse',
+  async (storePosition, { extra, dispatch }) => {
+    const { api } = extra;
+    const { data } = await api.post<TStoreHouse>('api/storehouse', storePosition);
+    await dispatch(fetchStoreHouse());
     return data;
   }
 );

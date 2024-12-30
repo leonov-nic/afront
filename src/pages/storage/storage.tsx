@@ -9,28 +9,33 @@ import ControlBox from '../../components/control-box/control-box';
 // import MainTable from '../../components/main-table/main-table';
 import useAuth from '../../hooks/useAuth';
 import { AuthorizationStatus, UserType } from '../../const';
-import {useAppSelector} from '../../hooks/useAppSelector';
-import {getUser} from '../../store/user-process/user-process';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { getUser } from '../../store/user-process/user-process';
+import { getIsLoading } from '../../store/stotrehouse-process/storehouse-process';
+import { fetchStoreHouse } from '../../store/api-action';
 
 export default function Storage(): JSX.Element | null {
   console.log('render Storage');
+  const isLoading = useAppSelector(getIsLoading);
+  const user = useAppSelector(getUser);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  console.log(pathname);
-  const user = useAppSelector(getUser);
   const statusAuthorization = useAuth();
-  console.log(user?.type);
+
   useLayoutEffect(() => {
     if (user?.type !== UserType.Storage && user?.type !== UserType.Admin) {
       navigate('/');
     } else {
-      navigate('/storage');
+      dispatch(fetchStoreHouse()).then(() => navigate('/storage'))
     }
 
     if (statusAuthorization !== AuthorizationStatus.Auth) {
       navigate('/entrance');
     }
-  },[navigate, user?.type, statusAuthorization, pathname]);
+  },[navigate, user?.type, statusAuthorization, pathname, dispatch]);
+
 
   return (user?.type === UserType.Regular ? null :
     <MainLayout>
@@ -43,10 +48,10 @@ export default function Storage(): JSX.Element | null {
           {<ControlBox />}
         </Container>
 
-        <Container className="container" $mt="10px" $overflow="auto" style={{alignItems: 'center', display: 'flex', minHeight: '65vh', flexDirection: 'column'}}>
+        {isLoading ? null : <Container className="container" $mt="10px" $overflow="auto" style={{alignItems: 'center', display: 'flex', minHeight: '65vh', flexDirection: 'column'}}>
           <p style={{color: 'black'}}> тут будет таблица в зависимости от выбора синих кнопок, как мне кажется</p>
           {/* <MainTable/> */}
-        </Container>
+        </Container>}
         
       </S.Main>
     </MainLayout>

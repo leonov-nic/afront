@@ -1,36 +1,44 @@
-// import { Formik, Field, Form } from 'formik';
-// import { TextField } from 'formik-mui';
-// import * as Yup from 'yup';
+import { Formik, Field, Form } from 'formik';
+import { TextField } from 'formik-mui';
+import * as Yup from 'yup';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-// import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid';
 
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
 
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
-// import { TNewDetail } from "../../types";
-// import { SubmitButton,  } from '../common/button/button';
+import { TStoreHouseDTO } from '../../types';
+import { SubmitButton,  } from '../common/button/button';
 
-// import { useAppDispatch } from '../../hooks/useAppDispatch';
-// import { postDetail } from '../../store/api-action';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { postStoreHouse } from '../../store/api-action';
 
-// const INITIAL_VALUES = {
-//   shortName: '',
-//   longName: '',
-//   normOfMinute: undefined,
-//   customer: '',
-// };
+const INITIAL_VALUES = {
+  name: '',
+  company: '',
+  characteristics: '',
+  size: 0,
+  diameter: 0,
+  type: '',
+  price: 0,
+  currentQuantity: 0,
+};
 
-// const VALIDATION_SCHEMA = Yup.object().shape({
-//   shortName: Yup.string().required("Required"),
-//   longName: Yup.string().required("Required"),
-//   normOfMinute: Yup.number(),
-//   customer: Yup.string().required("Required"),
-// });
+const VALIDATION_SCHEMA = Yup.object().shape({
+  name: Yup.string().required("Required"),
+  company: Yup.string().required("Required"),
+  characteristics: Yup.string().max(100, 'Too Long!'),
+  size: Yup.number(),
+  diameter: Yup.number(),
+  type: Yup.string().max(20, 'Too Long!'),
+  price: Yup.number(),
+  currentQuantity: Yup.number(),
+});
 
 interface DialogAddToStorageProps {
   open: boolean;
@@ -38,29 +46,27 @@ interface DialogAddToStorageProps {
 }
 
 export default function DialogAddToStorage(props: DialogAddToStorageProps): JSX.Element {
-
   const {open, onClose} = props;
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const hundlerCloseDialog = () => {
-    onClose && onClose();
+   onClose && onClose();
   }
 
-  // const submitFunction = (values: TNewDetail, actions: { setSubmitting: (arg0: boolean) => void; }) => {
-  //   dispatch(postDetail(values))
-  //   toast.success(`Добавлена деталь ${values.shortName}`,
-  //     {
-  //       style: {background: '#17c1bc',}
-  //     }
-  //   );
-  //   actions.setSubmitting(false);
-  //   setTimeout(() => {
-  //     hundlerCloseDialog();
-  //   }, 300);
-  // }
+  const submitFunction = (values: TStoreHouseDTO, actions: { setSubmitting: (arg0: boolean) => void; }) => {
+    const sub = Object.values(values).filter(Boolean).join(', ')
+    dispatch(postStoreHouse(values))
+    toast.success(`Добавлена позиция: ${sub}`,
+      {style: {background: '#17c1bc',}, autoClose: 4000,}
+    );
+    actions.setSubmitting(false);
+    setTimeout(() => {
+      hundlerCloseDialog();
+    }, 500);
+  }
 
   return (
-    <Dialog onClose={onClose} open={open} >
+    <Dialog onClose={hundlerCloseDialog} open={open} >
       <DialogContent>
         <Stack>
           <IconButton aria-label="close" color="inherit" size="large" sx={{backgroundColor: 'rgba(40, 40, 40, 0.1)', width: 'fit-content', ml: 'auto'}} onClick={hundlerCloseDialog}>
@@ -68,36 +74,43 @@ export default function DialogAddToStorage(props: DialogAddToStorageProps): JSX.
           </IconButton>
         </Stack>
         <DialogTitle sx={{color: 'gray', textAlign: 'center', textTransform: 'uppercase'}}>
-          Add or Delete Position to Storage
+          Add Position to Storage
         </DialogTitle>
-        Видимо для упрощения, сделать одну вылетающую форму добавления всех возможных позицй склада. 
-        Удаление и редактирование можно сделать в строках... пока не знаю.
-        Нужно разобраться нам с поцизиями склада )).
-        {/* <Formik
+        <Formik
           initialValues={INITIAL_VALUES}
           validationSchema={VALIDATION_SCHEMA}
           onSubmit={submitFunction}
         >
           {({ values }) => (
             <Form>
-              <Grid container columns={1} >
+              <Grid container columns={2} >
                 <Grid item xs={1} sx={{p: 1}}>
                   <Field
                     component={TextField}
-                    id="shortName"
-                    name="shortName"
+                    id="name"
+                    name="name"
                     type="text"
-                    placeholder="Short Name"
+                    placeholder="Name"
                     sx={{ width: '100%' }}
                   />
                 </Grid>
                 <Grid item xs={1} sx={{p: 1}}>
                   <Field
                     component={TextField}
-                    id="longName"
-                    name="longName"
+                    id="company"
+                    name="company"
                     type="text"
-                    placeholder="Long Name"
+                    placeholder="Company"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={1} sx={{p: 1}}>
+                  <Field
+                    component={TextField}
+                    id="characteristics"
+                    name="characteristics"
+                    type="text"
+                    placeholder="Characteristics"
                     sx={{ width: '100%' }}
                   />
                 </Grid>
@@ -105,30 +118,56 @@ export default function DialogAddToStorage(props: DialogAddToStorageProps): JSX.
                   <Field
                     component={TextField}
                     sx={{ width: '100%' }}
-                    id="normOfMinute"
-                    name="normOfMinute"
-                    value={values.normOfMinute ? values.normOfMinute : false}
+                    id="size"
+                    name="size"
+                    value={values.size === 0 ? '' : values.size}
                     type="number"
-                    placeholder="Norm Of Minute"
+                    placeholder="Size"
                   />
                 </Grid>
                 <Grid item xs={1} sx={{p: 1}}>
                   <Field
                     component={TextField}
-                    id="customer"
-                    name="customer"
+                    sx={{ width: '100%' }}
+                    id="diameter"
+                    name="diameter"
+                    type="number"
+                    placeholder="Diameter"
+                    value={values.diameter === 0 ? '' : values.diameter}
+                  />
+                </Grid>
+                <Grid item xs={1} sx={{p: 1}}>
+                  <Field
+                    component={TextField}
+                    id="type"
+                    name="type"
                     type="text"
-                    placeholder="Customer"
+                    placeholder="Type"
                     sx={{ width: '100%' }}
                   />
                 </Grid>
                 <Grid item xs={1} sx={{p: 1}}>
-                  <SubmitButton sx={{m: 0, width: '100%'}} disabled={values.shortName === '' || values.longName === ''} text='Add Detail'></SubmitButton>
+                  <Field
+                    component={TextField}
+                    sx={{ width: '100%' }}
+                    id="price"
+                    name="price"
+                    value={values.price === 0 ? '' : values.price}
+                    type="number"
+                    placeholder="Price"
+                  />
+                </Grid>
+                <Grid item xs={1} sx={{p: 1}}>
+                  <SubmitButton 
+                    sx={{m: 0, width: '100%'}} 
+                    disabled={values.name === '' || values.type === '' || values.company === ''} 
+                    text='Add Position'>
+                  </SubmitButton>
                 </Grid>
               </Grid>
             </Form>
           )}
-        </Formik> */}
+        </Formik>
       </DialogContent>
     </Dialog>
   );

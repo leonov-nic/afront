@@ -28,6 +28,7 @@ export default function Header(): JSX.Element {
 
   const handleLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    console.log('input');
     fileInputRef.current?.click();
   };
 
