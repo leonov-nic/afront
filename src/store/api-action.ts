@@ -15,7 +15,8 @@ import {
   Query,
   QueryByMonth,
   TStoreHouseDTO,
-  TStoreHouse
+  TStoreHouse,
+  TStoreHouseOperationDTO
 } from '../types';
 
 
@@ -243,6 +244,25 @@ export const postStoreHouse = createAsyncThunk<TStoreHouse, TStoreHouseDTO, { ex
   async (storePosition, { extra, dispatch }) => {
     const { api } = extra;
     const { data } = await api.post<TStoreHouse>('api/storehouse', storePosition);
+    await dispatch(fetchStoreHouse());
+    return data;
+  }
+);
+
+export const fetchStoreHouseOperation  = createAsyncThunk<TStoreHouseOperationDTO[], undefined, { extra: ThunkApiConfig }>(
+  'app/fetchStoreHouseOperation',
+  async (_, { extra }) => {
+    const { api } = extra;
+    const {data} = await api.get<TStoreHouseOperationDTO[]>('api/storeoperation');
+    return data;
+  },
+);
+
+export const postStoreHouseOperation = createAsyncThunk<TStoreHouseOperationDTO, TStoreHouseOperationDTO, { extra: ThunkApiConfig }>(
+  'app/postStoreHouseOperation',
+  async (storeOperation, { extra, dispatch }) => {
+    const { api } = extra;
+    const { data } = await api.post<TStoreHouseOperationDTO>('api/storeoperation', storeOperation);
     await dispatch(fetchStoreHouse());
     return data;
   }

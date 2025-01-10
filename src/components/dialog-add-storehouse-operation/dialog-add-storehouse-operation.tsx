@@ -19,15 +19,16 @@ import { SubmitButton,  } from '../common/button/button';
 import ToggleButonSelectStorehouseOperation from '../toggle-buton-select-storehouse-operation/toggle-buton-select-storehouse-operation';
 import SelectStorehousePosition from '../select-storehouse-position/select-storehouse-position';
 import SelectEmployeeStorage from '../select-employee-storage/select-employee-storage';
+import SelectFromWhoom from '../select-fromwhoom/select-fromwhoom';
 
-// import { useAppDispatch } from '../../hooks/useAppDispatch';
-// import post
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { postStoreHouseOperation } from '../../store/api-action';
 import { TypeOperation } from '../../const';
 
 const INITIAL_VALUES = {
   productId: '',
   employeeId: '',
-  box: 1,
+  box: 0,
   amount: 0,
   totalAmount: 0,
   typeOperation: undefined,
@@ -41,8 +42,8 @@ const VALIDATION_SCHEMA = Yup.object().shape({
   box: Yup.number(),
   amount: Yup.number().required("Required"),
   totalAmount: Yup.number().required("Required"),
-  typeOperation: Yup.string().required("Required").oneOf(Object.values(TypeOperation), '').nullable(),
-  fromWhom: Yup.string(),
+  typeOperation: Yup.string().required("Required").oneOf(Object.values(TypeOperation)),
+  fromWhom: Yup.string().required("Required"),
   comment: Yup.string(),
 });
 
@@ -54,18 +55,29 @@ interface DialogAddStorehouseOperationProps {
 export default function DialogAddStorehouseOperation(props: DialogAddStorehouseOperationProps): JSX.Element {
   const [operation, setOperation] = useState<string | undefined>(undefined)
   const {open, onClose} = props;
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const onChangeOperation = useCallback((value: string) => {
-    setOperation(value)
+    setOperation(value);
+    validateTypeOperation(value);
   }, [])
 
   const hundlerCloseDialog = () => {
     onClose && onClose();
   }
 
-  const submitFunction = (values: TStoreHouseOperationDTO, actions: { setSubmitting: (arg0: boolean) => void; }) => {
-    // dispatch(postStoreHouse(values))
+  const validateTypeOperation = (value: string) => {
+    if (value == undefined) {
+      return 'Select of Type Operation';
+    }
+    return undefined;
+  }
+
+  const submitFunction = (values: TStoreHouseOperationDTO, actions: {setSubmitting: (arg0: boolean) => void}) => {
+    if (values.amount && values.box === 0) {values.totalAmount = values.amount}
+    if (values.amount && values.box != 0) {values.totalAmount = Number(values.amount) * Number(values.box)}
+    dispatch(postStoreHouseOperation(values))
+    console.log(values);
     toast.success(`Added operation is ${values.typeOperation}`,
       {style: {background: '#17c1bc',}, autoClose: 3000,}
     );
@@ -88,7 +100,7 @@ export default function DialogAddStorehouseOperation(props: DialogAddStorehouseO
           Add Operation
         </DialogTitle>
         {!operation ? <Typography sx={{color: '#17c1bc', textAlign: 'center'}}>
-          Select Type Of Operation
+          Select Of Type Operation
         </Typography> : null}
         <Formik
           initialValues={INITIAL_VALUES}
@@ -115,7 +127,7 @@ export default function DialogAddStorehouseOperation(props: DialogAddStorehouseO
                     name="box"
                     type="number"
                     placeholder="Box"
-                    value={values.box === 1 ? "" : values.box}
+                    value={values.box === 0 ? "" : values.box}
                   />
                 </Grid>
                 <Grid item xs={1} sx={{p: 1}}>
@@ -135,20 +147,13 @@ export default function DialogAddStorehouseOperation(props: DialogAddStorehouseO
                     sx={{ width: '100%' }}
                     id="totalAmount"
                     name="totalAmount"
-                    value={values.box && values.amount ? Number(values.box) * Number(values.amount) : values.totalAmount === 0 ? "" : values.amount}
+                    value={values.box && values.amount ? Number(values.box) * Number(values.amount) : values.totalAmount === values.amount ? "" : values.amount}
                     type="number"
                     placeholder="Total amount"
                   />
                 </Grid>
                 <Grid item xs={1} sx={{p: 1}}>
-                  <Field
-                    component={TextField}
-                    sx={{ width: '100%' }}
-                    id="fromWhom"
-                    name="fromWhom"
-                    type="text"
-                    placeholder="From Whom"
-                  />
+                  <SelectFromWhoom />
                 </Grid>
                 <Grid item xs={2} sx={{p: 1}}>
                   <Textarea
@@ -163,7 +168,7 @@ export default function DialogAddStorehouseOperation(props: DialogAddStorehouseO
                   />
                 </Grid>
                 <Grid item xs={2} sx={{p: 1}}>
-                  <SubmitButton sx={{m: 0, width: '100%'}} disabled={values.totalAmount === undefined } text='Add Operation'></SubmitButton>
+                  <SubmitButton sx={{m: 0, width: '100%'}} disabled={values.amount === 0 || values.typeOperation === undefined} text='Add Operation'></SubmitButton>
                 </Grid>
               </Grid>
             </Form>

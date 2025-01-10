@@ -7,6 +7,8 @@ export const REQUEST_TIMEOUT = 5000;
 export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const MAX_JOBS = 200;
+export const STORE_HOUSE_TYPES = ['instruments', 'safety', 'other'];
+export const STORE_HOUSE_FROM_WHOOM = ['Vololodya', 'Alsfeld', 'Amberg', 'Vitalick', 'Slava', 'Zhenya',];
 
 export const baseQuery: Query = {
   createdAt: getDataNowWithResetTime(),

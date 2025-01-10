@@ -12,8 +12,10 @@ import Close from '@mui/icons-material/Close';
 
 import { toast } from 'react-toastify';
 
+import { STORE_HOUSE_TYPES } from '../../const';
 import { TStoreHouseDTO } from '../../types';
 import { SubmitButton,  } from '../common/button/button';
+import SelectStorehouseType from '../select-storehouse-type/select-storehouse-type';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { postStoreHouse } from '../../store/api-action';
@@ -22,7 +24,7 @@ const INITIAL_VALUES = {
   name: '',
   company: '',
   characteristics: '',
-  size: 0,
+  size: '',
   diameter: 0,
   type: '',
   price: 0,
@@ -33,9 +35,9 @@ const VALIDATION_SCHEMA = Yup.object().shape({
   name: Yup.string().required("Required"),
   company: Yup.string().required("Required"),
   characteristics: Yup.string().max(100, 'Too Long!'),
-  size: Yup.number(),
+  size: Yup.string(),
   diameter: Yup.number(),
-  type: Yup.string().max(20, 'Too Long!'),
+  type: Yup.string().max(20, 'Too Long!').oneOf(STORE_HOUSE_TYPES, 'Invalid type!').required("Required"),
   price: Yup.number(),
   currentQuantity: Yup.number(),
 });
@@ -120,8 +122,7 @@ export default function DialogAddToStorage(props: DialogAddToStorageProps): JSX.
                     sx={{ width: '100%' }}
                     id="size"
                     name="size"
-                    value={values.size === 0 ? '' : values.size}
-                    type="number"
+                    type="text"
                     placeholder="Size"
                   />
                 </Grid>
@@ -137,14 +138,7 @@ export default function DialogAddToStorage(props: DialogAddToStorageProps): JSX.
                   />
                 </Grid>
                 <Grid item xs={1} sx={{p: 1}}>
-                  <Field
-                    component={TextField}
-                    id="type"
-                    name="type"
-                    type="text"
-                    placeholder="Type"
-                    sx={{ width: '100%' }}
-                  />
+                  <SelectStorehouseType />
                 </Grid>
                 <Grid item xs={1} sx={{p: 1}}>
                   <Field

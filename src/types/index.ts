@@ -130,7 +130,7 @@ export type TStoreHouse = {
   name: string;
   company: string;
   characteristics?: string;
-  size?: number;
+  size?: string;
   diameter?: number;
   type: string;
   price?: number;

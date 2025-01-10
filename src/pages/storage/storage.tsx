@@ -6,6 +6,7 @@ import * as S from './storage.styled';
 import MainLayout from '../../components/common/main-layout/main-layout';
 import Container from '../../components/common/container/container';
 import ControlBox from '../../components/control-box/control-box';
+import Loading from '../../components/loading/loading';
 // import MainTable from '../../components/main-table/main-table';
 import useAuth from '../../hooks/useAuth';
 import { AuthorizationStatus, UserType } from '../../const';
@@ -36,6 +37,9 @@ export default function Storage(): JSX.Element | null {
     }
   },[navigate, user?.type, statusAuthorization, pathname, dispatch]);
 
+  if (isLoading && !user) {
+    return (<Loading/>)
+  }
 
   return (user?.type === UserType.Regular ? null :
     <MainLayout>
@@ -48,12 +52,13 @@ export default function Storage(): JSX.Element | null {
           {<ControlBox />}
         </Container>
 
-        {isLoading ? null : <Container className="container" $mt="10px" $overflow="auto" style={{alignItems: 'center', display: 'flex', minHeight: '65vh', flexDirection: 'column'}}>
+        <Container className="container" $mt="10px" $overflow="auto" style={{alignItems: 'center', display: 'flex', minHeight: '65vh', flexDirection: 'column'}}>
           <p style={{color: 'black'}}> тут будет таблица в зависимости от выбора синих кнопок, как мне кажется</p>
           {/* <MainTable/> */}
-        </Container>}
+        </Container>
         
       </S.Main>
     </MainLayout>
   );
+
 }
