@@ -143,12 +143,15 @@ export type TStoreHouseDTO = Omit<TStoreHouse, '_id' | 'currentQuantity' | 'isAc
 export type TStoreHouseOperation = {
   _id: string,
   productId: string;
-  employeeId: string;
+  employeeId?: string | null;
   box?: number;
-  amount?: number;
-  totalAmount?: number;
-  typeOperation?: TypeOperation;
+  amount: number;
+  totalAmount: number;
+  typeOperation: TypeOperation;
   fromWhom?: string;
+  comment?: string;
 }
+
+export type TStoreHouseOperationRDO = TStoreHouseOperation & { createdAt: string, employee?: TEmployeeRDO, product: TStoreHouse };
 
 export type TStoreHouseOperationDTO = Omit<TStoreHouseOperation, '_id'>

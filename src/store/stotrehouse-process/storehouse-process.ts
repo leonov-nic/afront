@@ -4,12 +4,15 @@ import { SubmitStatus } from '../../const';
 
 import {
   fetchStoreHouse,
+  fetchStoreHouseOperation,
+  postStoreHouseOperation,
   postStoreHouse,
 } from '../api-action';
 
 const initialState: TStoreHouseProcess = {
   isLoading: false,
   positions: [],
+  storehouseOperatons: [],
   isJobSendingStatus: SubmitStatus.Still,
 };
 
@@ -42,6 +45,27 @@ export const storeHouseProcess = createSlice({
       .addCase(postStoreHouse.fulfilled, (state) => {
         state.isLoading = false;
       })
+
+
+      .addCase(fetchStoreHouseOperation.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchStoreHouseOperation.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(fetchStoreHouseOperation.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.storehouseOperatons = action.payload
+      })
+      .addCase(postStoreHouseOperation.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(postStoreHouseOperation.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(postStoreHouseOperation.fulfilled, (state) => {
+        state.isLoading = false;
+      })
   }
 });
 
@@ -54,3 +78,4 @@ export const getIsJobSendingStatus = createSelector(storehouse, (state: TStoreHo
 export const getIsLoading = createSelector(storehouse, (state: TStoreHouseProcess) => state.isLoading);
 export const getStoreHousePositions = createSelector(storehouse, (state: TStoreHouseProcess) => state.positions);
 export const getAllPositionsLength = createSelector(storehouse, (state: TStoreHouseProcess) => state.positions.length);
+export const getStoreHouseOperations = createSelector(storehouse, (state: TStoreHouseProcess) => state.storehouseOperatons);

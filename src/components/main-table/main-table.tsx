@@ -38,7 +38,6 @@ const MainTable = memo((): JSX.Element => {
   const [family, setFamily] = useState<string | null>(null);
   const [rows, setRows] = useState<TJobRDO[]>([]);
 
-
   const isLoading = useAppSelector(getIsLoading);
   const jobs = useAppSelector(getNewJobs);
 

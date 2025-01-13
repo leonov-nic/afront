@@ -1,6 +1,7 @@
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
-import { TJobRDO, TEmployeeRDO, TDetail, TNameOfJob, TUserRDO } from '../types';
+import { TJobRDO, TEmployeeRDO, TDetail, TNameOfJob, TUserRDO, TStoreHouseOperationRDO, TStoreHouse } from '../types';
+import { TypeOperation } from '../const';
 // import { ChangeEvent } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -210,6 +211,43 @@ export const createDataForTable = (
 ) => {
   return { _id, createdAt, employeeId, employee, timeFrom, timeTo, totalHours, detailId, detail, typeOfJob, extra, quantity, comment, master };
 }
+
+export const createDataForTableStorage = (
+  _id: string,
+  createdAt: string,
+  product: TStoreHouse,
+  productId: string,
+  amount: number,
+  totalAmount: number,
+  typeOperation: TypeOperation,
+  employeeId?: string | null,
+  employee?: TEmployeeRDO,
+  box?: number,
+  fromWhom?: string,
+  comment?: string,
+) => {
+  return { _id, createdAt, product, productId, employeeId, employee, box, amount, totalAmount, typeOperation, fromWhom, comment };
+}
+
+export const createRowsForTableStorage = (storageOperations: TStoreHouseOperationRDO[]) => {
+  const rows = storageOperations.map(operation => createDataForTableStorage(
+    operation._id,
+    operation.createdAt,
+    operation.product,
+    operation.productId,
+    operation.amount, 
+    operation.totalAmount === undefined ? 0 : operation.totalAmount,
+    operation.typeOperation,
+    operation.employeeId === null ? "" : operation.employeeId,
+    operation.employee,
+    operation.box === undefined ? 0 : operation.box, 
+    operation.fromWhom,
+    operation.comment,
+  ));
+
+  return rows;
+}
+
 
 export const createRowsForTable = (jobs: TJobRDO[]) => {
   const rows = jobs.map(job => createDataForTable(

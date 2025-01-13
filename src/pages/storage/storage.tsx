@@ -7,14 +7,14 @@ import MainLayout from '../../components/common/main-layout/main-layout';
 import Container from '../../components/common/container/container';
 import ControlBox from '../../components/control-box/control-box';
 import Loading from '../../components/loading/loading';
-// import MainTable from '../../components/main-table/main-table';
+import MainTableStorage from '../../components/main-table-storage/main-table-storage';
 import useAuth from '../../hooks/useAuth';
 import { AuthorizationStatus, UserType } from '../../const';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { getUser } from '../../store/user-process/user-process';
 import { getIsLoading } from '../../store/stotrehouse-process/storehouse-process';
-import { fetchStoreHouse } from '../../store/api-action';
+import { fetchStoreHouse, fetchStoreHouseOperation } from '../../store/api-action';
 
 export default function Storage(): JSX.Element | null {
   console.log('render Storage');
@@ -29,7 +29,10 @@ export default function Storage(): JSX.Element | null {
     if (user?.type !== UserType.Storage && user?.type !== UserType.Admin) {
       navigate('/');
     } else {
-      dispatch(fetchStoreHouse()).then(() => navigate('/storage'))
+      Promise.all([
+        dispatch(fetchStoreHouse()),
+        dispatch(fetchStoreHouseOperation())
+      ]).then(() => navigate('/storage'));
     }
 
     if (statusAuthorization !== AuthorizationStatus.Auth) {
@@ -53,8 +56,7 @@ export default function Storage(): JSX.Element | null {
         </Container>
 
         <Container className="container" $mt="10px" $overflow="auto" style={{alignItems: 'center', display: 'flex', minHeight: '65vh', flexDirection: 'column'}}>
-          <p style={{color: 'black'}}> тут будет таблица в зависимости от выбора синих кнопок, как мне кажется</p>
-          {/* <MainTable/> */}
+          <MainTableStorage />
         </Container>
         
       </S.Main>

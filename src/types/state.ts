@@ -1,5 +1,5 @@
 import { store } from '../store/index.js';
-import { TUser, TJobRDO, TEmployee, TDetail, TStoreHouse} from './index.js';
+import { TUser, TJobRDO, TEmployee, TDetail, TStoreHouse, TStoreHouseOperationRDO} from './index.js';
 import { AuthorizationStatus, SubmitStatus } from '../const.js';
 
 export type TUserProcess = {
@@ -21,6 +21,7 @@ export type TStoreHouseProcess = {
   isJobSendingStatus: SubmitStatus,
   isLoading: boolean,
   positions: TStoreHouse[],
+  storehouseOperatons: TStoreHouseOperationRDO[],
 };
 
 export type State = ReturnType<typeof store.getState>;

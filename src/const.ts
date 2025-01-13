@@ -58,6 +58,7 @@ export const TYPES = ['admin', 'regular', 'storage'] as const;
 export enum TypeOperation {
   Shipment = 'Shipment',
   Arrival = 'Arrival',
+  initial = '',
 }
 
 export const NAMESOFJOBBOXONE = [
