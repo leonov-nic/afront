@@ -18,9 +18,9 @@ export default function ButtonLoadFile() {
 
   const handleLoadFile = async () => { 
     try { 
-      const jobs: TJobRDO[] = await dispatch(fetchJobsByMonth({createdAt: query.createdAt, filterByMonth: true})).unwrap(); 
-      const dd = new JsonToExcell(jobs, 'table', query.createdAt);  
-      dd.init();  
+      const jobs: TJobRDO[] = await dispatch(fetchJobsByMonth({limit: 3000, createdAt: query.createdAt, filterByMonth: true})).unwrap(); 
+      const table = new JsonToExcell(jobs, 'table', query.createdAt);  
+      table.init();  
     } catch (err) { 
       if (err instanceof Error) { 
         toast.error(`Ошибка загрузки – ${err.message}. Попробуйте ещё раз`,

@@ -104,15 +104,15 @@ export const postAvatar = createAsyncThunk<void, File, { extra: ThunkApiConfig }
 export const fetchJobsByMonth = createAsyncThunk<TJobRDO[], QueryByMonth, { extra: ThunkApiConfig }>(
   'app/fetchJobsByMonth',
   async (params, { extra }) => {
-    
+    const { createdAt, filterByMonth, limit = 300 } = params;
     const { api } = extra;
 
     const {data} = await api.get<TJobRDO[]>(`api/jobs/`, 
     {
       params: {
-        createdAt: params.createdAt,
-        limit: 300,
-        filterByMonth: params.filterByMonth
+        createdAt,
+        limit,
+        filterByMonth,
       }
     });
     return data;
