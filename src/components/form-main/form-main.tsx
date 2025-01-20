@@ -65,6 +65,7 @@ export default function FormMain(): JSX.Element {
         <InputLabel htmlFor="password">Password</InputLabel>
 
         <OutlinedInput
+          autoComplete='off'
           id="password"
           type={showPassword ? 'text' : 'password'}
           {...register("password", {required: 'Укажите пароль'})}

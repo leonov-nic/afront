@@ -18,7 +18,7 @@ export default function ButtonOpenDialogStorehouseOperation() {
     <>
       <CustomButton
         data-name='storage'
-        sx={{ backgroundColor: "#f1c40f", boxShadow: "none", px: 3, py: 1, minWidth: "57px", mx: 1, borderRadius: "7px", marginLeft: "auto" }}
+        sx={{ backgroundColor: "#17c1bc", boxShadow: "none", px: 3, py: 1, minWidth: "57px", mx: 1, borderRadius: "7px", marginLeft: "auto" }}
         onClick={handleOpenDialog}
       >
         <AddLinkIcon fontSize='large'/>

@@ -7,6 +7,8 @@ import {
   fetchStoreHouseOperation,
   postStoreHouseOperation,
   postStoreHouse,
+  editStoreHouse,
+  deleteStoreHouse,
 } from '../api-action';
 
 const initialState: TStoreHouseProcess = {
@@ -43,6 +45,24 @@ export const storeHouseProcess = createSlice({
         state.isLoading = false;
       })
       .addCase(postStoreHouse.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(editStoreHouse.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editStoreHouse.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(editStoreHouse.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(deleteStoreHouse.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteStoreHouse.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(deleteStoreHouse.fulfilled, (state) => {
         state.isLoading = false;
       })
 

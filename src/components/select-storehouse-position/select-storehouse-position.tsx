@@ -6,29 +6,52 @@ import { useFormikContext } from 'formik';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { getStoreHousePositions } from '../../store/stotrehouse-process/storehouse-process';
 
-import { TStoreHouseOperationDTO } from '../../types';
-// import { dictionary } from '../../utils/utils';
-// import { setJobBoxOne } from '../../const';
+import { TStoreEditDTO } from '../../types';
 
 export default function SelectStorehousePosition({sx}:{sx?: SxProps<Theme>}): JSX.Element {
   const storeHousePositions = useAppSelector(getStoreHousePositions);
 
-  // const dictionaryStoreHousePositions = dictionary<TStoreHouse>(storeHousePositions);
-  const { setFieldValue, values, errors, touched, handleChange } =  useFormikContext<TStoreHouseOperationDTO>();
+  const { setFieldValue, setValues, values, errors, touched, handleChange } =  useFormikContext<TStoreEditDTO>();
+
   const value = values['productId'];
   const error = errors[`productId`];
   return (
     <Autocomplete
-      // disabled={setJobBoxOne.has(values.typeOfJob)} 
-      // value={values ? dictionaryStoreHousePositions.get(values.productId) : null}
       autoComplete={false}
       id="select-storehouse"
       sx={[{display: "inline-flex", maxHeight: "100px"}, ...(Array.isArray(sx) ? sx : [sx])]}
       options={storeHousePositions}
       fullWidth={true}
       getOptionLabel={(option) => `${option.name} ${option.diameter ? option.diameter : option.size}`}
+      isOptionEqualToValue={(option, value) => option._id === value._id && option.currentQuantity === value.currentQuantity} 
       onChange={(_event, value ) => {
+        if (value === null) {
+          setValues({...values,
+            productId: '',
+            name: '',
+            company: '',
+            characteristics: '',
+            size: '',
+            diameter: 0,
+            type: '',
+            price: 0,
+          })
+          setFieldValue('detailId', '');
+          handleChange('detailId');
+        }
+
+
         if (value) {
+          setValues({...values,
+            name: value && value.name ? value.name : '',
+            company: value && value.company ? value.company : '',
+            characteristics: value && value.characteristics ? value.characteristics : '',
+            size: value && value.size ? value.size : '',
+            diameter: value && value.diameter ? value.diameter : 0,
+            type: value && value.type ? value.type : '',
+            price: value && value.price ? value.price : 0,
+            productId: value && value._id ? value._id : '',
+          })
           setFieldValue('productId', value._id);
           handleChange('productId');
         }

@@ -1,15 +1,14 @@
 import { useState, useCallback } from 'react';
-import AddTaskIcon from '@mui/icons-material/AddTask';
+import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
 
 import { CustomButton } from '../common/button/button';
-import DialogAddToStorage from '../dialog-add-to-storage/dialog-add-to-storage';
+import DialogEditStorage from '../dialog-edit-storage/dialog-edit-storage';
 import { getUserStatus } from '../../store/user-process/user-process';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
-export default function ButtonOpenDialogAddToStorage() {
+export default function ButtonOpenDialogEditStorage() {
   const [open, setOpen] = useState(false);
   const userStatus = useAppSelector(getUserStatus);
-  
 
   const handleOpenDialog = () => {
     setOpen(!open)
@@ -20,16 +19,16 @@ export default function ButtonOpenDialogAddToStorage() {
   }, [])
 
   return (
-    userStatus === 'admin' && 
+    userStatus === 'admin' &&
     <>
       <CustomButton
         data-name='storage'
-        sx={{ backgroundColor: "#17c1bc", boxShadow: "none", px: 3, py: 1, minWidth: "57px", mx: 1, borderRadius: "7px" }}
+        sx={{ backgroundColor: "#f1c40f", boxShadow: "none", px: 3, py: 1, minWidth: "57px", mx: 1, borderRadius: "7px" }}
         onClick={handleOpenDialog}
       >
-        <AddTaskIcon fontSize='large'/>
+        <FlipCameraAndroidIcon fontSize='large'/>
       </CustomButton>
-      <DialogAddToStorage open={open} onClose={handleCloseDialog} />
+      <DialogEditStorage open={open} onClose={handleCloseDialog} />
     </>
   );
 }

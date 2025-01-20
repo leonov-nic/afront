@@ -139,6 +139,7 @@ export type TStoreHouse = {
 }
 
 export type TStoreHouseDTO = Omit<TStoreHouse, '_id' | 'currentQuantity' | 'isActive'>
+export type TStoreEditDTO = TStoreHouseDTO & Pick<TStoreHouseOperation, 'productId'>
 
 export type TStoreHouseOperation = {
   _id: string,

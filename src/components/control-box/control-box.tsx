@@ -9,6 +9,7 @@ import ButtonOpenDialogAddDetail from '../button-open-dialog-add-detail/button-o
 import ButtonOpenDialogUpdateDetail from '../button-open-dialog-update-detail/button-open-dialog-update-detail';
 import ButtonOpenDialogAddToStorage from '../button-open-dialog-add-to-storage/button-open-dialog-add-to-storage';
 import ButtonOpenDialogStorehouseOperation from '../button-open-dialog-add-storehouse-operation/button-open-dialog-add-storehouse-operation';
+import ButtonOpenDialogEditStorage from '../button-open-dialog-edit-storage/button-open-dialog-edit-storage';
 
 import DateFilter from '../date-filter/date-filter';
 import { CustomButton } from '../common/button/button';
@@ -56,6 +57,7 @@ const ControlBox = memo(() => {
       </>
     ) : <> 
           <ButtonOpenDialogAddToStorage/>
+          <ButtonOpenDialogEditStorage />
           <CustomButton
             sx={{
               position: 'relative',

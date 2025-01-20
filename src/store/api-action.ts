@@ -18,7 +18,8 @@ import {
   TStoreHouse,
   TStoreHouseOperation,
   TStoreHouseOperationDTO,
-  TStoreHouseOperationRDO
+  TStoreHouseOperationRDO,
+  TStoreEditDTO,
 } from '../types';
 
 
@@ -247,6 +248,28 @@ export const postStoreHouse = createAsyncThunk<TStoreHouse, TStoreHouseDTO, { ex
     const { api } = extra;
     const { data } = await api.post<TStoreHouse>('api/storehouse', storePosition);
     await dispatch(fetchStoreHouse());
+    return data;
+  }
+);
+
+export const editStoreHouse = createAsyncThunk<TStoreHouse, TStoreEditDTO, { extra: ThunkApiConfig }>(
+  'app/editStoreHouse',
+  async (position, { extra, dispatch }) => {
+    const { api } = extra;
+    const { data } = await api.put<TStoreHouse>(`api/storehouse/${position.productId}`, position);
+    await dispatch(fetchStoreHouse());
+    await dispatch(fetchStoreHouseOperation());
+    return data;
+  }
+);
+
+export const deleteStoreHouse = createAsyncThunk<void, TStoreHouse['_id'], { extra: ThunkApiConfig }>(
+  'app/deleteStoreHouse',
+  async (id, { extra, dispatch }) => {
+    const { api } = extra;
+    const { data } = await api.delete<void>(`api/storehouse/${id}`);
+    await dispatch(fetchStoreHouse());
+    await dispatch(fetchStoreHouseOperation());
     return data;
   }
 );
