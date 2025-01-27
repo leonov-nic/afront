@@ -3,13 +3,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { SxProps, Theme } from '@mui/material/styles';
 import { useFormikContext } from 'formik';
 
-import { useAppSelector } from '../../hooks/useAppSelector';
-import { getStoreHousePositions } from '../../store/stotrehouse-process/storehouse-process';
+import { TStoreEditDTO, TStoreHouse } from '../../types';
 
-import { TStoreEditDTO } from '../../types';
-
-export default function SelectStorehousePosition({sx}:{sx?: SxProps<Theme>}): JSX.Element {
-  const storeHousePositions = useAppSelector(getStoreHousePositions);
+export default function SelectStorehousePosition({sx, storeHouse}:{sx?: SxProps<Theme>, storeHouse: TStoreHouse[]}): JSX.Element {
 
   const { setFieldValue, setValues, values, errors, touched, handleChange } =  useFormikContext<TStoreEditDTO>();
 
@@ -20,7 +16,7 @@ export default function SelectStorehousePosition({sx}:{sx?: SxProps<Theme>}): JS
       autoComplete={false}
       id="select-storehouse"
       sx={[{display: "inline-flex", maxHeight: "100px"}, ...(Array.isArray(sx) ? sx : [sx])]}
-      options={storeHousePositions}
+      options={storeHouse}
       fullWidth={true}
       getOptionLabel={(option) => `${option.name} ${option.diameter ? option.diameter : option.size}`}
       isOptionEqualToValue={(option, value) => option._id === value._id && option.currentQuantity === value.currentQuantity} 

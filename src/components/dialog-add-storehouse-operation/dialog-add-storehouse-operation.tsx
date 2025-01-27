@@ -24,6 +24,8 @@ import SelectFromWhoom from '../select-fromwhoom/select-fromwhoom';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { postStoreHouseOperation } from '../../store/api-action';
 import { TypeOperation } from '../../const';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { getStoreHousePositions } from '../../store/stotrehouse-process/storehouse-process';
 
 const INITIAL_VALUES = {
   productId: '',
@@ -53,6 +55,7 @@ interface DialogAddStorehouseOperationProps {
 }
 
 export default function DialogAddStorehouseOperation(props: DialogAddStorehouseOperationProps): JSX.Element {
+  const storeHousePositions = useAppSelector(getStoreHousePositions);
   const [operation, setOperation] = useState<string | undefined>(undefined)
   const {open, onClose} = props;
   const dispatch = useAppDispatch();
@@ -131,7 +134,7 @@ export default function DialogAddStorehouseOperation(props: DialogAddStorehouseO
                   {values.typeOperation &&
                   <>
                     <Grid item xs={1} sx={{p: 1}}>
-                      <SelectStorehousePosition />
+                      <SelectStorehousePosition storeHouse={storeHousePositions} />
                     </Grid>
                     {
                       values.typeOperation && values.typeOperation === TypeOperation.Shipment || 

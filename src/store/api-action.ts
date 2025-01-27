@@ -269,7 +269,6 @@ export const deleteStoreHouse = createAsyncThunk<void, TStoreHouse['_id'], { ext
     const { api } = extra;
     const { data } = await api.delete<void>(`api/storehouse/${id}`);
     await dispatch(fetchStoreHouse());
-    await dispatch(fetchStoreHouseOperation());
     return data;
   }
 );

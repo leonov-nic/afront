@@ -1,27 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Formik, Field, Form } from 'formik';
-import { TextField } from 'formik-mui';
+import { TextField as FormikTextField } from 'formik-mui';
 import * as Yup from 'yup';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
-
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import { Typography } from '@mui/material';
 
 import { toast } from 'react-toastify';
 
 import { STORE_HOUSE_TYPES } from '../../const';
-import { TStoreEditDTO } from '../../types';
+import { TStoreEditDTO, TStoreHouse } from '../../types';
 import { SubmitButton,  } from '../common/button/button';
 import { CustomButton } from '../common/button/button';
 import SelectStorehouseType from '../select-storehouse-type/select-storehouse-type';
 import SelectStorehousePosition from '../select-storehouse-position/select-storehouse-position';
+import SelectStorehousePositionWithoutFormik from '../select-storehouse-position-without-formik/select-storehouse-position-without-formik';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { editStoreHouse } from '../../store/api-action';
+import { editStoreHouse, deleteStoreHouse } from '../../store/api-action';
+
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { getStoreHousePositions } from '../../store/stotrehouse-process/storehouse-process';
 
 const INITIAL_VALUES: TStoreEditDTO = {
   productId: '',
@@ -55,12 +60,20 @@ interface SubmitActions {
 }
 
 export default function DialogEditStorage(props: DialogEditStorageProps): JSX.Element {
+  const storeHousePositions = useAppSelector(getStoreHousePositions);
+
+  const [deletedStoreHouse, setDeletedStoreHouse] = useState<string[]>([]);
+  const [storeHouse, setStoreHouse] = useState<TStoreHouse[]>([]);
   const {open, onClose} = props;
   const [typeForm, setTypeForm] = useState<'none' | 'edit' | 'delete'>('none');
   const dispatch = useAppDispatch();
   const isEdit = typeForm === 'edit';
   const isDelete = typeForm === 'delete';
   const isNone= typeForm === 'none';
+
+  useEffect(() => {
+    return setStoreHouse(storeHousePositions);
+  }, [storeHousePositions])
 
   const hundlerCloseDialog = () => {
    onClose && onClose();
@@ -69,27 +82,33 @@ export default function DialogEditStorage(props: DialogEditStorageProps): JSX.El
    }, 300);
   }
 
+  const hundlerDeleteStoreHouse = async () => {
+    if(isDelete) {
+      await dispatch(deleteStoreHouse(deletedStoreHouse[1]))
+      .then(res => {
+        if (res.meta.requestStatus === 'fulfilled') {
+          setTimeout(() => {
+            setDeletedStoreHouse([]);
+            hundlerCloseDialog();
+          }, 300);
+          toast.error(`Deleted position: ${deletedStoreHouse[0]}`);
+        }
+      })
+    }
+  }
+
   const onSelectTypeDelete = () => {
     setTypeForm('delete')
   }
 
   const onSelectTypeEdit = () => {
     setTypeForm('edit')
-   }
+  }
 
   const submitFunction = (values: TStoreEditDTO, actions: SubmitActions) => {
-    const sub = Object.values(values).filter(Boolean).join(', ')
-    if(isDelete) {
-      // dispatch(deleteStoreHouse(values.productId));
-      actions.setValues(INITIAL_VALUES);
-      toast.success(`Deleted position: ${values.name}`,
-        {style: {background: '#17c1bc',}, autoClose: 4000,}
-      );
-    }
-
     if(isEdit) {
       dispatch(editStoreHouse(values));
-      toast.success(`Edited position: ${sub}`,
+      toast.success(`Edited position: ${values.name}`,
         {style: {background: '#17c1bc',}, autoClose: 4000,}
       );
     }
@@ -131,7 +150,7 @@ export default function DialogEditStorage(props: DialogEditStorageProps): JSX.El
                 boxShadow: "none", py: 1.7, px: 3, mx: 0.5, 
                 width: '100%',
                 '&:hover': {backgroundColor: '#7690a0'}
-              }}>{isEdit ? 'Click here to Deactivate' : 'Deactivate'}
+              }}>{!isNone && <KeyboardDoubleArrowLeftIcon/>} {isEdit ? 'Click here to Deactivate' : 'Deactivate'}
             </CustomButton>
           </Grid> : null}
           {isNone || isDelete ? <Grid item xs={isDelete ? 2 : 1} sx={{p: 1}}>
@@ -147,27 +166,27 @@ export default function DialogEditStorage(props: DialogEditStorageProps): JSX.El
                 boxShadow: "none", py: 1.7, px: 3, mx: 0.5, 
                 width: '100%',
                 '&:hover': {backgroundColor: '#7690a0'}
-              }}>{isDelete ? 'Click here to Edit' : 'Edit'}
+              }}>{!isNone && <KeyboardDoubleArrowLeftIcon/>} {isDelete ? 'Click here to Edit' : 'Edit'}
             </CustomButton>
           </Grid> : null}
         </Grid>
-        <Formik
-          initialValues={INITIAL_VALUES}
-          validationSchema={VALIDATION_SCHEMA}
-          onSubmit={submitFunction}
-        >
+        { isEdit ?
+          <>
+            <Formik
+              initialValues={INITIAL_VALUES}
+              validationSchema={VALIDATION_SCHEMA}
+              onSubmit={submitFunction}
+            >
 
-          {({ values }) => (
-            <Form>
-              { 
-                isEdit ? <>
+              {({ values }) => (
+                <Form>
                   <Grid container columns={2} >
                     <Grid item xs={2} sx={{p: 1}}>
-                      <SelectStorehousePosition />
+                      <SelectStorehousePosition storeHouse={storeHouse} />
                     </Grid>
                     <Grid item xs={1} sx={{p: 1}}>
                       <Field
-                        component={TextField}
+                        component={FormikTextField}
                         id="name"
                         name="name"
                         type="text"
@@ -177,7 +196,7 @@ export default function DialogEditStorage(props: DialogEditStorageProps): JSX.El
                     </Grid>
                     <Grid item xs={1} sx={{p: 1}}>
                       <Field
-                        component={TextField}
+                        component={FormikTextField}
                         id="company"
                         name="company"
                         type="text"
@@ -187,7 +206,7 @@ export default function DialogEditStorage(props: DialogEditStorageProps): JSX.El
                     </Grid>
                     <Grid item xs={1} sx={{p: 1}}>
                       <Field
-                        component={TextField}
+                        component={FormikTextField}
                         id="characteristics"
                         name="characteristics"
                         type="text"
@@ -197,7 +216,7 @@ export default function DialogEditStorage(props: DialogEditStorageProps): JSX.El
                     </Grid>
                     <Grid item xs={1} sx={{p: 1}}>
                       <Field
-                        component={TextField}
+                        component={FormikTextField}
                         sx={{ width: '100%' }}
                         id="size"
                         name="size"
@@ -207,7 +226,7 @@ export default function DialogEditStorage(props: DialogEditStorageProps): JSX.El
                     </Grid>
                     <Grid item xs={1} sx={{p: 1}}>
                       <Field
-                        component={TextField}
+                        component={FormikTextField}
                         sx={{ width: '100%' }}
                         id="diameter"
                         name="diameter"
@@ -221,7 +240,7 @@ export default function DialogEditStorage(props: DialogEditStorageProps): JSX.El
                     </Grid>
                     <Grid item xs={1} sx={{p: 1}}>
                       <Field
-                        component={TextField}
+                        component={FormikTextField}
                         sx={{ width: '100%' }}
                         id="price"
                         name="price"
@@ -237,28 +256,35 @@ export default function DialogEditStorage(props: DialogEditStorageProps): JSX.El
                         text='Edit Position'>
                       </SubmitButton>
                     </Grid>
-                  </Grid>
-                </> : isDelete ?
-                <>
-                  <Grid container columns={2} >
-                    <Grid item xs={2} sx={{p: 1}}>
-                      <SelectStorehousePosition />
-                    </Grid>
-                    <Grid item xs={2} sx={{p: 1}}>
-                      <SubmitButton 
-                        sx={{m: 0, width: '100%'}} 
-                        disabled 
-                        text='Deactivate Position Пока не работает'>
-                      </SubmitButton>
-                    </Grid>
-                  </Grid>
-                </> : null
-              }
-            </Form>
-          )}
-        </Formik>
+                  </Grid>  
+                </Form>
+              )}
+            </Formik>
+          </> 
+          : isDelete ?
+            <>
+              <Grid container columns={2} >
+                <Grid item xs={2} sx={{p: 1}}>
+                  <Typography sx={{color: 'gray', textAlign: 'center', textTransform: 'uppercase'}}>
+                    Select Position For Deactivate
+                  </Typography>
+                </Grid>
+                <Grid item xs={2} sx={{p: 1}}>
+                  <SelectStorehousePositionWithoutFormik onChange={setDeletedStoreHouse} storeHouse={storeHouse}/>
+                </Grid>
+                <Grid item xs={2} sx={{p: 1}}>
+                <CustomButton
+                  disabled={deletedStoreHouse.length === 0}
+                  onClick={hundlerDeleteStoreHouse}
+                  sx={{width: '100%', p: 2, my: 2,
+                  backgroundColor: 'gray'}}> Deactivate 
+                </CustomButton>
+                </Grid>
+              </Grid>
+            </>
+          : null
+        }
       </DialogContent>
     </Dialog>
-
   );
 }

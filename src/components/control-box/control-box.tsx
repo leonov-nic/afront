@@ -19,6 +19,7 @@ import {
   fetchJobs,
   fetchEmployees,
   fetchDetails,
+  fetchStoreHouse
  } from '../../store/api-action';
 
 const ControlBox = memo(() => {
@@ -31,6 +32,7 @@ const ControlBox = memo(() => {
     dispatch(fetchJobs(query));
     dispatch(fetchEmployees());
     dispatch(fetchDetails());
+    dispatch(fetchStoreHouse());
 
   }, [dispatch, query]);
 
