@@ -10,9 +10,9 @@ import ButtonOpenDialogUpdateDetail from '../button-open-dialog-update-detail/bu
 import ButtonOpenDialogAddToStorage from '../button-open-dialog-add-to-storage/button-open-dialog-add-to-storage';
 import ButtonOpenDialogStorehouseOperation from '../button-open-dialog-add-storehouse-operation/button-open-dialog-add-storehouse-operation';
 import ButtonOpenDialogEditStorage from '../button-open-dialog-edit-storage/button-open-dialog-edit-storage';
+import SelectFilterTypeStorehouse from '../select-filter-type-storehouse/select-filter-type-storehouse';
 
 import DateFilter from '../date-filter/date-filter';
-import { CustomButton } from '../common/button/button';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import useQuery from '../../hooks/useQuery';
 import {
@@ -60,65 +60,8 @@ const ControlBox = memo(() => {
     ) : <> 
           <ButtonOpenDialogAddToStorage/>
           <ButtonOpenDialogEditStorage />
-          <CustomButton
-            sx={{
-              position: 'relative',
-              left: '15%',
-              minWidth: '15%',
-              display: 'flex',
-              fontSize: '12px',
-              color: 'white', 
-              backgroundColor: '#247cc1',
-              borderRadius: 1.5,
-              boxShadow: "none", py: 1.7, px: 3, mx: 0.5, 
-              width: 'fit-content',
-              '&:hover': {backgroundColor: '#7690a0'}
-            }}>Input Instrument
-          </CustomButton>
-          <CustomButton
-            sx={{
-              position: 'relative',
-              left: '15%',
-              minWidth: '15%',
-              display: 'flex',
-              fontSize: '12px',
-              color: 'white', 
-              backgroundColor: '#247cc1',
-              borderRadius: 1.5,
-              boxShadow: "none", py: 1.7, px: 3, mx: 0.5, 
-              width: 'fit-content',
-              '&:hover': {backgroundColor: '#7690a0'}
-            }}>Input Ochrana
-          </CustomButton>
-          <CustomButton
-            sx={{
-              position: 'relative',
-              left: '15%',
-              minWidth: '15%',
-              display: 'flex',
-              fontSize: '12px',
-              color: 'white', 
-              backgroundColor: '#247cc1',
-              borderRadius: 1.5,
-              boxShadow: "none", py: 1.7, px: 3, mx: 0.5, 
-              width: 'fit-content',
-              '&:hover': {backgroundColor: '#7690a0'}
-            }}>issuance
-          </CustomButton>
-          <CustomButton
-            sx={{
-              position: 'relative',
-              left: '15%',
-              display: 'flex',
-              fontSize: '12px',
-              color: 'white', 
-              backgroundColor: '#247cc1',
-              borderRadius: 1.5,
-              boxShadow: "none", py: 1.7, px: 3, mx: 0.5, 
-              width: 'fit-content',
-              '&:hover': {backgroundColor: '#7690a0'}
-            }}>Info
-          </CustomButton>
+
+          <SelectFilterTypeStorehouse />
           <ButtonOpenDialogStorehouseOperation/>
         </>
       }

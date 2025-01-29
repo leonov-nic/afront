@@ -32,8 +32,8 @@ export default function SelectStorehousePosition({sx, storeHouse}:{sx?: SxProps<
             type: '',
             price: 0,
           })
-          setFieldValue('detailId', '');
-          handleChange('detailId');
+          setFieldValue('productId', '');
+          handleChange('productId');
         }
 
 
