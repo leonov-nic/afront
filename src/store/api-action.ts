@@ -140,29 +140,47 @@ export const fetchJobs = createAsyncThunk<TJobRDO[], Query, { extra: ThunkApiCon
 
 export const deleteJob = createAsyncThunk<void, TJobRDO['_id'], { extra: ThunkApiConfig }>
 ('app/deleteJob',
-  async (_id, { extra }) => {
+  async (_id, { extra, dispatch }) => {
     const { api, browserHistory } = extra;
-    const {data} = await api.delete<void>(`api/jobs/${_id}`);
-    browserHistory.push('/');
-    return data;
+    try {
+      await dispatch(fetchUserStatus());
+      const {data} = await api.delete<void>(`api/jobs/${_id}`);
+      browserHistory.push('/');
+      return data;
+    } catch (error) {
+      Promise.reject(error);
+      browserHistory.push('/entrance');
+    }
   },
 );
 
-export const editJob = createAsyncThunk<TUpdateJob, TUpdateJob, { extra: ThunkApiConfig }>(
+export const editJob = createAsyncThunk<TUpdateJob | undefined, TUpdateJob, { extra: ThunkApiConfig }>(
   'app/editJob',
-  async (job, { extra }) => {
-    const { api } = extra;
-    const { data } = await api.put<TUpdateJob>(`api/jobs/${job._id}`, job);
-    return data;
+  async (job, { extra, dispatch }) => {
+    const { api, browserHistory } = extra;
+    try {
+      await dispatch(fetchUserStatus());
+      const { data } = await api.put<TUpdateJob>(`api/jobs/${job._id}`, job);
+      return data;
+    } catch (error) {
+      Promise.reject(error);
+      browserHistory.push('/entrance');
+    }
   }
 );
 
-export const postJob = createAsyncThunk<TJob, TJob, { extra: ThunkApiConfig }>(
+export const postJob = createAsyncThunk<TJob | undefined, TJob, { extra: ThunkApiConfig }>(
   'app/postJob',
-  async (job, { extra }) => {
-    const { api } = extra;
-    const { data: newJob} = await api.post<TJob>('api/jobs', job);
-    return newJob;
+  async (job, { extra, dispatch }) => {
+    const { api, browserHistory } = extra;
+    try {
+      await dispatch(fetchUserStatus());
+      const { data: newJob} = await api.post<TJob>('api/jobs', job);
+      return newJob;
+    } catch (error) {
+      Promise.reject(error);
+      browserHistory.push('/entrance');
+    }
   }
 );
 
