@@ -11,6 +11,7 @@ import ButtonOpenDialogAddToStorage from '../button-open-dialog-add-to-storage/b
 import ButtonOpenDialogStorehouseOperation from '../button-open-dialog-add-storehouse-operation/button-open-dialog-add-storehouse-operation';
 import ButtonOpenDialogEditStorage from '../button-open-dialog-edit-storage/button-open-dialog-edit-storage';
 import SelectFilterTypeStorehouse from '../select-filter-type-storehouse/select-filter-type-storehouse';
+import useQueryStoreOperations from '../../hooks/useQueryStoreOperations';
 
 import DateFilter from '../date-filter/date-filter';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -19,7 +20,8 @@ import {
   fetchJobs,
   fetchEmployees,
   fetchDetails,
-  fetchStoreHouse
+  fetchStoreHouse,
+  fetchStoreHouseOperation
  } from '../../store/api-action';
 
 const ControlBox = memo(() => {
@@ -27,14 +29,15 @@ const ControlBox = memo(() => {
   const { pathname } = useLocation();
   const dispatch = useAppDispatch();
   const { query } = useQuery();
+  const { query: queryOperations } = useQueryStoreOperations();
 
   useLayoutEffect(() => {
     dispatch(fetchJobs(query));
     dispatch(fetchEmployees());
     dispatch(fetchDetails());
     dispatch(fetchStoreHouse());
-
-  }, [dispatch, query]);
+    dispatch(fetchStoreHouseOperation(queryOperations));
+  }, [dispatch, query, queryOperations]);
 
   return (
     <Box

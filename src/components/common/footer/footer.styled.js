@@ -6,9 +6,12 @@ const StyledFooter = styled.footer`
 `;
 
 const FooterWrapper = styled.div`
-  display: 'flex';
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
   position: relative;
-  padding: 15px 10px;
+  padding: 5px 10px;
   text-align: center;
   background-color: ${({ theme }) => theme.color.mulledWine};
 

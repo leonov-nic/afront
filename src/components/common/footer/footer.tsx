@@ -5,6 +5,7 @@ import * as S from './footer.styled';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { getUser } from '../../../store/user-process/user-process';
 import { UserType } from '../../../const';
+import CheckAvailability from '../../check-availability/check-availability';
 
 export default function Footer(): JSX.Element {
   const { pathname } = useLocation();
@@ -15,9 +16,8 @@ export default function Footer(): JSX.Element {
         {user?.type === UserType.Admin ? <Link to={pathname !== '/storage' ? '/storage' : '/'}>
           <CustomButton
             sx={{ 
-              position: 'absolute',
+              position: 'relative',
               left: 0,
-              top: 0,
               display: 'flex',
               fontSize: '12px',
               color: 'white', 
@@ -30,7 +30,9 @@ export default function Footer(): JSX.Element {
           >{pathname !== '/storage' ? 'Storage' : 'To main'}</CustomButton>
         </Link> : null}
 
-        <S.FooterText>Made For Voitto. {new Date().getFullYear()}</S.FooterText>
+        <S.FooterText style={{
+          marginLeft: pathname !== '/storage' ? 'calc(50% - 340px)' : 'auto', marginRight: pathname !== '/storage' ? 'auto' : 'auto'}}>Made For Voitto. {new Date().getFullYear()}</S.FooterText>
+        <CheckAvailability></CheckAvailability>
       </S.FooterWrapper>
     </S.StyledFooter>)
 }

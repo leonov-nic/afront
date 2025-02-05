@@ -1,13 +1,13 @@
-import { TNameOfJob, TTypeOfJob, Query } from './types/index';
+import { TNameOfJob, TTypeOfJob, Query, QueryStorehouseOperations } from './types/index';
 import { getDataNowWithResetTime } from './utils/utils';
 
-// export const BACKEND_URL = 'http://localhost:5002/';
-export const BACKEND_URL = '/';
+export const BACKEND_URL = 'http://localhost:5002/';
+// export const BACKEND_URL = '/';
 export const REQUEST_TIMEOUT = 5000;
 export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const MAX_JOBS = 200;
-export const STORE_HOUSE_TYPES = ['instruments', 'safety', 'other'];
+export const STORE_HOUSE_TYPES = ['Instruments', 'Safety', 'Arrival'];
 export const STORE_HOUSE_FROM_WHOOM = ['Vololodya', 'Alsfeld', 'Amberg', 'Vitalick', 'Slava', 'Zhenya',];
 
 export const baseQuery: Query = {
@@ -16,6 +16,26 @@ export const baseQuery: Query = {
   offset: 0,
   lengthJobs: MAX_JOBS,
 };
+
+export const baseQueryOperations: QueryStorehouseOperations = {
+  createdAt: '',
+  limit: 100,
+  page: 1,
+  typeProduct: '',
+  type: '',
+}; 
+
+export enum TypeProduct {
+  Instruments = 'Instruments',
+  Safety = 'Safety',
+  Other = 'Other',
+}
+
+export enum TypeOperation {
+  Shipment = 'Shipment',
+  Arrival = 'Arrival',
+  initial = '',
+}
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',
@@ -55,11 +75,6 @@ export enum UserType {
 
 export const TYPES = ['admin', 'regular', 'storage'] as const;
 
-export enum TypeOperation {
-  Shipment = 'Shipment',
-  Arrival = 'Arrival',
-  initial = '',
-}
 
 export const NAMESOFJOBBOXONE = [
   'f',

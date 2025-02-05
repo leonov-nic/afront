@@ -11,6 +11,7 @@ export default function SelectStorehousePosition({sx, storeHouse}:{sx?: SxProps<
 
   const value = values['productId'];
   const error = errors[`productId`];
+  
   return (
     <Autocomplete
       autoComplete={false}
@@ -19,7 +20,7 @@ export default function SelectStorehousePosition({sx, storeHouse}:{sx?: SxProps<
       options={storeHouse}
       fullWidth={true}
       getOptionLabel={(option) => `${option.name} ${option.diameter ? option.diameter : option.size}`}
-      isOptionEqualToValue={(option, value) => option._id === value._id && option.currentQuantity === value.currentQuantity} 
+      isOptionEqualToValue={(option, value) => option._id === value._id} 
       onChange={(_event, value ) => {
         if (value === null) {
           setValues({...values,

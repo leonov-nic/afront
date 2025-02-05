@@ -14,6 +14,7 @@ import { CustomButton } from "../common/button/button";
 import { humanizeDate } from "../../utils/utils";
 import { TStoreHouseOperationRDO } from "../../types";
 import { deleteStoreHouseOperation, fetchStoreHouseOperation} from "../../store/api-action";
+import useQueryStoreOperations from "../../hooks/useQueryStoreOperations";
 
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
@@ -44,6 +45,7 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 const ControlsColumnStorage = ({ row, fun, opacity }: { row: TStoreHouseOperationRDO, fun: () => void, opacity: boolean }) => {
+  const {query} = useQueryStoreOperations();
   const { visibility, toggle, hide } = useVisibility();
   const dispatch = useAppDispatch();
   const ref = useRef<HTMLButtonElement>(null);
@@ -57,9 +59,20 @@ const ControlsColumnStorage = ({ row, fun, opacity }: { row: TStoreHouseOperatio
 
   const hundleDeleteRow = () => {
     dispatch(deleteStoreHouseOperation(row._id))
-    .then((data) => { if (data.meta.requestStatus === 'fulfilled') {
-      dispatch(fetchStoreHouseOperation()); 
-    }});
+    .then((data) => { 
+      if (data.meta.requestStatus === 'rejected') {
+        toast.error(`You must delete all opration Shipment for position ${(row.product.name)} after ${humanizeDate(row.createdAt)}`, {
+          position: 'top-center',
+          style: {
+            background: '#e74c3c',
+          }, 
+          autoClose: 5000,
+        });
+      }
+      if (data.meta.requestStatus === 'fulfilled') {
+        dispatch(fetchStoreHouseOperation(query)); 
+      }
+    });
 
     toast.info(`Operation for ${row.typeOperation} for ${humanizeDate(row.createdAt)} deleted`, {
       position: 'top-center',

@@ -20,8 +20,9 @@ import {
   TStoreHouseOperationDTO,
   TStoreHouseOperationRDO,
   TStoreEditDTO,
+  QueryStorehouseOperations
 } from '../types';
-
+import { baseQueryOperations } from '../const';
 
 import type { History } from 'history';
 // import type { AxiosError } from 'axios';
@@ -258,7 +259,7 @@ export const editStoreHouse = createAsyncThunk<TStoreHouse, TStoreEditDTO, { ext
     const { api } = extra;
     const { data } = await api.put<TStoreHouse>(`api/storehouse/${position.productId}`, position);
     await dispatch(fetchStoreHouse());
-    await dispatch(fetchStoreHouseOperation());
+    await dispatch(fetchStoreHouseOperation({}));
     return data;
   }
 );
@@ -273,11 +274,20 @@ export const deleteStoreHouse = createAsyncThunk<void, TStoreHouse['_id'], { ext
   }
 );
 
-export const fetchStoreHouseOperation  = createAsyncThunk<TStoreHouseOperationRDO[], undefined, { extra: ThunkApiConfig }>(
+export const fetchStoreHouseOperation = createAsyncThunk<TStoreHouseOperationRDO[], QueryStorehouseOperations, { extra: ThunkApiConfig }>(
   'app/fetchStoreHouseOperation',
-  async (_, { extra }) => {
+  async (params, { extra }) => {
     const { api } = extra;
-    const {data} = await api.get<TStoreHouseOperationRDO[]>('api/storeoperation');
+    const {data} = await api.get<TStoreHouseOperationRDO[]>(`api/storeoperation`, 
+    {
+      params: {
+        limit: params.limit,
+        page: params.page,
+        type: params.type,
+        typeProduct: params.typeProduct,
+        createdAt: params.createdAt,
+      }
+    });
     return data;
   },
 );
@@ -287,7 +297,8 @@ export const postStoreHouseOperation = createAsyncThunk<TStoreHouseOperationDTO,
   async (storeOperation, { extra, dispatch }) => {
     const { api } = extra;
     const { data } = await api.post<TStoreHouseOperationDTO>('api/storeoperation', storeOperation);
-    await dispatch(fetchStoreHouseOperation());
+    await dispatch(fetchStoreHouseOperation(baseQueryOperations));
+    await dispatch(fetchStoreHouse());
     return data;
   }
 );
@@ -297,7 +308,8 @@ export const deleteStoreHouseOperation = createAsyncThunk<void, TStoreHouseOpera
   async (id, { extra, dispatch }) => {
     const { api } = extra;
     const { data } = await api.delete<void>(`api/storeoperation/${id}`);
-    await dispatch(fetchStoreHouseOperation());
+    await dispatch(fetchStoreHouseOperation(baseQueryOperations));
+    await dispatch(fetchStoreHouse());
     return data;
   }
 );

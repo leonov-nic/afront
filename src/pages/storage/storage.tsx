@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as S from './storage.styled';
@@ -15,9 +15,12 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { getUser } from '../../store/user-process/user-process';
 import { getIsLoading } from '../../store/stotrehouse-process/storehouse-process';
 import { fetchStoreHouse, fetchStoreHouseOperation } from '../../store/api-action';
+import QueryProviderStoreOperations from '../../components/query-provider-store-operations/query-provider-store-operations';
+import useQueryStoreOperations from '../../hooks/useQueryStoreOperations';
 
 export default function Storage(): JSX.Element | null {
   console.log('render Storage');
+  const {query} = useQueryStoreOperations()
   const isLoading = useAppSelector(getIsLoading);
   const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
@@ -25,20 +28,24 @@ export default function Storage(): JSX.Element | null {
   const { pathname } = useLocation();
   const statusAuthorization = useAuth();
 
+  useEffect(() => {
+    dispatch(fetchStoreHouseOperation(query))
+  }, [dispatch, query]);
+
   useLayoutEffect(() => {
     if (user?.type !== UserType.Storage && user?.type !== UserType.Admin) {
       navigate('/');
     } else {
       Promise.all([
         dispatch(fetchStoreHouse()),
-        dispatch(fetchStoreHouseOperation())
+        dispatch(fetchStoreHouseOperation(query))
       ]).then(() => navigate('/storage'));
     }
 
     if (statusAuthorization !== AuthorizationStatus.Auth) {
       navigate('/entrance');
     }
-  },[navigate, user?.type, statusAuthorization, pathname, dispatch]);
+  },[navigate, user?.type, statusAuthorization, pathname, dispatch, query]);
 
   if (isLoading && !user) {
     return (<Loading/>)
@@ -46,20 +53,22 @@ export default function Storage(): JSX.Element | null {
 
   return (user?.type === UserType.Regular ? null :
     <MainLayout>
-      <Helmet>
-        <title>VOITTO-STORAGE</title>
-      </Helmet>
+      <QueryProviderStoreOperations>
+        <Helmet>
+          <title>VOITTO-STORAGE</title>
+        </Helmet>
 
-      <S.Main>
-        <Container>
-          {<ControlBox />}
-        </Container>
+        <S.Main>
+          <Container>
+            {<ControlBox />}
+          </Container>
 
-        <Container className="container" $mt="10px" $overflow="auto" style={{alignItems: 'center', display: 'flex', minHeight: '65vh', flexDirection: 'column'}}>
-          <MainTableStorage />
-        </Container>
-        
-      </S.Main>
+          <Container className="container" $mt="10px" $overflow="auto" style={{alignItems: 'center', display: 'flex', minHeight: '65vh', flexDirection: 'column'}}>
+            <MainTableStorage />
+          </Container>
+          
+        </S.Main>
+      </QueryProviderStoreOperations>
     </MainLayout>
   );
 

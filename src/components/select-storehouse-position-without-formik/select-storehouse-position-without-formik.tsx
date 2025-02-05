@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { SxProps, Theme } from '@mui/material/styles';
@@ -6,11 +6,15 @@ import { SxProps, Theme } from '@mui/material/styles';
 import { TStoreHouse } from '../../types';
 
 export default function SelectStorehousePositionWithoutFormik({sx, onChange, storeHouse}:{sx?: SxProps<Theme>, onChange: (value:  string[]) => void, storeHouse: TStoreHouse[]}): JSX.Element {
-  
+  const [selectedValue, setSelectedValue] = useState<TStoreHouse | null>(null);
   const memoizedStoreHouse = useMemo(() => storeHouse, [storeHouse]);
-  console.log(memoizedStoreHouse);
+  // console.log(memoizedStoreHouse);
+  useEffect(() => {
+    setSelectedValue(null);
+  }, [memoizedStoreHouse])
   return (
     <Autocomplete
+      value={selectedValue} 
       autoComplete={false}
       id="select-storehouse"
       sx={[{display: "inline-flex", maxHeight: "100px", minWidth: "250px"}, ...(Array.isArray(sx) ? sx : [sx])]}
@@ -21,8 +25,10 @@ export default function SelectStorehousePositionWithoutFormik({sx, onChange, sto
       onChange={(_event, value) => {
         if (value === null) {
           onChange([]);
+          setSelectedValue(null);
         } else {
-          onChange([value.name, value._id]);
+          onChange([value.name, value._id, value.currentQuantity.toString()]);
+          setSelectedValue(value);
         }
       }}
 

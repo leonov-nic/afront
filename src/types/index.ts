@@ -1,4 +1,4 @@
-import { UserType } from "../const";
+import { UserType, TypeProduct } from "../const";
 import { TYPES, NAMESOFJOB, TypeOperation } from "../const";
 
 export type CountByDirection = {
@@ -10,6 +10,14 @@ export interface Query {
   limit: number;
   offset: number;
   lengthJobs: number;
+}
+
+export interface QueryStorehouseOperations {
+  createdAt?: string;
+  limit?: number;
+  page?: number;
+  typeProduct?: keyof typeof TypeProduct | '',
+  type?: keyof typeof TypeOperation | '';
 }
 
 export interface QueryByMonth {

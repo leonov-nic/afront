@@ -1,4 +1,4 @@
-import { memo, useState, useEffect } from 'react';
+import { memo, useState, useLayoutEffect } from 'react';
 
 import Loading from '../../components/loading/loading';
 import Table from '@mui/material/Table';
@@ -36,13 +36,13 @@ const MainTableStorage = memo((): JSX.Element => {
   const isLoading = useAppSelector(getIsLoading);
   const storehouseOperations = useAppSelector(getStoreHouseOperations);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setRows(createRowsForTableStorage(storehouseOperations));
   }, [storehouseOperations]);
   
   return (
     !isLoading ? rows && rows.length ? 
-      <TableContainer sx={{ maxHeight: '63vh' }} component={Paper}>
+      <TableContainer sx={{ maxHeight: '70.3vh' }} component={Paper}>
         <Table stickyHeader sx={{ minWidth: 700 }} aria-label="table of jobs">
           <TableHead>
             <TableRow>
@@ -52,7 +52,7 @@ const MainTableStorage = memo((): JSX.Element => {
               <StyledTableCell width="10%" align="center">Data</StyledTableCell>
               <StyledTableCell width="10%" align="center">Position</StyledTableCell>
               <StyledTableCell width="10%" align="center">Quantity</StyledTableCell>
-              <StyledTableCell width="10%" align="center">Available</StyledTableCell>
+              <StyledTableCell width="10%" align="center">Availible</StyledTableCell>
               <StyledTableCell width="10%" align="center">From Whom</StyledTableCell>
               <StyledTableCell width="10%" align="center">Comment</StyledTableCell>
               <StyledTableCell width="15px" align="center"><DeleteIcon style={{paddingTop: "5px"}}></DeleteIcon></StyledTableCell>

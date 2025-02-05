@@ -84,7 +84,6 @@ export default function DialogAddStorehouseOperation(props: DialogAddStorehouseO
     dispatch(postStoreHouseOperation(values))
     .then((data) => {
       if (data.meta.requestStatus === 'rejected') {
-        console.log(data);
         toast.error(`Perhaps  ${values.totalAmount} more then possible in base`,
           {style: {background: '#e74c3c',}, autoClose: 3000,}
         );
