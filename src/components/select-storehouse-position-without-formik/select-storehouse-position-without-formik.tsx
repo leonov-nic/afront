@@ -8,7 +8,7 @@ import { TStoreHouse } from '../../types';
 export default function SelectStorehousePositionWithoutFormik({sx, onChange, storeHouse}:{sx?: SxProps<Theme>, onChange: (value:  string[]) => void, storeHouse: TStoreHouse[]}): JSX.Element {
   const [selectedValue, setSelectedValue] = useState<TStoreHouse | null>(null);
   const memoizedStoreHouse = useMemo(() => storeHouse, [storeHouse]);
-  // console.log(memoizedStoreHouse);
+
   useEffect(() => {
     setSelectedValue(null);
   }, [memoizedStoreHouse])

@@ -36,6 +36,7 @@ const INITIAL_VALUES = {
   typeOperation: TypeOperation.initial,
   fromWhom: '',
   comment: '',
+  currentQuantityProduct: 0,
 };
 
 const VALIDATION_SCHEMA = Yup.object().shape({
@@ -47,6 +48,7 @@ const VALIDATION_SCHEMA = Yup.object().shape({
   typeOperation: Yup.string().required("Required").oneOf(Object.values(TypeOperation), ''),
   fromWhom: Yup.string(),
   comment: Yup.string(),
+  currentQuantityProduct: Yup.number(),
 });
 
 interface DialogAddStorehouseOperationProps {
@@ -70,9 +72,7 @@ export default function DialogAddStorehouseOperation(props: DialogAddStorehouseO
   }
 
   const validateTypeOperation = (value: string) => {
-    if (value == undefined) {
-      return 'Select of Type Operation';
-    }
+    if (value == undefined) {return 'Select of Type Operation';}
     return undefined;
   }
 
@@ -96,11 +96,17 @@ export default function DialogAddStorehouseOperation(props: DialogAddStorehouseO
           {style: {background: '#17c1bc',}, autoClose: 3000,}
         );
         actions.setSubmitting(false);
-        setTimeout(() => {
-          hundlerCloseDialog();
-        }, 300);
+        setTimeout(() => {hundlerCloseDialog();}, 300);
       }
     })
+    .catch((error) => {
+      toast.error('Error ' + `${error.message || 'Unknown error'}`, {
+        style: { background: '#e74c3c' },
+        autoClose: 3000,
+      });
+      actions.setSubmitting(false);
+      setTimeout(() => {hundlerCloseDialog();}, 300);
+    });
   }
 
   return (
@@ -123,7 +129,6 @@ export default function DialogAddStorehouseOperation(props: DialogAddStorehouseO
           onSubmit={submitFunction}
         >
           {({ values, setFieldValue }) => {
-            // console.log(values.typeOperation);
             return (
               <Form>
                 <Grid container columns={2} >

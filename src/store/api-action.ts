@@ -39,15 +39,18 @@ type ThunkApiConfig = {
 export const fetchUserStatus = createAsyncThunk<TUser, undefined,  { extra: ThunkApiConfig }>(
   'user/fetchUserStatus',
   async (_, { extra }) => {
-    const { api } = extra;
+    const { api, browserHistory } = extra;
 
     try {
       const { data: user } = await api.get<UserWithTokenDto>('api/users');
       return user;
     } catch (error) {
       // const axiosError = error as AxiosError;
+      // throw axiosError;
       Token.drop();
+      browserHistory.push('/entrance');
       return Promise.reject(error);
+
     }
   },
 );
@@ -148,11 +151,12 @@ export const deleteJob = createAsyncThunk<void, TJobRDO['_id'], { extra: ThunkAp
       browserHistory.push('/');
       return data;
     } catch (error) {
-      Promise.reject(error);
       browserHistory.push('/entrance');
+      return Promise.reject(error);
     }
   },
 );
+
 
 export const editJob = createAsyncThunk<TUpdateJob | undefined, TUpdateJob, { extra: ThunkApiConfig }>(
   'app/editJob',
@@ -163,8 +167,8 @@ export const editJob = createAsyncThunk<TUpdateJob | undefined, TUpdateJob, { ex
       const { data } = await api.put<TUpdateJob>(`api/jobs/${job._id}`, job);
       return data;
     } catch (error) {
-      Promise.reject(error);
       browserHistory.push('/entrance');
+      return Promise.reject(error);
     }
   }
 );
@@ -178,8 +182,8 @@ export const postJob = createAsyncThunk<TJob | undefined, TJob, { extra: ThunkAp
       const { data: newJob} = await api.post<TJob>('api/jobs', job);
       return newJob;
     } catch (error) {
-      Promise.reject(error);
       browserHistory.push('/entrance');
+      return Promise.reject(error);
     }
   }
 );
@@ -296,7 +300,7 @@ export const fetchStoreHouseOperation = createAsyncThunk<TStoreHouseOperationRDO
   'app/fetchStoreHouseOperation',
   async (params, { extra }) => {
     const { api } = extra;
-    const {data} = await api.get<TStoreHouseOperationRDO[]>(`api/storeoperation`, 
+    const { data } = await api.get<TStoreHouseOperationRDO[]>(`api/storeoperation`, 
     {
       params: {
         limit: params.limit,
@@ -306,6 +310,7 @@ export const fetchStoreHouseOperation = createAsyncThunk<TStoreHouseOperationRDO
         createdAt: params.createdAt,
       }
     });
+
     return data;
   },
 );

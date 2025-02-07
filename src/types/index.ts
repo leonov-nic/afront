@@ -159,6 +159,7 @@ export type TStoreHouseOperation = {
   typeOperation: TypeOperation;
   fromWhom?: string;
   comment?: string;
+  currentQuantityProduct?: number;
 }
 
 export type TStoreHouseOperationRDO = TStoreHouseOperation & { createdAt: string, employee?: TEmployeeRDO, product: TStoreHouse };

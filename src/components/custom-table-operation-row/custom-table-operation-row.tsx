@@ -54,7 +54,7 @@ export default function CustumTableOperationRow({row}: {row: TStoreHouseOperatio
           <TableCell align="center" width="10%">{getDayAndMonth(row.createdAt)}</TableCell>
           <TableCell align="center">{`${row.product.name} ${row.product.size ? row.product.size : row.product.diameter}`}</TableCell>
           <TableCell align="center">{row.totalAmount}</TableCell>
-          <TableCell align="center">{row.product.currentQuantity}</TableCell>
+          <TableCell align="center">{row.currentQuantityProduct}</TableCell>
           <TableCell align="center">{`${row.fromWhom ? row.fromWhom : '-'}`}</TableCell>
           <TableCell align="center">{`${row.comment ? row.comment : '-'}`}</TableCell>
           <TableCell align="center" width="15px" style={{position: 'relative', right: 0, top: 0, padding: 0}}><ControlsColumnStorage opacity={visibility} fun={handleLeaveRow} row={row}/></TableCell>

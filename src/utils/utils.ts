@@ -225,8 +225,9 @@ export const createDataForTableStorage = (
   box?: number,
   fromWhom?: string,
   comment?: string,
+  currentQuantityProduct?: number,
 ) => {
-  return { _id, createdAt, product, productId, employeeId, employee, box, amount, totalAmount, typeOperation, fromWhom, comment };
+  return { _id, createdAt, product, productId, employeeId, employee, box, amount, totalAmount, typeOperation, fromWhom, comment, currentQuantityProduct };
 }
 
 export const createRowsForTableStorage = (storageOperations: TStoreHouseOperationRDO[]) => {
@@ -243,6 +244,7 @@ export const createRowsForTableStorage = (storageOperations: TStoreHouseOperatio
     operation.box === undefined ? 0 : operation.box, 
     operation.fromWhom,
     operation.comment,
+    operation.currentQuantityProduct,
   ));
 
   return rows;
