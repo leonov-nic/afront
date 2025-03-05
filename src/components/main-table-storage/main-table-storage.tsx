@@ -52,7 +52,7 @@ const MainTableStorage = memo((): JSX.Element => {
               <StyledTableCell width="10%" align="center">Data</StyledTableCell>
               <StyledTableCell width="10%" align="center">Position</StyledTableCell>
               <StyledTableCell width="10%" align="center">Quantity</StyledTableCell>
-              <StyledTableCell width="10%" align="center">Was Available</StyledTableCell>
+              <StyledTableCell width="10%" align="center">Available</StyledTableCell>
               <StyledTableCell width="10%" align="center">From Whom</StyledTableCell>
               <StyledTableCell width="10%" align="center">Comment</StyledTableCell>
               <StyledTableCell width="15px" align="center"><DeleteIcon style={{paddingTop: "5px"}}></DeleteIcon></StyledTableCell>
