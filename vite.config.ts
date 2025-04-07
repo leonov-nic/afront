@@ -8,24 +8,4 @@ export default defineConfig({
     react(),
     svgr({floatPrecision: 2,}),
   ],
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules/react')) {
-            return 'react';
-          }
-          if (id.includes('node_modules/@mui/x-data-grid')) {
-            return 'mui-x-data-grid';
-          }
-          if (id.includes('node_modules/@mui')) {
-            return 'mui';
-          }
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
-        },
-      },
-    },
-  },
 })
