@@ -92,7 +92,7 @@ const hundleDeleteRow = () => {
       flex: 1,
       headerAlign: 'center',
       align: 'center',
-      valueGetter: (_value, row) => `${row.product.name} ${row.product.size ? row.product.size : row.product.type}`,
+      valueGetter: (_value, row) => `${row.product.name} ${row.product.size ? row.product.size : row.product.diameter}`,
     }, 
     {
       field: 'totalAmount',
@@ -138,7 +138,7 @@ const hundleDeleteRow = () => {
   return (
     <Box 
       sx={{ 
-        minHeight: 650, width: '100%',  minWidth: '735px', position: 'relative',
+        minHeight: 645, width: '100%',  minWidth: '735px', position: 'relative',
         "& .MuiDataGrid-columnHeader": {color: '#93a9b8'},
         "& .MuiTablePagination-displayedRows": {
           fontSize: '15px', fontWeight: 'bold', color: '#17c1bc'
@@ -187,7 +187,7 @@ const hundleDeleteRow = () => {
             backgroundColor: "#e74c3c",
             boxShadow: "none",
             px: 4,
-            py: 1.8,
+            py: 1.75,
             minWidth: "57px",
             mx: 1,
             position: 'absolute',
