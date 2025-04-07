@@ -19,6 +19,7 @@ export type TJobProcess = {
 
 export type TStoreHouseProcess = {
   isJobSendingStatus: SubmitStatus,
+  totalItems: number,
   isLoading: boolean,
   positions: TStoreHouse[],
   storehouseOperatons: TStoreHouseOperationRDO[],

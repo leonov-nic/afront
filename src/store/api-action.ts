@@ -18,9 +18,10 @@ import {
   TStoreHouse,
   TStoreHouseOperation,
   TStoreHouseOperationDTO,
-  TStoreHouseOperationRDO,
+  // TStoreHouseOperationRDO,
   TStoreEditDTO,
-  QueryStorehouseOperations
+  QueryStorehouseOperations,
+  StoreHouseOperationRDOWithCount
 } from '../types';
 import { baseQueryOperations } from '../const';
 
@@ -296,11 +297,11 @@ export const deleteStoreHouse = createAsyncThunk<void, TStoreHouse['_id'], { ext
   }
 );
 
-export const fetchStoreHouseOperation = createAsyncThunk<TStoreHouseOperationRDO[], QueryStorehouseOperations, { extra: ThunkApiConfig }>(
+export const fetchStoreHouseOperation = createAsyncThunk<StoreHouseOperationRDOWithCount, QueryStorehouseOperations, { extra: ThunkApiConfig }>(
   'app/fetchStoreHouseOperation',
   async (params, { extra }) => {
     const { api } = extra;
-    const { data } = await api.get<TStoreHouseOperationRDO[]>(`api/storeoperation`, 
+    const { data } = await api.get<StoreHouseOperationRDOWithCount>(`api/storeoperation`, 
     {
       params: {
         limit: params.limit,

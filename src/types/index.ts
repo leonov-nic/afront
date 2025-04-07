@@ -162,6 +162,15 @@ export type TStoreHouseOperation = {
   currentQuantityProduct?: number;
 }
 
-export type TStoreHouseOperationRDO = TStoreHouseOperation & { createdAt: string, employee?: TEmployeeRDO, product: TStoreHouse };
+export type TStoreHouseOperationRDO = TStoreHouseOperation & { 
+  createdAt: string, 
+  employee?: TEmployeeRDO, 
+  product: TStoreHouse,
+};
+
+export type StoreHouseOperationRDOWithCount = {
+  items: TStoreHouseOperationRDO[],
+  totalItems: number,
+};
 
 export type TStoreHouseOperationDTO = Omit<TStoreHouseOperation, '_id'>

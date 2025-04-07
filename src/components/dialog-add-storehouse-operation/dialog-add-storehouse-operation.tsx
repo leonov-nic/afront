@@ -85,7 +85,7 @@ export default function DialogAddStorehouseOperation(props: DialogAddStorehouseO
     .then((data) => {
       if (data.meta.requestStatus === 'rejected') {
         toast.error(`Perhaps  ${values.totalAmount} more then possible in base`,
-          {style: {background: '#e74c3c',}, autoClose: 3000,}
+          {style: {background: '#e74c3c',}, autoClose: 2000,}
         );
         setTimeout(() => {
           hundlerCloseDialog();
@@ -93,7 +93,7 @@ export default function DialogAddStorehouseOperation(props: DialogAddStorehouseO
         actions.setSubmitting(false);
       } else {
         toast.success(`Added operation is ${values.typeOperation}`,
-          {style: {background: '#17c1bc',}, autoClose: 3000,}
+          {style: {background: '#17c1bc',}, autoClose: 2000,}
         );
         actions.setSubmitting(false);
         setTimeout(() => {hundlerCloseDialog();}, 300);

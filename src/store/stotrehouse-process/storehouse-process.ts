@@ -15,6 +15,7 @@ const initialState: TStoreHouseProcess = {
   isLoading: false,
   positions: [],
   storehouseOperatons: [],
+  totalItems: 0,
   isJobSendingStatus: SubmitStatus.Still,
 };
 
@@ -75,7 +76,8 @@ export const storeHouseProcess = createSlice({
       })
       .addCase(fetchStoreHouseOperation.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.storehouseOperatons = action.payload
+        state.totalItems = action.payload.totalItems,
+        state.storehouseOperatons = action.payload.items
       })
       .addCase(postStoreHouseOperation.pending, (state) => {
         state.isLoading = true;
@@ -99,3 +101,4 @@ export const getIsLoading = createSelector(storehouse, (state: TStoreHouseProces
 export const getStoreHousePositions = createSelector(storehouse, (state: TStoreHouseProcess) => state.positions);
 export const getAllPositionsLength = createSelector(storehouse, (state: TStoreHouseProcess) => state.positions.length);
 export const getStoreHouseOperations = createSelector(storehouse, (state: TStoreHouseProcess) => state.storehouseOperatons);
+export const getTotalCountOfStoreHouseOperations = createSelector(storehouse, (state: TStoreHouseProcess) => state.totalItems);

@@ -1,4 +1,4 @@
-import { createContext, useState, useCallback, ReactNode } from 'react';
+import { createContext, useState, useCallback, ReactNode, useMemo } from 'react';
 import { Query } from '../../types';
 import { baseQuery } from '../../const';
 import { Dayjs } from 'dayjs';
@@ -25,10 +25,12 @@ export const QueryContext = createContext<{
 export default function QueryProvider({children}: {children: ReactNode}): JSX.Element {
 
   const allJobslength = useAppSelector(getAllJobsLength);
+  const memoAllJobslength = useMemo(() => allJobslength, [allJobslength])
   const count = useAppSelector(getJobsCount);
  
   const dispatch = useAppDispatch();
   const [query, setQuery] = useState<Query>({...baseQuery});
+  const memoQuery = useMemo(() => query, [query])
 
   const handleChangeDate = useCallback((date: Dayjs) => {
     dispatch(setSortDate(''));
@@ -57,7 +59,7 @@ export default function QueryProvider({children}: {children: ReactNode}): JSX.El
   }, [dispatch, query.createdAt, count, allJobslength]);
 
   const value = {
-    query: {...query, lengthJobs: allJobslength},
+    query: {...memoQuery, lengthJobs: memoAllJobslength},
     onChangeDate: handleChangeDate,
     onChangeOffset: handleChangeOffset,
     setQuery: setQuery,

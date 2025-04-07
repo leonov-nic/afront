@@ -19,7 +19,7 @@ export const baseQuery: Query = {
 
 export const baseQueryOperations: QueryStorehouseOperations = {
   createdAt: '',
-  limit: 100,
+  limit: 10,
   page: 1,
   typeProduct: '',
   type: '',

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { getStoreHousePositions } from '../../store/stotrehouse-process/storehouse-process';

@@ -7,9 +7,6 @@ export const AuthContext = createContext<AuthorizationStatus>(AuthorizationStatu
 
 export default function AuthProvider({children}: {children: ReactNode}): JSX.Element {
   const statusAuthorization = useAppSelector(getAuthorizationStatus);
-//   const value = {
-//     isAuthorization: statusAuthorization === AuthorizationStatus.Auth
-//   }
 
   return (
     <AuthContext.Provider value={statusAuthorization}>

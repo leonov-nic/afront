@@ -45,7 +45,7 @@ const ControlBox = memo(() => {
       borderTop="3px solid #93a9b8"
       position="relative"
       marginTop="10px"
-      marginBottom="15px"
+      marginBottom={pathname !== '/storage' ? "15px" : "0"}
       display="flex"
       minHeight="auto"
       flexDirection={"row"}
