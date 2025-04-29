@@ -13,8 +13,6 @@ const MainTableBody = memo((): JSX.Element => {
   console.log('render TableBody');
   const [jobs, setJobs] = useState<TJobRDO[]>([]);
   const fetchingJobs = useAppSelector(getJobs);
-//   console.log(fetchingJobs);
-//   console.log(jobs);
 
   useEffect(() => {
     setJobs(prevJobs => {

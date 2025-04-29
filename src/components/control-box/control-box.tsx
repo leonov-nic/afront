@@ -10,6 +10,7 @@ import ButtonOpenDialogUpdateDetail from '../button-open-dialog-update-detail/bu
 import ButtonOpenDialogAddToStorage from '../button-open-dialog-add-to-storage/button-open-dialog-add-to-storage';
 import ButtonOpenDialogStorehouseOperation from '../button-open-dialog-add-storehouse-operation/button-open-dialog-add-storehouse-operation';
 import ButtonOpenDialogEditStorage from '../button-open-dialog-edit-storage/button-open-dialog-edit-storage';
+import ButtonOpenDrawerStatistics from '../button-open-drawer-statistics/button-open-drawer-statistics';
 import SelectFilterTypeStorehouse from '../select-filter-type-storehouse/select-filter-type-storehouse';
 import useQueryStoreOperations from '../../hooks/useQueryStoreOperations';
 
@@ -65,6 +66,7 @@ const ControlBox = memo(() => {
           <ButtonOpenDialogEditStorage />
 
           <SelectFilterTypeStorehouse />
+          <ButtonOpenDrawerStatistics/>
           <ButtonOpenDialogStorehouseOperation/>
         </>
       }

@@ -58,8 +58,8 @@ const hundleDeleteRow = () => {
       field: 'typeOperation',
       headerName: 'Operation',
       flex: 1,
-      disableColumnMenu: true,
-      sortable: false,
+      // disableColumnMenu: true,
+      // sortable: false,
     },
     {
       field: 'employee.registrationNumber',
@@ -77,14 +77,17 @@ const hundleDeleteRow = () => {
       flex: 1,
       align: 'left',
       valueGetter: (_value, row) => `${row.employee?.familyName || '-'}`,
+      filterable: false,
+      disableColumnMenu: true,
     },
     {
       field: 'createdAt',
       headerName: 'Date',
-      // description: 'This column has a value getter and is not sortable.',
-      sortable: false,
       width: 80,
       valueGetter: (_value, row) => `${getDayAndMonth(row.createdAt)}`,
+      filterable: false,
+      sortable: false,
+      disableColumnMenu: true,
     },
     {
       field: 'product.name',
@@ -93,6 +96,9 @@ const hundleDeleteRow = () => {
       headerAlign: 'center',
       align: 'center',
       valueGetter: (_value, row) => `${row.product.name} ${row.product.size ? row.product.size : row.product.diameter}`,
+      filterable: false,
+      sortable: false,
+      disableColumnMenu: true,
     }, 
     {
       field: 'totalAmount',
@@ -103,6 +109,7 @@ const hundleDeleteRow = () => {
       flex: 1,
       disableColumnMenu: true,
       sortable: false,
+      filterable: false,
     },
     {
       field: 'currentQuantityProduct',
@@ -113,6 +120,7 @@ const hundleDeleteRow = () => {
       flex: 1,
       disableColumnMenu: true,
       sortable: false,
+      filterable: false,
     },
     {
       field: 'fromWhom',
@@ -121,6 +129,9 @@ const hundleDeleteRow = () => {
       headerAlign: 'center',
       align: 'center',
       valueGetter: (_value, row) => `${row.fromWhom || '-'}`,
+      disableColumnMenu: true,
+      sortable: false,
+      filterable: false,
     }, 
     {
       field: 'comment',
@@ -132,6 +143,7 @@ const hundleDeleteRow = () => {
       valueGetter: (_value, row) => `${row.comment || '-'}`,
       disableColumnMenu: true,
       sortable: false,
+      filterable: false,
     }, 
   ];
   
@@ -187,7 +199,7 @@ const hundleDeleteRow = () => {
             backgroundColor: "#e74c3c",
             boxShadow: "none",
             px: 4,
-            py: 1.75,
+            py: 1.8,
             minWidth: "57px",
             mx: 1,
             position: 'absolute',

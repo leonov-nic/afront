@@ -21,7 +21,8 @@ import {
   // TStoreHouseOperationRDO,
   TStoreEditDTO,
   QueryStorehouseOperations,
-  StoreHouseOperationRDOWithCount
+  StoreHouseOperationRDOWithCount,
+  StatisticsOfOperations,
 } from '../types';
 import { baseQueryOperations } from '../const';
 
@@ -336,4 +337,13 @@ export const deleteStoreHouseOperation = createAsyncThunk<void, TStoreHouseOpera
     await dispatch(fetchStoreHouse());
     return data;
   }
+);
+
+export const getStatisticsOperation = createAsyncThunk<StatisticsOfOperations[], undefined, { extra: ThunkApiConfig }>(
+  'app/getStatisticsOperation',
+  async (_, { extra }) => {
+    const { api } = extra;
+    const { data } = await api.get<StatisticsOfOperations[]>(`api/storeoperation/statistics`);
+    return data;
+  },
 );

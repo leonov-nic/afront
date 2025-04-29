@@ -9,6 +9,7 @@ import {
   postStoreHouse,
   editStoreHouse,
   deleteStoreHouse,
+  getStatisticsOperation,
 } from '../api-action';
 
 const initialState: TStoreHouseProcess = {
@@ -86,6 +87,16 @@ export const storeHouseProcess = createSlice({
         state.isLoading = false;
       })
       .addCase(postStoreHouseOperation.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+
+      .addCase(getStatisticsOperation.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getStatisticsOperation.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(getStatisticsOperation.fulfilled, (state) => {
         state.isLoading = false;
       })
   }

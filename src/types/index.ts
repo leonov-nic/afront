@@ -173,4 +173,16 @@ export type StoreHouseOperationRDOWithCount = {
   totalItems: number,
 };
 
+
+export type StatisticsOfOperationsProducts = {
+  productName: 'string',
+  totalAmount: 'number',
+}
+
+export type StatisticsOfOperations = {
+  products: StatisticsOfOperationsProducts[],
+  employeeName: 'string',
+}
+
+
 export type TStoreHouseOperationDTO = Omit<TStoreHouseOperation, '_id'>
