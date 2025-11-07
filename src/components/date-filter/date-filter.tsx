@@ -1,8 +1,12 @@
 import DatePickerFilter from '../data-picker-filter/data-picker-filter';
 import ButtonLoadFile from '../button-load-file/button-load-file';
 import Stack from '@mui/material/Stack';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { getUser } from '../../store/user-process/user-process';
 
 export default function DateFilter() {
+  const user = useAppSelector(getUser);
+
   return (
     <Stack direction="row" spacing={2} 
       sx={{ justifyContent: "center", 
@@ -12,7 +16,7 @@ export default function DateFilter() {
       }}
     >
       <DatePickerFilter  />
-      {ButtonLoadFile() || null}
+      {user && user?.name === "Liza S" ? ButtonLoadFile() : null}
     </Stack >
   );
 }
