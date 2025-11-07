@@ -6,6 +6,7 @@ import { getUser } from '../../store/user-process/user-process';
 
 export default function DateFilter() {
   const user = useAppSelector(getUser);
+  const shouldShowButton = user && user.name === "Liza S";
 
   return (
     <Stack direction="row" spacing={2} 
@@ -16,7 +17,7 @@ export default function DateFilter() {
       }}
     >
       <DatePickerFilter  />
-      {user && user?.name === "Liza S" ? ButtonLoadFile() : null}
+      {shouldShowButton ? ButtonLoadFile() : null}
     </Stack >
   );
 }
