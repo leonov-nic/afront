@@ -7,6 +7,7 @@ import {
   deleteJob,
   fetchEmployees,
   deleteEmployee,
+  recoveryEmployee,
   postEmployee,
   fetchDetails,
   postJob,
@@ -81,7 +82,17 @@ export const jobProcess = createSlice({
         state.employees = action.payload;
         state.isLoading = false;
       })
-      .addCase(deleteEmployee.fulfilled, () => {
+      .addCase(deleteEmployee.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(deleteEmployee.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(recoveryEmployee.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(recoveryEmployee.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(postEmployee.fulfilled, (state) => {
         state.isLoading = false;

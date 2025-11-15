@@ -199,6 +199,25 @@ export const fetchEmployees = createAsyncThunk<TEmployee[], undefined, { extra: 
   },
 );
 
+export const fetchDeletedEmployees = createAsyncThunk<TEmployee[], undefined, { extra: ThunkApiConfig }>(
+  'app/fetchDeletedEmployees',
+  async (_, { extra }) => {
+    const { api } = extra;
+    const {data} = await api.get<TEmployee[]>('api/employees/deleted');
+    return data;
+  },
+);
+
+export const recoveryEmployee = createAsyncThunk<void, TEmployee['_id'], { extra: ThunkApiConfig }>(
+  'app/recoveryEmployee',
+  async (_id, { extra, dispatch }) => {
+    const { api } = extra;
+    const { data } = await api.patch<void>(`api/employees/recovery/${_id}`);
+    await dispatch(fetchEmployees());
+    return data;
+  },
+);
+
 export const editEmployee = createAsyncThunk<TEditEmployee, TEditEmployee, { extra: ThunkApiConfig }>(
   'app/editEmployee',
   async (employee, { extra, dispatch }) => {
@@ -223,7 +242,7 @@ export const deleteEmployee = createAsyncThunk<void, TEmployee['_id'], { extra: 
   'app/deleteEmployee',
   async (_id, { extra, dispatch }) => {
     const { api } = extra;
-    const {data} = await api.delete<void>(`api/employees/${_id}`);
+    const { data } = await api.delete<void>(`api/employees/${_id}`);
     await dispatch(fetchEmployees());
     return data;
   },

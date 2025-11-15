@@ -21,10 +21,10 @@ export default function Entrance(): JSX.Element {
       return;
     }
     if (user?.type === UserType.Storage) {
-      toast.info('Добро пожаловать');
+      toast.info('Welcome');
       navigate('/storage');
     } else {
-      toast.info('Добро пожаловать');
+      toast.info('Welcome');
       navigate('/');
     } 
   },[statusAuthorization, navigate, user]);
@@ -37,7 +37,7 @@ export default function Entrance(): JSX.Element {
         </Helmet>
 
         <section className="entrance">
-          <h2 className="visually-hidden">вход в приложение</h2>
+          <h2 className="visually-hidden">Login to the application</h2>
           <div className="container">
             <div className="entrance__wrapper">
               <p className="entrance__title">today: {getDay()}</p>
