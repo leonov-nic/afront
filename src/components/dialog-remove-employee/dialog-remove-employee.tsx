@@ -19,6 +19,7 @@ import { CustomButton } from '../common/button/button';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
+import { getUser } from '../../store/user-process/user-process';
 import { getEmployees, getIsLoading } from "../../store/job-process/job-process";
 import { deleteEmployee, fetchDeletedEmployees, recoveryEmployee } from '../../store/api-action';
 import { TEmployee } from '../../types';
@@ -31,6 +32,9 @@ export interface SimpleDialogProps {
 export default function DialogRemoveEmployee(props: SimpleDialogProps): JSX.Element {
   const employees = useAppSelector(getEmployees);
   const isLoading = useAppSelector(getIsLoading);
+  const user = useAppSelector(getUser);
+  const shouldShowCheckbox = user && user.name === "Liza S";
+
   const dispatch = useAppDispatch();
 
   const {open, onClose} = props;
@@ -142,15 +146,15 @@ export default function DialogRemoveEmployee(props: SimpleDialogProps): JSX.Elem
               </CustomButton>
             }
           </DialogActions>
-           
-          <FormControlLabel
+        
+          {shouldShowCheckbox ? <FormControlLabel
             sx={{p: 0, justifySelf: 'center',  ml: 0, mt: 5, width: '100%',
               backgroundColor: '#d7e0e6ff',
               '&:hover': {backgroundColor: '#f1c40f'}
               }}
             label="Recovery Of Employee"
             control={<Checkbox checked={checked} onChange={handleCheckboxRecoveryOfEmployee} />}
-          />
+          /> : null}
         </Box>
       </DialogContent>
     </Dialog>
