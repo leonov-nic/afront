@@ -178,13 +178,13 @@ export const editJob = createAsyncThunk<TUpdateJob | undefined, TUpdateJob, { ex
 export const postJob = createAsyncThunk<TJob | undefined, TJob, { extra: ThunkApiConfig }>(
   'app/postJob',
   async (job, { extra, dispatch }) => {
-    const { api, browserHistory } = extra;
+    const { api } = extra;
     try {
       await dispatch(fetchUserStatus());
       const { data: newJob} = await api.post<TJob>('api/jobs', job);
       return newJob;
     } catch (error) {
-      browserHistory.push('/entrance');
+      // browserHistory.push('/entrance');
       return Promise.reject(error);
     }
   }

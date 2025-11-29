@@ -16,6 +16,7 @@ import SelectEmployee from '../select-employee/select-employee';
 import SelectDetail from '../select-detail/select-detail';
 import SelectTypeOfJob from '../select-type-of-job/select-type-of-job';
 import CustomTextarea from '../custom-textarea/custom-textarea';
+import LunchSwitch from '../lunch-switch/lunch-switch';
 
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -24,17 +25,17 @@ import { postJob, fetchJobs } from '../../store/api-action';
 import { baseQuery, setJobBoxOne, setJobBoxTwo } from '../../const';
 
 
-export type TINITIAL_VALUES = {
-  employeeId: string;
-  timeFrom: string | undefined;
-  timeTo: string | undefined;
-  detailId: string;
-  typeOfJob: string;
-  extra: undefined;
-  quantity: undefined;
-  master: string;
-  comment: string;
-}
+// export type TINITIAL_VALUES = {
+//   employeeId: string;
+//   timeFrom: string | undefined;
+//   timeTo: string | undefined;
+//   detailId: string;
+//   typeOfJob: string;
+//   extra: undefined;
+//   quantity: undefined;
+//   master: string;
+//   comment: string;
+// }
 
 const INITIAL_VALUES = {
   employeeId: '',
@@ -46,6 +47,7 @@ const INITIAL_VALUES = {
   quantity: undefined,
   comment: '',
   master: '',
+  isLunch: true,
 };
 
 const VALIDATION_SCHEMA = Yup.object().shape({
@@ -57,6 +59,7 @@ const VALIDATION_SCHEMA = Yup.object().shape({
   extra: Yup.number(),
   quantity: Yup.number().required("Fill field"),
   comment: Yup.string(),
+  isLunch: Yup.boolean(),
 });
 
 export default function FormAddJob(): JSX.Element {
@@ -71,11 +74,13 @@ export default function FormAddJob(): JSX.Element {
     return undefined;
   }
   
-  const submitFunction = (values: TJob, actions: { setSubmitting: (arg0: boolean) => void; resetForm: (arg0: { employeeId: string; timeFrom: string; timeTo: string; detailId: string; typeOfJob: string; extra: undefined; quantity: undefined; comment: string; master: string; }) => void; }) => {
+  const submitFunction = (values: TJob, actions: { setSubmitting: (arg0: boolean) => void; resetForm: (arg0: { employeeId: string; timeFrom: string; timeTo: string; detailId: string; typeOfJob: string; extra: undefined; quantity: undefined; comment: string; master: string; isLunch: boolean}) => void; }) => {
+    console.log(values, 'from submitFunction')
     user ? values.master = user._id : values.master = '';
     if (!setJobBoxOne.has(values.typeOfJob)) {
       values.timeFrom = dayjs(getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
       values.timeTo = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
+      
     } else {
       values.timeFrom = '-';
       values.timeTo = '-';
@@ -107,12 +112,13 @@ export default function FormAddJob(): JSX.Element {
           <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" alignItems="center">
             <SelectEmployee />
             <SelectTime name="timeFrom"></SelectTime>
+            <LunchSwitch/>
             <SelectTime name="timeTo"></SelectTime>
             <SelectDetail/>
             <SelectTypeOfJob name="typeOfJob"/>
             <Field
               component={TextField}
-              sx={{ maxWidth: 100}}
+              sx={{ maxWidth: 90}}
               id="extra"
               type="number"
               name="extra"
@@ -122,7 +128,7 @@ export default function FormAddJob(): JSX.Element {
             />
             <Field
               component={TextField}
-              sx={{ maxWidth: 100}}
+              sx={{ maxWidth: 90}}
               id="quantity"
               name="quantity"
               type="number"

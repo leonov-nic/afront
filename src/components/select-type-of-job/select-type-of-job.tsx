@@ -34,9 +34,10 @@ export default function SelectTypeOfJob({name, sx = []}: SelectTypeOfJobProps): 
               quantity: 0,
               timeFrom: '-',
               timeTo: '-',
+              isLunch: false,
               detailId: '66e3fa22873f13f61db28d36',
               // комп
-              // detailId: '66e482d2f776718b37d41d2b',
+              // detailId: '6733c9d01c3f96b7e44f987f',
             })
           } else if (setJobBoxTwo.has(value.name)) {
             setValues({...values,

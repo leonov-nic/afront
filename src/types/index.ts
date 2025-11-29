@@ -66,6 +66,7 @@ export type TJob = {
   quantity: number | undefined;
   master: string;
   comment?: string;
+  isLunch?: boolean;
 }
 
 export type TSelectJob = TJob & { familyName?: string } & { registrationNumber?: number };
