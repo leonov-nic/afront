@@ -21,7 +21,7 @@ export default function SelectTypeOfJob({name, sx = []}: SelectTypeOfJobProps): 
     <Autocomplete
       value={values.typeOfJob ? TypesOfJob[values.typeOfJob] : null}
       id={name}
-      sx={[{ minWidth: 150, width: '100%', maxWidth: 200, display: "inline-flex"}, ...(Array.isArray(sx) ? sx : [sx]),]}
+      sx={[{ minWidth: 150, width: '100%', maxWidth: 185, display: "inline-flex"}, ...(Array.isArray(sx) ? sx : [sx]),]}
       options={typesJob}
       autoComplete={false}
       fullWidth={true}

@@ -1,5 +1,6 @@
 
 import Stack from '@mui/material/Stack';
+
 import { Formik, Field, Form } from 'formik';
 import { TextField } from "formik-mui";
 import * as Yup from 'yup';
@@ -11,6 +12,7 @@ import { TJob } from '../../types';
 import { getNewTimeInDate } from '../../utils/utils';
 
 import { SubmitButton } from '../common/button/button';
+import ButtonTimeOfJob from '../button-time-of-job/button-time-of-job';
 import SelectTime from '../select-time/select-time';
 import SelectEmployee from '../select-employee/select-employee';
 import SelectDetail from '../select-detail/select-detail';
@@ -72,10 +74,9 @@ export default function FormAddJob(): JSX.Element {
       return 'Quantity must be';
     }
     return undefined;
-  }
-  
+  };
+
   const submitFunction = (values: TJob, actions: { setSubmitting: (arg0: boolean) => void; resetForm: (arg0: { employeeId: string; timeFrom: string; timeTo: string; detailId: string; typeOfJob: string; extra: undefined; quantity: undefined; comment: string; master: string; isLunch: boolean}) => void; }) => {
-    console.log(values, 'from submitFunction')
     user ? values.master = user._id : values.master = '';
     if (!setJobBoxOne.has(values.typeOfJob)) {
       values.timeFrom = dayjs(getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
@@ -110,6 +111,7 @@ export default function FormAddJob(): JSX.Element {
       {({values}) => (
         <Form autoComplete="off">
           <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" alignItems="center">
+            <ButtonTimeOfJob/>
             <SelectEmployee />
             <SelectTime name="timeFrom"></SelectTime>
             <LunchSwitch/>

@@ -52,9 +52,9 @@ export default function SelectTime({ name }: SelectTimeProps): JSX.Element {
         if (value === '-') {return true;}
         return option === value; 
       }}
-      sx={{ minWidth: 130, maxWidth: 160, display: 'inline-flex'}}
+      sx={{ minWidth: 130, maxWidth: 130, display: 'inline-flex'}}
       data-name={name}
-      options={[...timeSlots.slice(12, 48), '24:00']}
+      options={[...timeSlots.slice(0, 48), '24:00']}
       onChange={handleChangeSelect}
       // getOptionDisabled={(option) =>
       //   timeSlots.slice(0, 12).includes(option)}

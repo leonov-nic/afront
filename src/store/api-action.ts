@@ -175,7 +175,7 @@ export const editJob = createAsyncThunk<TUpdateJob | undefined, TUpdateJob, { ex
   }
 );
 
-export const postJob = createAsyncThunk<TJob | undefined, TJob, { extra: ThunkApiConfig }>(
+export const postJob = createAsyncThunk<TJob | undefined & {isTimeNow: boolean}, TJob, { extra: ThunkApiConfig }>(
   'app/postJob',
   async (job, { extra, dispatch }) => {
     const { api } = extra;

@@ -22,7 +22,7 @@ export default function SelectDetail({sx}:{sx?: SxProps<Theme>}): JSX.Element {
       value={values.detailId ? dictionaryDetails.get(values.detailId) : null}
       autoComplete={false}
       id="select-detail"
-      sx={[{ maxWidth: 185, display: "inline-flex"}, ...(Array.isArray(sx) ? sx : [sx])]}
+      sx={[{ maxWidth: 155, display: "inline-flex"}, ...(Array.isArray(sx) ? sx : [sx])]}
       options={details}
       fullWidth={true}
       getOptionDisabled={(option) =>
