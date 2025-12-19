@@ -200,7 +200,7 @@ export const createDataForTable = (
   employee: TEmployeeRDO,
   timeFrom: string,
   timeTo: string,
-  totalHours: number | undefined,
+  totalHours: number | undefined | string,
   detailId: string,
   detail: TDetail | undefined,
   typeOfJob: TNameOfJob,
@@ -296,11 +296,12 @@ export const createRowsForTable = (jobs: TJobRDO[]) => {
 export const createRowsForExellFile = async (jobs: TJobRDO[]) => {
   const rows = jobs.map(job => {
     return {
-    "Date": new Date(job.createdAt).toLocaleString('ru-RU', {year: 'numeric', month: '2-digit', day: '2-digit'}),
+    // "Date": new Date(job.createdAt).toLocaleString('ru-RU', {year: 'numeric', month: '2-digit', day: '2-digit'}),
+    "Date": new Date(job.createdAt),
     "№": job.employee.registrationNumber,
     "Type Of Job&Detail": `${job.typeOfJob}${job.detail?.shortName !== '0' ? job.detail?.shortName : ''}`,
     "Quantity": job.quantity !== 0 ? Number(job.quantity) : '',
-    "TotalHours": job.totalHours || "",
+    "TotalHours": job.totalHours === '-' ? "" : (job.totalHours || ""),
     "Extra": job.extra || "",
     "Comment": job.comment || "",
     "Type Of Job": job.typeOfJob,

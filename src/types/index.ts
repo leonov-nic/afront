@@ -80,7 +80,7 @@ export type TJobRDO = {
   employee: TEmployeeRDO;
   timeFrom: string;
   timeTo: string;
-  totalHours?: number;
+  totalHours?: number | string;
   detailId: string;
   detail?: TDetail;
   typeOfJob: TNameOfJob;

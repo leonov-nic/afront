@@ -29,7 +29,7 @@ const MainTableBody = memo((): JSX.Element => {
     employee: TEmployeeRDO,
     timeFrom: string,
     timeTo: string,
-    totalHours: number | undefined,
+    totalHours: number | undefined | string,
     detailId: string,
     detail: TDetail | undefined,
     typeOfJob: TNameOfJob,
