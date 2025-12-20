@@ -40,14 +40,19 @@ export class Token {
 
 export const humanizeDate = (date: string): string => dayjs(date).format('DD.MM.YYYY');
 
-export const getNewTimeInDate = (time: string) => {
+export const getNewTimeInDate = (time: string, baseDate: Date = new Date()) => {
   if (!time) {return;}
-  const [hours, minutes] = time.split(':').map(Number);
-  const currentDate = new Date();
-  currentDate.setHours(hours);
-  currentDate.setMinutes(minutes);
-  currentDate.setSeconds(0);
-  return currentDate.toISOString();
+  const [rawHours, minutes] = time.split(':').map(Number);
+  const date = new Date(baseDate);
+  const actualHours = rawHours % 24;
+  const daysToAdd = Math.floor(rawHours / 24);
+  date.setHours(actualHours, minutes, 0, 0);
+  if (daysToAdd > 0) {
+    date.setDate(date.getDate() + daysToAdd);
+  }
+
+  return date;
+  // return currentDate.toISOString();
 }
 
 export const isTimeSameOrBefore = (timeFrom: string, timeTo: string) => {

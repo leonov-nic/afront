@@ -50,6 +50,7 @@ const INITIAL_VALUES = {
   comment: '',
   master: '',
   isLunch: true,
+  isTimeNow: false,
 };
 
 const VALIDATION_SCHEMA = Yup.object().shape({
@@ -62,6 +63,7 @@ const VALIDATION_SCHEMA = Yup.object().shape({
   quantity: Yup.number().required("Fill field"),
   comment: Yup.string(),
   isLunch: Yup.boolean(),
+  isTimeNow: Yup.boolean(),
 });
 
 export default function FormAddJob(): JSX.Element {
@@ -76,11 +78,26 @@ export default function FormAddJob(): JSX.Element {
     return undefined;
   };
 
-  const submitFunction = (values: TJob, actions: { setSubmitting: (arg0: boolean) => void; resetForm: (arg0: { employeeId: string; timeFrom: string; timeTo: string; detailId: string; typeOfJob: string; extra: undefined; quantity: undefined; comment: string; master: string; isLunch: boolean}) => void; }) => {
+  const submitFunction = (values: TJob & {isTimeNow: boolean}, actions: { setSubmitting: (arg0: boolean) => void; resetForm: (arg0: { employeeId: string; timeFrom: string; timeTo: string; detailId: string; typeOfJob: string; extra: undefined; quantity: undefined; comment: string; master: string; isLunch: boolean}) => void; }) => {
     user ? values.master = user._id : values.master = '';
+    console.log('Form submitFunction', values.isTimeNow);
     if (!setJobBoxOne.has(values.typeOfJob)) {
-      values.timeFrom = dayjs(getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
-      values.timeTo = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
+      const now = new Date(); // Единая точка отсчета
+      const startDate = getNewTimeInDate(`${values.timeFrom && values.timeFrom}`, now);
+      const endDate = getNewTimeInDate(`${values.timeTo && values.timeTo}`, now);
+      // const startDate  = getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
+      // let endDate = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
+
+    if (startDate && endDate) {
+      // Проверка на ночную смену (например, From 22:00 To 02:00)
+      // Если To меньше или равно From, значит To — это следующий день
+      if (endDate.getTime() <= startDate.getTime()) {
+        endDate.setDate(endDate.getDate() + 1);
+      }
+
+      values.timeFrom = dayjs(startDate).format('YYYY-MM-DDTHH:mm:ssZ');
+      values.timeTo = dayjs(endDate).format('YYYY-MM-DDTHH:mm:ssZ');
+    }
       
     } else {
       values.timeFrom = '-';

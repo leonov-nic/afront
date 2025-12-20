@@ -175,13 +175,18 @@ export const editJob = createAsyncThunk<TUpdateJob | undefined, TUpdateJob, { ex
   }
 );
 
-export const postJob = createAsyncThunk<TJob | undefined & {isTimeNow: boolean}, TJob, { extra: ThunkApiConfig }>(
+export const postJob = createAsyncThunk<TJob | undefined, TJob & {isTimeNow?: boolean}, { extra: ThunkApiConfig }>(
   'app/postJob',
-  async (job, { extra, dispatch }) => {
+  async (args, { extra, dispatch }) => {
     const { api } = extra;
+    const { isTimeNow = false, ...jobData } = args; 
     try {
       await dispatch(fetchUserStatus());
-      const { data: newJob} = await api.post<TJob>('api/jobs', job);
+      const { data: newJob} = await api.post<TJob>('api/jobs', jobData, {
+        params: {
+          isTimeNow: isTimeNow,
+        }
+      });
       return newJob;
     } catch (error) {
       // browserHistory.push('/entrance');
@@ -189,6 +194,23 @@ export const postJob = createAsyncThunk<TJob | undefined & {isTimeNow: boolean},
     }
   }
 );
+
+// export const fetchJobs = createAsyncThunk<TJobRDO[], Query, { extra: ThunkApiConfig }>(
+//   'app/fetchJobs',
+//   async (params, { extra }) => {
+//     const { api } = extra;
+
+//     const {data} = await api.get<TJobRDO[]>(`api/jobs/`, 
+//     {
+//       params: {
+//         createdAt: params.createdAt,
+//         limit: params.limit,
+//         offset: params.offset
+//       }
+//     });
+//     return data;
+//   },
+// );
 
 export const fetchEmployees = createAsyncThunk<TEmployee[], undefined, { extra: ThunkApiConfig }>(
   'app/fetchEmployees',
