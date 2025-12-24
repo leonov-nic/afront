@@ -80,7 +80,7 @@ export default function FormAddJob(): JSX.Element {
 
   const submitFunction = (values: TJob & {isTimeNow: boolean}, actions: { setSubmitting: (arg0: boolean) => void; resetForm: (arg0: { employeeId: string; timeFrom: string; timeTo: string; detailId: string; typeOfJob: string; extra: undefined; quantity: undefined; comment: string; master: string; isLunch: boolean}) => void; }) => {
     user ? values.master = user._id : values.master = '';
-    console.log('Form submitFunction', values.isTimeNow);
+
     if (!setJobBoxOne.has(values.typeOfJob)) {
       const now = new Date(); // Единая точка отсчета
       const startDate = getNewTimeInDate(`${values.timeFrom && values.timeFrom}`, now);

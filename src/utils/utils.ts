@@ -110,9 +110,12 @@ export const getMonth = (date: string) => {
 }
 
 export const getDataNowWithResetTime = () => {
-  const data = new Date();
-  data.setHours(0, 0, 0, 0);
-  return dayjs(data).utc().local().format();
+  // const data = new Date();
+  // data.setHours(0, 0, 0, 0);
+  // return dayjs(data).utc().local().format();
+  // убрали одну эту
+  // return dayjs().utc().startOf('day').toISOString();
+  return dayjs().utc().startOf('day').format();
 }
 
 export default class JsonToExcell {
