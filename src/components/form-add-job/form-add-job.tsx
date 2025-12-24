@@ -88,16 +88,19 @@ export default function FormAddJob(): JSX.Element {
       // const startDate  = getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
       // let endDate = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
 
-    if (startDate && endDate) {
-      // Проверка на ночную смену (например, From 22:00 To 02:00)
-      // Если To меньше или равно From, значит To — это следующий день
-      if (endDate.getTime() <= startDate.getTime()) {
-        endDate.setDate(endDate.getDate() + 1);
-      }
+      if (startDate?.getTime() && endDate?.getTime()) {
+        // Проверка на ночную смену (например, From 22:00 To 02:00)
+        // Если To меньше или равно From, значит To — это следующий день
+        if (endDate.getTime() <= startDate.getTime()) {
+          endDate.setDate(endDate.getDate() + 1);
+        }
 
-      values.timeFrom = dayjs(startDate).format('YYYY-MM-DDTHH:mm:ssZ');
-      values.timeTo = dayjs(endDate).format('YYYY-MM-DDTHH:mm:ssZ');
-    }
+        values.timeFrom = dayjs(startDate).format('YYYY-MM-DDTHH:mm:ssZ');
+        values.timeTo = dayjs(endDate).format('YYYY-MM-DDTHH:mm:ssZ');
+      }  else {
+        values.timeFrom = '-';
+        values.timeTo = '-';
+      }
       
     } else {
       values.timeFrom = '-';
