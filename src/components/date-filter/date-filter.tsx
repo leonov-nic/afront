@@ -6,7 +6,7 @@ import { getUser } from '../../store/user-process/user-process';
 
 export default function DateFilter() {
   const user = useAppSelector(getUser);
-  const shouldShowButton = user && user.name === "Liza S";
+  const shouldShowButton = user && user.type === "admin";
 
   return (
     <Stack direction="row" spacing={2} 

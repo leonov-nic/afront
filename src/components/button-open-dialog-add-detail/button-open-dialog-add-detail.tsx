@@ -3,11 +3,11 @@ import { CustomButton } from '../common/button/button';
 import { useState } from 'react';
 import DialogAddDetail from '../dialog-add-detail/dialog-add-detail';
 
-import { getUserStatus } from '../../store/user-process/user-process';
-import { useAppSelector } from '../../hooks/useAppSelector';
+// import { getUserStatus } from '../../store/user-process/user-process';
+// import { useAppSelector } from '../../hooks/useAppSelector';
 
 export default function ButtonOpenDialogAddDetail() {
-  const userStatus = useAppSelector(getUserStatus);
+  // const userStatus = useAppSelector(getUserStatus);
 
   const [open, setOpen] = useState(false);
 
@@ -20,7 +20,7 @@ export default function ButtonOpenDialogAddDetail() {
   }
 
   return (
-    userStatus === 'admin' && 
+    // userStatus === 'admin' && 
     <>
       <CustomButton
         data-name='111'

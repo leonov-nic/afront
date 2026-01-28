@@ -67,7 +67,7 @@ export default function Header(): JSX.Element {
                 </S.HeaderAvatarWrapper>
                 <input onChange={handleFileChange} ref={fileInputRef} type="file" id="avatar" name="avatar" className="visually-hidden"  style={{position: 'absolute', height: '42px', width: '42px', background: 'red'}}/>
               </form>
-              <S.HeaderUserName>{user?.email}</S.HeaderUserName>
+              <S.HeaderUserName>{user?.name === 'Vjaceslavs Jevsejevs' ? user?.name : user?.email}</S.HeaderUserName>
             </S.HeaderTextWrapper>
           </S.HeaderUserWrapper>
         </S.HeaderWrapper>
