@@ -26,6 +26,7 @@ import CustomTextarea from '../custom-textarea/custom-textarea';
 import { getDayAndMonth, getHours, getNewTimeInDate } from '../../utils/utils';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { editJob, fetchJobs } from '../../store/api-action';
+import { setJobBoxOne } from '../../const';
 
 import Drawer from '@mui/material/Drawer';
 import useQuery from '../../hooks/useQuery';
@@ -67,8 +68,33 @@ export default function DrawerEditJob(props: DrawerEditJobProps): JSX.Element {
   }
 
   const submitFunction = (values: TUpdateJob) => {
-    values.timeFrom = dayjs(getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
-    values.timeTo = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
+    if (!setJobBoxOne.has(values.typeOfJob)) {
+      const now = new Date(); // Единая точка отсчета
+      const startDate = getNewTimeInDate(`${values.timeFrom && values.timeFrom}`, now);
+      const endDate = getNewTimeInDate(`${values.timeTo && values.timeTo}`, now);
+      // const startDate  = getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
+      // let endDate = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
+
+      if (startDate?.getTime() && endDate?.getTime()) {
+        // Проверка на ночную смену (например, From 22:00 To 02:00)
+        // Если To меньше или равно From, значит To — это следующий день
+        if (endDate.getTime() <= startDate.getTime()) {
+          endDate.setDate(endDate.getDate() + 1);
+        }
+
+        values.timeFrom = dayjs(startDate).format('YYYY-MM-DDTHH:mm:ssZ');
+        values.timeTo = dayjs(endDate).format('YYYY-MM-DDTHH:mm:ssZ');
+      }  else {
+        values.timeFrom = '-';
+        values.timeTo = '-';
+      }
+      
+    } else {
+      values.timeFrom = '-';
+      values.timeTo = '-';
+    }
+    // values.timeFrom = dayjs(getNewTimeInDate(`${values.timeFrom && values.timeFrom}`)).format('YYYY-MM-DDTHH:mm:ssZ')
+    // values.timeTo = dayjs(getNewTimeInDate(`${values.timeTo && values.timeTo}`)).format('YYYY-MM-DDTHH:mm:ssZ')
     dispatch(editJob(values))
     .then((data) => { if (data.meta.requestStatus === 'fulfilled') {
       dispatch(fetchJobs(query));
