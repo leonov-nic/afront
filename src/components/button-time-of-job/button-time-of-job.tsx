@@ -8,7 +8,6 @@ import { useFormikContext } from 'formik';
 export default function ButtonTimeOfJob() {
   const { values, setFieldValue } =  useFormikContext<{[key: string]: string}>();
   const isTimeNow = values.isTimeNow;
-  console.log('Form ButtonTimeOfJob', isTimeNow);
 
   const handlerChangeTimeOfJob = useCallback(() => {
     setFieldValue('isTimeNow', !isTimeNow);

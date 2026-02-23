@@ -89,6 +89,7 @@ export type TJobRDO = {
   comment?: string;
   count?: number;
   master: TUserRDO;
+  isLunch?: boolean;
 }
 
 export type TUserType  = typeof TYPES[number];
