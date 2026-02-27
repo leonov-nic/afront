@@ -18,10 +18,20 @@ export default function ButtonLoadFile() {
 
   const handleLoadFile = async () => { 
     try { 
-      const jobs: TJobRDO[] = await dispatch(fetchJobsByMonth({limit: 3000, createdAt: query.createdAt, filterByMonth: true})).unwrap(); 
+      const fetchParams = {limit: 3000, createdAt: query.createdAt, filterByMonth: true};
+      console.log("Параметры запроса:", fetchParams);
+
+      const jobs: TJobRDO[] = await dispatch(fetchJobsByMonth(fetchParams)).unwrap(); 
+    
+      // 2. ПРОВЕРКА: Пришли ли данные вообще?
+      console.log("Данные получены успешно. Количество записей:", jobs?.length);
+      // const jobs: TJobRDO[] = await dispatch(fetchJobsByMonth({limit: 3000, createdAt: query.createdAt, filterByMonth: true})).unwrap(); 
+      console.log("Начинаю инициализацию JsonToExcell...");
       const table = new JsonToExcell(jobs, 'table', query.createdAt);  
       table.init();  
+      console.log("Файл должен был начать скачиваться.");
     } catch (err) { 
+      console.error("ПОЛНАЯ ОШИБКА ПРИ ЗАГРУЗКЕ:", err);
       if (err instanceof Error) { 
         toast.error(`Ошибка загрузки – ${err.message}. Попробуйте ещё раз`,
         {style: {background: '#e44848',}});
