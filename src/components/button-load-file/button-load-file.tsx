@@ -18,7 +18,7 @@ export default function ButtonLoadFile() {
 
   const handleLoadFile = async () => { 
     try { 
-      const fetchParams = {limit: 300, createdAt: query.createdAt, filterByMonth: true};
+      const fetchParams = {limit: 3000, createdAt: query.createdAt, filterByMonth: true};
       console.log("Параметры запроса:", fetchParams);
 
         const resultAction = await dispatch(fetchJobsByMonth(fetchParams)); 
