@@ -22,6 +22,11 @@ export default function ButtonLoadFile() {
       console.log("Параметры запроса:", fetchParams);
 
       const jobs: TJobRDO[] = await dispatch(fetchJobsByMonth(fetchParams)).unwrap(); 
+      if (fetchJobsByMonth.rejected.match(jobs)) {
+        const serverError = jobs.payload || jobs.error;
+        console.error("СЕРВЕР ВЕРНУЛ ОШИБКУ:", serverError);
+        return; 
+      }
     
       // 2. ПРОВЕРКА: Пришли ли данные вообще?
       console.log("Данные получены успешно. Количество записей:", jobs?.length);
