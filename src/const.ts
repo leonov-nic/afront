@@ -3,7 +3,7 @@ import { getDataNowWithResetTime } from './utils/utils';
 
 // export const BACKEND_URL = 'http://localhost:5002/';
 export const BACKEND_URL = '/';
-export const REQUEST_TIMEOUT = 5000;
+export const REQUEST_TIMEOUT = 10000;
 export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const MAX_JOBS = 200;
