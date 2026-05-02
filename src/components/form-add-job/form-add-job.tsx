@@ -44,7 +44,7 @@ const INITIAL_VALUES = {
   timeFrom: '',
   timeTo: '',
   detailId: '',
-  typeOfJob: '',
+  typeOfJob: null,
   extra: undefined,
   quantity: undefined,
   comment: '',
@@ -78,7 +78,7 @@ export default function FormAddJob(): JSX.Element {
     return undefined;
   };
 
-  const submitFunction = (values: TJob & {isTimeNow: boolean}, actions: { setSubmitting: (arg0: boolean) => void; resetForm: (arg0: { employeeId: string; timeFrom: string; timeTo: string; detailId: string; typeOfJob: string; extra: undefined; quantity: undefined; comment: string; master: string; isLunch: boolean}) => void; }) => {
+  const submitFunction = (values: TJob & {isTimeNow: boolean}, actions: { setSubmitting: (arg0: boolean) => void; resetForm: (arg0: { employeeId: string; timeFrom: string; timeTo: string; detailId: string; typeOfJob: null; extra: undefined; quantity: undefined; comment: string; master: string; isLunch: boolean, isTimeNow: boolean}) => void; }) => {
     user ? values.master = user._id : values.master = '';
 
     if (!setJobBoxOne.has(values.typeOfJob)) {

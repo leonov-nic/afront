@@ -20,6 +20,7 @@ export default function SelectTypeOfJob({name, sx = []}: SelectTypeOfJobProps): 
   return (
     <Autocomplete
       value={values.typeOfJob ? TypesOfJob[values.typeOfJob] : null}
+
       id={name}
       sx={[{ minWidth: 150, width: '100%', maxWidth: 185, display: "inline-flex"}, ...(Array.isArray(sx) ? sx : [sx]),]}
       options={typesJob}
@@ -44,9 +45,9 @@ export default function SelectTypeOfJob({name, sx = []}: SelectTypeOfJobProps): 
               quantity: 0,
               detailId: '66e3fa22873f13f61db28d36',
               // комп
-              // detailId: '66e482d2f776718b37d41d2b',
+              // detailId: '6733c9d01c3f96b7e44f987f',
             })
-          }
+          } 
           setFieldValue(`${name}`, value.name);
           handleChange(`${name}`);
         }

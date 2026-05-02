@@ -61,7 +61,7 @@ export type TJob = {
   timeFrom: string | undefined;
   timeTo: string | undefined;
   detailId: string;
-  typeOfJob: TNameOfJob | undefined;
+  typeOfJob: TNameOfJob | null;
   extra: number | undefined;
   quantity: number | undefined;
   master: string;

@@ -7,24 +7,25 @@ import { getDetails } from "../../store/job-process/job-process";
 
 import { TDetail, TNewDetail, TJob } from '../../types';
 import { dictionary } from '../../utils/utils';
-import { setJobBoxOne } from '../../const';
+import { setJobBoxOne, setJobBoxTwo} from '../../const';
 
 export default function SelectDetail({sx}:{sx?: SxProps<Theme>}): JSX.Element {
   const details = useAppSelector(getDetails);
   const dictionaryDetails = dictionary<TDetail>(details);
   const { setFieldValue, setValues, values, errors, touched, handleChange } =  useFormikContext<Pick<TJob, 'detailId' | 'typeOfJob'> & TNewDetail>();
-  const error = errors[`detailId`];
+  const error = errors['detailId'];
   const value = values['detailId'];
 
   return (
     <Autocomplete
-      disabled={setJobBoxOne.has(values.typeOfJob)} 
+      disabled={setJobBoxOne.has(values.typeOfJob) || setJobBoxTwo.has(values.typeOfJob)}
       value={values.detailId ? dictionaryDetails.get(values.detailId) : null}
       autoComplete={false}
       id="select-detail"
       sx={[{ maxWidth: 155, display: "inline-flex"}, ...(Array.isArray(sx) ? sx : [sx])]}
       options={details}
       fullWidth={true}
+      isOptionEqualToValue={(option, value) => option.shortName === value.shortName }
       getOptionDisabled={(option) =>
         details.slice(-1).includes(option)}
       getOptionLabel={(option) => `${option.shortName} / ${option.longName}`}

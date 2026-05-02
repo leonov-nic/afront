@@ -49,7 +49,7 @@ export default function SelectEmployee({sx, onChangeSelect}: SelectEmployeeProps
           }
           if (value && setJobBoxTwo.has(value.mainJob)) {
             setValues({...values,
-              typeOfJob: value.mainJob,
+              typeOfJob: value.mainJob ? value.mainJob : null,
               familyName: value.familyName,
               registrationNumber: value.registrationNumber,
               employeeId: `${value._id && value._id.toString()}`,
@@ -61,7 +61,7 @@ export default function SelectEmployee({sx, onChangeSelect}: SelectEmployeeProps
             })
           } else {
             value && setValues({...values,
-              typeOfJob: value.mainJob,
+              typeOfJob: value.mainJob ? value.mainJob : null,
               familyName: value.familyName,
               registrationNumber: value.registrationNumber,
               employeeId: `${value._id && value._id.toString()}`
