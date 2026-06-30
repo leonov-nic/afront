@@ -24,7 +24,7 @@ export default function ButtonOpenDialogUpdateDetail() {
     <>
       <CustomButton
         data-name='111'
-        sx={{ backgroundColor: "#e4ba48", boxShadow: "none", p: 1, borderRadius: 50, minWidth: "57px" }}
+        sx={{ backgroundColor: "#e4ba48", boxShadow: "none", p: 1, borderRadius: 50, minWidth: "57px", marginRight: '5px' }}
         onClick={handleOpenDialog}
       >
         <S.IconWorker />

@@ -105,6 +105,7 @@ export const NAMESOFJOBBOXTWO = [
   'baum',
   'pac',
   'sob',
+  'barv',
 ];
 
 export const setJobBoxOne = new Set();
@@ -149,6 +150,7 @@ export const NAMESOFJOB = [
   'pac',
   's',
   'sob',
+  'barv',
 ];
 
 export const TypesOfJob: { [key in TNameOfJob]: TTypeOfJob } = {
@@ -276,6 +278,10 @@ export const TypesOfJob: { [key in TNameOfJob]: TTypeOfJob } = {
     name: 'sob',
     longName: 'sobranie',
   },
+  barv: {
+    name: 'barv',
+    longName: 'barv',
+  },
 };
 
 export const typesJob: TTypeOfJob[] = [
@@ -372,5 +378,8 @@ export const typesJob: TTypeOfJob[] = [
   },{
     name: 'sob',
     longName: 'sobranie',
-  }
+  },{
+    name: 'barv',
+    longName: 'barv',
+  },
 ]

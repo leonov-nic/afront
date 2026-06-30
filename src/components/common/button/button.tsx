@@ -59,12 +59,13 @@ export const SubmitButton = ({ text, sx=[], disabled }: SubmitButtonProps) => {
       className="secondary"
       disabled={isSubmitting || disabled}
       sx={[
-        {px: 4, py: 1.95, m: 0, top: '-1px',
+        {px: 2.5, py: 1.95, m: 0, top: '-1px',
         backgroundColor: '#17c1bc',
         color: 'white',
         fontWeight: 'bold',
         borderRadius: 0,
         ts: 5,
+        // flexGrow: 1,
         '&:hover': {backgroundColor: '#128682'}}, ...(Array.isArray(sx) ? sx : [sx]),]}
     >
       {text}
