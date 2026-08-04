@@ -180,8 +180,19 @@ export default class JsonToExcell {
             right: {style:'thin'}
           };
 
-          if (colNumber === 1 ) { 
+          if (colNumber === 1 && cell.value instanceof Date) {
+            cell.value = new Date(Date.UTC(
+              cell.value.getFullYear(),
+              cell.value.getMonth(),
+              cell.value.getDate()
+            ));
+
             cell.numFmt = 'yyyy-mm-dd';
+
+            // новый вариант но в стринг выход
+            // cell.value = `${cell.value.getFullYear()}-${String(cell.value.getMonth() + 1).padStart(2, '0')}-${String(cell.value.getDate()).padStart(2, '0')}`;
+            // самый старый вариант одна строчка
+            // cell.numFmt = 'yyyy-mm-dd';
           }
 
           if (colNumber === 11 ||  colNumber === 12) { 
@@ -306,8 +317,8 @@ export const createRowsForTable = (jobs: TJobRDO[]) => {
 
 export const createRowsForExellFile = async (jobs: TJobRDO[]) => {
   const rows = jobs.map(job => {
+
     return {
-    // "Date": new Date(job.createdAt).toLocaleString('ru-RU', {year: 'numeric', month: '2-digit', day: '2-digit'}),
     "Date": new Date(job.createdAt),
     "№": job.employee?.registrationNumber || "",
     "Type Of Job&Detail": `${job.typeOfJob}${job.detail?.shortName !== '0' ? job.detail?.shortName : ''}`,
