@@ -4,7 +4,7 @@ import { getDataNowWithResetTime } from './utils/utils';
 // export const BACKEND_URL = 'http://localhost:5002/';
 export const BACKEND_URL = '/';
 export const REQUEST_TIMEOUT = 30000;
-export const TIMEOUT_SHOW_ERROR = 3000;
+export const TIMEOUT_SHOW_ERROR = 5000;
 
 export const MAX_JOBS = 200;
 export const STORE_HOUSE_TYPES = ['Instruments', 'Safety', 'Arrival'];

@@ -148,7 +148,7 @@ export default function FormAddJob(): JSX.Element {
           <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" alignItems="center">
 
             {isCustomSelectDate ? <ButtonCustomDateSelect /> : null}
-            {user?.type === 'admin' ? 
+            {/* {user?.type === 'admin' ? "my button" : null} */}
 
             <CustomButton text='D' onClick={handleToggleCustomSelectDate} 
               sx={[{
@@ -157,7 +157,7 @@ export default function FormAddJob(): JSX.Element {
                 backgroundColor: isCustomSelectDate ? '#17c1bc' : '#e5cb64ff', color: 'white'
               }]} 
             />
-            : null}
+           
 
             {!isCustomSelectDate ? <ButtonTimeOfJob/> : null}
             <SelectEmployee />
