@@ -32,11 +32,12 @@ export type TEmployee = {
   registrationNumber: number | undefined;
   mainJob: string | undefined;
   masterId: string | undefined ;
+  hiringChannel: string;
 }
 
 export type TEditEmployee = Omit<TEmployee, 'masterId'> & { typeOfJob?: string } & { employeeId?: string };
 
-export type TNewEmployee = Pick<TEmployee, 'familyName' | 'registrationNumber' | 'mainJob'> & { typeOfJob?: string };
+export type TNewEmployee = Pick<TEmployee, 'familyName' | 'registrationNumber' | 'mainJob' | 'hiringChannel'> & { typeOfJob?: string };
 export type TEmployeeRDO = Omit<TEmployee, 'masterId'>
 
 export type TNameOfJob = typeof NAMESOFJOB[number];
@@ -69,7 +70,7 @@ export type TJob = {
   isLunch?: boolean;
 }
 
-export type TSelectJob = TJob & { familyName?: string } & { registrationNumber?: number };
+export type TSelectJob = TJob & { familyName?: string } & { registrationNumber?: number } & { hiringChannel?: string };
 
 export type TUpdateJob = Omit<TJobRDO, 'employee' | 'totalHours' | 'detail' | 'master'> & { master?: string };
 

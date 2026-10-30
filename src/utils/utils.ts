@@ -227,9 +227,10 @@ export const createDataForTable = (
   master: TUserRDO,
   extra?: number,
   comment?: string,
-  isLunch?: boolean
+  isLunch?: boolean,
+  hiringChannel?: string
 ) => {
-  return { _id, createdAt, employeeId, employee, timeFrom, timeTo, totalHours, detailId, detail, typeOfJob, extra, quantity, comment, master, isLunch };
+  return { _id, createdAt, employeeId, employee, timeFrom, timeTo, totalHours, detailId, detail, typeOfJob, extra, quantity, comment, master, isLunch, hiringChannel };
 }
 
 export const createDataForTableStorage = (
@@ -289,6 +290,7 @@ export const createRowsForTable = (jobs: TJobRDO[]) => {
     job.extra,
     job.comment,
     job.isLunch,
+    job.employee.hiringChannel,
   ));
 
   return rows;
@@ -333,7 +335,8 @@ export const createRowsForExellFile = async (jobs: TJobRDO[]) => {
     "TimeFrom": job.timeFrom !== '-' ? getHoursAndSeconds(job.timeFrom) : '',
     "TimeTo": job.timeTo !== '-' ? getHoursAndSeconds(job.timeTo) : '',
     "Master": job.master?.name || "no master",
-    "isLunch": job.isLunch ? 'yes' : 'NO'};
+    "isLunch": job.isLunch ? 'yes' : 'NO',
+    "hiringChannel": job.employee?.hiringChannel,};
   });
 
   return rows;

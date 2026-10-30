@@ -26,6 +26,7 @@ const INITIAL_VALUES = {
   registrationNumber: undefined,
   mainJob: 'kd',
   _id: undefined,
+  hiringChannel: '',
 };
 
 const VALIDATION_SCHEMA = Yup.object().shape({
@@ -81,48 +82,61 @@ export default function DialogEditEmployee(props: DialogAddEmployeeProps): JSX.E
           validationSchema={VALIDATION_SCHEMA}
           onSubmit={submitFunction}
         >
-          <Form>
-            <Grid container columns={1} >
-              <Grid item xs={1} sx={{p: 1,  width: '100%' }}>
-                <SelectEmployee sx={{maxWidth: '100%', mx: 0 }}/>
+          {({ values }) => (
+            <Form>
+              <Grid container columns={1} >
+                <Grid item xs={1} sx={{p: 1,  width: '100%' }}>
+                  <SelectEmployee sx={{maxWidth: '100%', mx: 0 }}/>
+                </Grid>
+                <Grid item xs={1} sx={{p: 1}}>
+                  <Field
+                    component={TextField}
+                    id="familyName"
+                    name="familyName"
+                    type="text"
+                    placeholder="Family and Name"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={1} sx={{p: 1}}>
+                  <SelectTypeOfJob name='typeOfJob' sx={{minWidth: '100%', marginLeft: '0'}}/>
+                </Grid>
+                <Grid item xs={1} sx={{p: 1}}>
+                  <Field
+                    value={(values.registrationNumber ?? '') as string | number}
+                    component={TextField}
+                    sx={{ width: '100%' }}
+                    id="registrationNumber"
+                    type="number"
+                    name="registrationNumber"
+                    placeholder="Reg Number"
+                  />
+                </Grid>
+                <Grid item xs={1} sx={{p: 1}}>
+                  <Field
+                    component={TextField}
+                    id="hiringChannel"
+                    name="hiringChannel"
+                    type="text"
+                    placeholder="Hiring Channel"
+                    sx={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={1} sx={{p: 1}}>
+                  <SubmitButton sx={{m: 0, width: '100%'}} text='Edit'></SubmitButton>
+                </Grid>
+                <Grid item xs={2}>
+                  <Box
+                    sx={{display: 'flex', px: 1,
+                      flexDirection: 'row',
+                      flexWrap: 'wrap',
+                      justifyContent: 'space-between',
+                    }}>
+                  </Box>
+                </Grid>
               </Grid>
-              <Grid item xs={1} sx={{p: 1}}>
-                <Field
-                  component={TextField}
-                  id="familyName"
-                  name="familyName"
-                  type="text"
-                  placeholder="Family and Name"
-                  sx={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={1} sx={{p: 1}}>
-                <SelectTypeOfJob name='typeOfJob' sx={{minWidth: '100%', marginLeft: '0'}}/>
-              </Grid>
-              <Grid item xs={1} sx={{p: 1}}>
-                <Field
-                  component={TextField}
-                  sx={{ width: '100%' }}
-                  id="registrationNumber"
-                  type="number"
-                  name="registrationNumber"
-                  placeholder="Reg Number"
-                />
-              </Grid>
-              <Grid item xs={1} sx={{p: 1}}>
-                <SubmitButton sx={{m: 0, width: '100%'}} text='Edit'></SubmitButton>
-              </Grid>
-              <Grid item xs={2}>
-                <Box
-                  sx={{display: 'flex', px: 1,
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    justifyContent: 'space-between',
-                  }}>
-                </Box>
-              </Grid>
-            </Grid>
-          </Form>
+            </Form>
+          )}
         </Formik>
       </DialogContent>
     </Dialog>

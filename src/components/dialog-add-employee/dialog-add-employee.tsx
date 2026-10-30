@@ -23,14 +23,15 @@ const INITIAL_VALUES = {
   familyName: '',
   registrationNumber: undefined,
   mainJob: 'n',
+  hiringChannel: '',
 };
 
 const VALIDATION_SCHEMA = Yup.object().shape({
   familyName: Yup.string().required("Required"),
-  registrationNumber: Yup.number().required("Required"),
+  registrationNumber: Yup.number().required("Required"), 
   mainJob: Yup.string().required("Required"),
+  hiringChannel: Yup.string().required("Required"),
 });
-
 
 export interface DialogAddEmployeeProps {
   open: boolean;
@@ -48,6 +49,7 @@ export default function DialogAddEmployee(props: DialogAddEmployeeProps): JSX.El
   const submitFunction = (values: TNewEmployee, actions: { setSubmitting: (arg0: boolean) => void; }) => {
     values.mainJob = values.typeOfJob;
     delete values.typeOfJob;
+
     dispatch(postEmployee(values))
 
     toast.success(`Добавлен сотрудник ${values.familyName}`,
@@ -95,12 +97,23 @@ export default function DialogAddEmployee(props: DialogAddEmployeeProps): JSX.El
                 </Grid>
                 <Grid item xs={1} sx={{p: 1}}>
                   <Field
+                    value={(values.registrationNumber ?? '') as string | number}
                     component={TextField}
                     sx={{ width: '100%' }}
                     id="registrationNumber"
                     type="number"
                     name="registrationNumber"
                     placeholder="Reg Number"
+                  />
+                </Grid>
+                <Grid item xs={1} sx={{p: 1}}>
+                  <Field
+                    component={TextField}
+                    id="hiringChannel"
+                    name="hiringChannel"
+                    type="text"
+                    placeholder="Hiring Channel"
+                    sx={{ width: '100%' }}
                   />
                 </Grid>
                 <Grid item xs={1} sx={{p: 1}}>

@@ -54,6 +54,7 @@ export default function SelectEmployee({sx, onChangeSelect}: SelectEmployeeProps
               registrationNumber: value.registrationNumber,
               employeeId: `${value._id && value._id.toString()}`,
               quantity: 0,
+              hiringChannel: value.hiringChannel,
               detailId: '66e3fa22873f13f61db28d36',
               // detailId: '66e482d2f776718b37d41d2b',
               // ноут
@@ -64,6 +65,7 @@ export default function SelectEmployee({sx, onChangeSelect}: SelectEmployeeProps
               typeOfJob: value.mainJob ? value.mainJob : null,
               familyName: value.familyName,
               registrationNumber: value.registrationNumber,
+              hiringChannel: value.hiringChannel,
               employeeId: `${value._id && value._id.toString()}`
             })
           }
